@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Courses;
+use App\Models\Posters;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,33 @@ class RequestsFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
+
+        //extra logic to keep speedcode and grant_holder together
+
+        
+        $returnArray = 
+        [
+            'poster_id' => Posters::factory(),
+            'course_id' => Courses::factory(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'email' =>fake()->email(),
+            'payment_method' => fake()->randomElement(['cash', 'speedcode']),
+            'position' => fake()->randomElement(['graduate', 'faculty', 'undergraduate', 'staff']),
+            'quantity' => fake()->randomDigitNotZero(),
         ];
+
+        if($returnArray["payment_method"] == 'speedcode')
+        {
+            $returnArray['grant_holder_name'] = fake()->name();
+            $returnArray['grant_holder_email'] = fake()->email();
+        }
+        else
+        {
+            $returnArray['grant_holder_name'] = null;
+            $returnArray['grant_holder_email'] = null;
+        }
+
+        return $returnArray;
     }
 }

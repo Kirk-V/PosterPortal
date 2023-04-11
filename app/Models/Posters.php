@@ -20,12 +20,12 @@ class Posters extends Model
 
     #region Relationships
 
-    public function request(): HasOne
+    public function requests(): HasOne
     {
         return $this->hasOne(Requests::class, 'poster_id');
     }
 
-    public function transaction(): HasOne
+    public function transactions(): HasOne
     {
         return $this->hasOne(Transactions::class, 'poster_id');
     }

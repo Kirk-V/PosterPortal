@@ -29,9 +29,10 @@ return new class extends Migration
 
         Schema::create('Courses', function (Blueprint $table) {
             $table->id('course_id')->first();
-            $table->string('course_number');
-            $table->string('course_year');
-            $table->string('course_instructor');
+            $table->string('number');
+            $table->string('year');
+            $table->string('department');
+            $table->string('instructor');
         });
 
         Schema::create('Requests', function (Blueprint $table) {
@@ -52,7 +53,7 @@ return new class extends Migration
 
         Schema::create('Jobs', function (Blueprint $table) {
             $table->id('job_id');
-            $table->foreignId('poster_id')->references('poster_id')->on('Posters')->nullOnDelete();
+            $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->foreignId('request_id')->nullable()->references('request_id')->on('Requests')->nullOnDelete();
             $table->enum('state', ['in_queue', 'printed', 'on_hold']);
             

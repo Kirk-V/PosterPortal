@@ -16,12 +16,12 @@ class Courses extends Model
     public $timestamps = false;
 
 
-    public function requests() :HasOne
+    public function request() :HasOne
     {
         return $this->hasOne(Requests::class, 'class_id');
     }
 
-    public function transactions(): HasOne
+    public function transaction(): HasOne
     {
         return $this->hasOne(Transactions::class, 'class_id');
     }

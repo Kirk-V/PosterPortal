@@ -8,14 +8,15 @@ use Tests\TestCase;
 
 class DataBaseTest extends TestCase
 {
+    //ensurest hat databsae changes do not persist (as long as schema is up to date)
     use RefreshDatabase;
     /**
      * A basic feature test example.
      */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    // public function test_example(): void
+    // {
+    //     $response = $this->get('/');
 
-        $response->assertStatus(200);
-    }
+    //     $response->assertStatus(200);
+    // }
 }

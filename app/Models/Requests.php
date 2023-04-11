@@ -14,7 +14,7 @@ class Requests extends Model
 
     public $timestamps = false;
 
-    public function poster(): BelongsTo
+    public function posters(): BelongsTo
     {
         return $this->belongsTo(Posters::class,'poster_id', 'poster_id');
     }
