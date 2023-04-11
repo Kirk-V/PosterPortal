@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Posters extends Model
 {
     use HasFactory;
+
+    protected $table = 'Posters';
+    protected $primaryKey = 'poster_id';
+
+    public $timestamps = false;
 }

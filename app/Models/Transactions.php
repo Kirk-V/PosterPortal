@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Transactions extends Model
 {
     use HasFactory;
+
+    protected $table = 'Transactions';
+    protected $primaryKey = 'transaction_id';
+
+    public $timestamps = false;
 }

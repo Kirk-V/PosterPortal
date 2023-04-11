@@ -60,7 +60,7 @@ return new class extends Migration
             $table->float('height', 8, 2);
             $table->foreignId('transaction_id')->nullable()->references('transaction_id')->on('Transactions')->nullOnDelete();
             $table->boolean('discount_eligible');
-            $table->string('speed_code');
+            $table->string('speed_code')->nullable();
             $table->boolean('speed_code_approved');
             $table->float('discount', 8, 2);
         });
