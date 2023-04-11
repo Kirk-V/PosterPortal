@@ -37,6 +37,8 @@ class DataBaseRelationshipsTest extends TestCase
                 ->create()->first();
 
         $this->assertInstanceOf(Models\Posters::class, $request->posters);
+        $this->assertInstanceOf(Models\Requests::class, $poster->requests);
+        $this->assertTrue($poster->is($request->posters), "Poster id = ".$poster->poster_id." ".$poster->width. "-- parent poster is id= ".$request->posters->poster_id." ".$request->posters->width);
     }
 
     public function request_belongs_to_poster(){
