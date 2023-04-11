@@ -77,12 +77,15 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('Courses');
+       
         Schema::dropIfExists('Settings');
+        
+       
         Schema::dropIfExists('Posters');
         Schema::dropIfExists('Transactions');
         Schema::dropIfExists('Jobs');
         Schema::dropIfExists('Requests');
+        Schema::dropIfExists('Courses');
         
     }
 };

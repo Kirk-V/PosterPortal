@@ -16,19 +16,20 @@ class PostersFactory extends Factory
      */
     public function definition(): array
     {
+        error_log('Seeding Database');
+
         return [
-            //
-            'poster_id' => $this->faker->randomNumber(5, false),
-            'request_id' => $this->faker->randomNumber(5, false),
-            'job_id' => $this->faker->randomNumber(5, false),
-            'state' => $this->faker->randomElements(['pending', 'rejected', 'accepted', 'printed', 'paid', 'complete']),
-            'width' => $this->faker->randomFloat(2),
-            'height' => $this->faker->randomFloat(2),
-            'transaction_id' => $this->faker->randomNumber(5, false),
-            'discount_eligible' => $this->faker->randomNumber(5, false),
-            'speed_code' => $this->faker->randomNumber(5, false),
-            'speed_code_approved' => $this->faker->bothify('?????-#####'),
-            'discount' => $this->faker->randomFloat(2),
+            'poster_id' => fake()->randomNumber(5, false),
+            'request_id' => fake()->randomNumber(5, false),
+            'job_id' => fake()->randomNumber(5, false),
+            'state' => fake()->randomElement(['pending', 'rejected', 'accepted', 'printed', 'paid', 'complete']),
+            'width' => fake()->randomFloat(2),
+            'height' => fake()->randomFloat(2),
+            'transaction_id' => fake()->randomNumber(5, false),
+            'discount_eligible' => fake()->randomNumber(5, false),
+            'speed_code' => fake()->randomNumber(5, false),
+            'speed_code_approved' => fake()->bothify('?????-#####'),
+            'discount' => fake()->randomFloat(2)
         ];
     }
 }
