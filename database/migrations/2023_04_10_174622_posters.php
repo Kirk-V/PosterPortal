@@ -11,6 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //Create a table for posters
+        Schema::create('Posters', function (Blueprint $table) {
+            $table->id('poster_id')->first();
+            // $table->foreignId('request_id')->nullable()->references('request_id')->on('Requests')->nullOnDelete();
+            // $table->foreignId('job_id')->nullable()->references('job_id')->on('Jobs')->nullOnDelete();
+            $table->enum('state', ['pending', 'rejected', 'accepted', 'printed', 'paid', 'complete']);
+            $table->float('width', 8, 2);
+            $table->float('height', 8, 2);
+            // $table->foreignId('transaction_id')->nullable()->references('transaction_id')->on('Transactions')->nullOnDelete();
+            $table->boolean('discount_eligible');
+            $table->string('speed_code')->nullable();
+            $table->boolean('speed_code_approved');
+            $table->float('discount', 8, 2);
+        });
+
+
         Schema::create('Courses', function (Blueprint $table) {
             $table->id('course_id')->first();
             $table->string('course_number');
@@ -20,7 +36,7 @@ return new class extends Migration
 
         Schema::create('Requests', function (Blueprint $table) {
             $table->id('request_id')->first();
-            // $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
+            $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->foreignId('course_id')->nullable()->references('course_id')->on('Courses')->nullOnDelete();
             $table->string('first_name');
             $table->string('last_name');
@@ -36,7 +52,7 @@ return new class extends Migration
 
         Schema::create('Jobs', function (Blueprint $table) {
             $table->id('job_id');
-            // $table->foreignId('poster_id')->references('poster_id')->on('Posters')->nullOnDelete();
+            $table->foreignId('poster_id')->references('poster_id')->on('Posters')->nullOnDelete();
             $table->foreignId('request_id')->nullable()->references('request_id')->on('Requests')->nullOnDelete();
             $table->enum('state', ['in_queue', 'printed', 'on_hold']);
             
@@ -44,26 +60,13 @@ return new class extends Migration
         });
 
         Schema::create('Transactions', function (Blueprint $table) {
-            $table->id('transaction_id')->first();
+            // $table->id('transaction_id')->first();
             $table->date('transaction_date');
             $table->float('total_recieved', 8, 2);
             $table->boolean('reconciled');
         });
 
-        //Create a table for posters
-        Schema::create('Posters', function (Blueprint $table) {
-            $table->id('poster_id')->first();
-            $table->foreignId('request_id')->nullable()->references('request_id')->on('Requests')->nullOnDelete();
-            $table->foreignId('job_id')->nullable()->references('job_id')->on('Jobs')->nullOnDelete();
-            $table->enum('state', ['pending', 'rejected', 'accepted', 'printed', 'paid', 'complete']);
-            $table->float('width', 8, 2);
-            $table->float('height', 8, 2);
-            $table->foreignId('transaction_id')->nullable()->references('transaction_id')->on('Transactions')->nullOnDelete();
-            $table->boolean('discount_eligible');
-            $table->string('speed_code')->nullable();
-            $table->boolean('speed_code_approved');
-            $table->float('discount', 8, 2);
-        });
+        
 
         Schema::create('Settings', function (Blueprint $table) {
             $table->string('setting');
