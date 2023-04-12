@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Courses extends Model
@@ -16,13 +17,13 @@ class Courses extends Model
     public $timestamps = false;
 
 
-    public function request() :HasOne
+    public function requests() : HasMany
     {
-        return $this->hasOne(Requests::class, 'class_id');
+        return $this->hasMany(Requests::class, 'course_id');
     }
 
-    public function transaction(): HasOne
+    public function transactions(): HasMany
     {
-        return $this->hasOne(Transactions::class, 'class_id');
+        return $this->hasMany(Transactions::class, 'course_id');
     }
 }

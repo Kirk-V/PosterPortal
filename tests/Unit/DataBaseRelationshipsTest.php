@@ -26,6 +26,8 @@ class DataBaseRelationshipsTest extends TestCase
 
     private ?Models\Transactions $transaction;
 
+    private ?Models\Settings $setting;
+
     /**
      * Summary of setUp
      * Test fixture creation. A poster which has an associated job,
@@ -34,18 +36,37 @@ class DataBaseRelationshipsTest extends TestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         // Create a poster that has a one to one relationship with a request, transaction, and job
         $this->poster = Models\Posters::factory()
                 ->has(Models\Requests::factory())
                 ->has(Models\Jobs::factory())
                 ->has(Models\Transactions::factory())
-                ->create()->first();
+                ->create()
+                ->first();
         
-        Log::info("made poster");
         //Add a request;
         $this->request = Models\Requests::factory()
                 ->for($this->poster)
                 ->create()->first();
+
+        $this->course = Models\Courses::factory()
+            ->create()
+            ->first();
+
+        $this->job = Models\Jobs::factory()
+            ->for($this->poster)
+            ->create()
+            ->first();
+
+        $this->transaction = Models\Transactions::factory()
+            ->for($this->poster)
+            ->create()
+            ->first();
+
+        $this->setting = Models\Settings::factory()
+            ->create()
+            ->first();
 
     }
 
@@ -56,34 +77,44 @@ class DataBaseRelationshipsTest extends TestCase
      */
     protected function tearDown(): void
     {
+        parent::tearDown();
         $this->poster = null;
         $this->request = null;
     }
 
-    /**@test */
-    public function poster_has_a_request(){
-        Log::info("making poster\n");
-        // Create a poster that has a one to one relationship with a request
-        $poster = Models\Posters::factory()
-                ->has(Models\Requests::factory())
-                ->create()->first();
+    /**
+     * Summary of test_models_created
+     *  Checks that all models are being created properly -- checks factories 
+     * @return void
+     */
+    public function test_models_created(){
+        $this->assertInstanceOf(Models\Posters::class, $this->poster, "Failed: Poster is type: ".gettype( $this->poster));
+        $this->assertInstanceOf(Models\Requests::class, $this->request, "Failed: Request is type: ".gettype( $this->poster));
+        $this->assertInstanceOf(Models\Settings::class, $this->setting, "Failed: Request is type: ".gettype($this->setting));
+        $this->assertInstanceOf(Models\Transactions::class, $this->transaction, "Failed: Request is type: ".gettype($this->transaction));
+        $this->assertInstanceOf(Models\Jobs::class, $this->job, "Failed: Request is type: ".gettype($this->job));
+        $this->assertInstanceOf(Models\Courses::class, $this->course, "Failed: Request is type: ".gettype($this->course));
+    }
+    
+    /**
+     * Summary of test_poster_has_all_models
+     *  Tests if a poster has the expected job, transaction, and request
+     * @return void
+     */
+    public function test_poster_has_all_models(){
+        $this->assertTrue($this->request->is($this->poster->requests), "Poster's request_id = ".$this->poster->requests->request_id."-- request has id= ".$this->request->request_id);
+        $this->assertTrue($this->job->is($this->poster->jobs), "Poster has job with id = ".$this->poster->jobs->job_id."--Job has id= ".$this->job->job_id);
+        $this->assertTrue($this->transaction->is($this->poster->transactions), "Poster has transaction with id = ".$this->poster->transactions->transaction_id."--transaction has id= ".$this->transaction->transaction_id);
+    }
+    public function test_course_has_requests_and_transaction(){
+        $this->assertTrue($this->course->requests->contains($this->request), "Requests with id: ".$this->request->request_id." Could not be associated with course id: ".$this->course->course_id );
+    }
+
+    public function request_belongs_to_poster(){
         
-        Log::info("made poster");
-        //Add a request;
-        $request = Models\Requests::factory()
-                ->for($poster)
-                ->create()->first();
-
-        $this->assertInstanceOf(Models\Posters::class, $request->posters);
-        $this->assertInstanceOf(Models\Requests::class, $poster->requests);
-        $this->assertTrue($poster->is($request->posters), "Poster id = ".$poster->poster_id." ".$poster->width. "-- parent poster is id= ".$request->posters->poster_id." ".$request->posters->width);
-        $this->assertTrue($request->is($poster->requests), "Poster id = ".$poster->poster_id." ".$poster->width. "-- parent poster is id= ".$request->posters->poster_id." ".$request->posters->width);
-    }
-
-
-    public function test_request_belongs_to_poster(){
 
     }
+
 
     public function poster_has_a_transaction(){
 
