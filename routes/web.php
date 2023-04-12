@@ -25,3 +25,6 @@ Route::get('/h', function () {
 Route::get('/request', [RequestsController::class, 'index']);
 
 Route::get('/allRequest', [RequestsController::class, 'getAll']);
+
+
+Route::get('/getOne', [RequestsController::class, 'getOne']);

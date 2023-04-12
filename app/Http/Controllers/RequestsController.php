@@ -18,4 +18,10 @@ class RequestsController extends Controller
         Requests::factory(10)->create();
         return Requests::all();
     }
+
+    public function getOne()
+    {
+        $r = Requests::factory()->create();
+        return $r;
+    }
 }
