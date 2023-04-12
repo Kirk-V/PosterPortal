@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RequestsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,6 @@ Route::get('/', function () {
 Route::get('/h', function () {
     return 'Hello world';
 });
+
+Route::get('/request', [RequestsController::class, 'index']);
 
