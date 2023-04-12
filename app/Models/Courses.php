@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,15 +16,15 @@ class Courses extends Model
     protected $primaryKey = 'course_id';
 
     public $timestamps = false;
-
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transactions::class, 'course_id');
+    }
 
     public function requests() : HasMany
     {
         return $this->hasMany(Requests::class, 'course_id');
     }
 
-    public function transactions(): HasMany
-    {
-        return $this->hasMany(Transactions::class, 'course_id');
-    }
+    
 }

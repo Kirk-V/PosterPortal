@@ -36,6 +36,15 @@ return new class extends Migration
             $table->string('instructor');
         });
 
+        Schema::create('Transactions', function (Blueprint $table) {
+            $table->id('transaction_id')->first();
+            $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
+            $table->foreignId('course_id')->nullable()->references('course_id')->on('Courses')->nullOnDelete();
+            $table->date('transaction_date');
+            $table->float('total_recieved', 8, 2);
+            $table->boolean('reconciled');
+        });
+
         Schema::create('Requests', function (Blueprint $table) {
             $table->id('request_id')->first();
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
@@ -59,16 +68,8 @@ return new class extends Migration
             $table->date('print_date')->nullable();
         });
 
-        Schema::create('Transactions', function (Blueprint $table) {
-            $table->id('transaction_id')->first();
-            $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
-            $table->foreignId('course_id')->nullable()->references('course_id')->on('Courses')->nullOnDelete();
-            $table->date('transaction_date');
-            $table->float('total_recieved', 8, 2);
-            $table->boolean('reconciled');
-        });
 
-        
+      
 
         Schema::create('Settings', function (Blueprint $table) {
             $table->string('setting');
@@ -82,15 +83,12 @@ return new class extends Migration
     public function down(): void
     {
         //
-       
         Schema::dropIfExists('Settings');
-        
-       
-        Schema::dropIfExists('Posters');
         Schema::dropIfExists('Transactions');
         Schema::dropIfExists('Jobs');
         Schema::dropIfExists('Requests');
         Schema::dropIfExists('Courses');
+        Schema::dropIfExists('Posters');
         
     }
 };

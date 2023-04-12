@@ -16,8 +16,6 @@ class PostersFactory extends Factory
      */
     public function definition(): array
     {
-        error_log('Seeding Database');
-
         return [
             // 'poster_id' => fake()->randomNumber(5, false),
             // 'request_id' => fake()->randomNumber(5, false),

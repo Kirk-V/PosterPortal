@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Transactions extends Model
 {
     use HasFactory;
-
     protected $table = 'Transactions';
     protected $primaryKey = 'transaction_id';
 
@@ -18,12 +17,11 @@ class Transactions extends Model
 
     public function posters(): BelongsTo
     {
-        return $this->belongsTo(Posters::class, 'poster_id', 'poster_id');
+        return $this->belongsTo(Posters::class,'poster_id');
     }
-
 
     public function courses(): BelongsTo
     {
-        return $this->belongsTo(Courses::class, 'course_id', 'course_id');
+        return $this->belongsTo(Courses::class, 'course_id');
     }
 }

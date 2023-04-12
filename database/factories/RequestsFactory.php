@@ -28,7 +28,7 @@ class RequestsFactory extends Factory
             'course_id' => Courses::factory(),
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'email' =>fake()->email(),
+            'email' => fake()->email(),
             'payment_method' => fake()->randomElement(['cash', 'speedcode']),
             'position' => fake()->randomElement(['graduate', 'faculty', 'undergraduate', 'staff']),
             'quantity' => fake()->randomDigitNotZero(),

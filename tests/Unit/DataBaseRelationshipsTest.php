@@ -37,6 +37,8 @@ class DataBaseRelationshipsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        error_log("setting up");
         // Create a poster that has a one to one relationship with a request, transaction, and job
         $this->poster = Models\Posters::factory()
                 ->has(Models\Requests::factory())
@@ -44,13 +46,24 @@ class DataBaseRelationshipsTest extends TestCase
                 ->has(Models\Transactions::factory())
                 ->create()
                 ->first();
-        
-        //Add a request;
-        $this->request = Models\Requests::factory()
-                ->for($this->poster)
-                ->create()->first();
 
         $this->course = Models\Courses::factory()
+            ->has(Models\Transactions::factory(1))
+            ->has(Models\Requests::factory(1))
+            ->create()
+            ->first();
+
+        $this->transaction = Models\Transactions::factory()
+            ->for($this->course)
+            ->for($this->poster)
+            ->create()
+            ->first();
+        
+
+        //Add a request;
+        $this->request = Models\Requests::factory()
+            ->for($this->poster)
+            ->for($this->course)
             ->create()
             ->first();
 
@@ -59,10 +72,7 @@ class DataBaseRelationshipsTest extends TestCase
             ->create()
             ->first();
 
-        $this->transaction = Models\Transactions::factory()
-            ->for($this->poster)
-            ->create()
-            ->first();
+        
 
         $this->setting = Models\Settings::factory()
             ->create()
@@ -80,6 +90,10 @@ class DataBaseRelationshipsTest extends TestCase
         parent::tearDown();
         $this->poster = null;
         $this->request = null;
+        $this->setting = null;
+        $this->job= null;
+        $this->transaction= null;
+        $this->course= null;
     }
 
     /**
@@ -105,10 +119,22 @@ class DataBaseRelationshipsTest extends TestCase
         $this->assertTrue($this->request->is($this->poster->requests), "Poster's request_id = ".$this->poster->requests->request_id."-- request has id= ".$this->request->request_id);
         $this->assertTrue($this->job->is($this->poster->jobs), "Poster has job with id = ".$this->poster->jobs->job_id."--Job has id= ".$this->job->job_id);
         $this->assertTrue($this->transaction->is($this->poster->transactions), "Poster has transaction with id = ".$this->poster->transactions->transaction_id."--transaction has id= ".$this->transaction->transaction_id);
+        
     }
     public function test_course_has_requests_and_transaction(){
-        $this->assertTrue($this->course->requests->contains($this->request), "Requests with id: ".$this->request->request_id." Could not be associated with course id: ".$this->course->course_id );
+        $this->assertTrue($this->course->transactions->contains($this->transaction), "Transaction has course id: ".$this->transaction->course_id." Could not be associated with course id: ".$this->course->course_id);
+
+        $this->assertTrue($this->course->requests->contains($this->request), "Requests with id: ".$this->request->request_id." Could not be associated with course id: ".$this->course->course_id);
     }
+
+    public function test_request_belongs_to_course(){
+        $this->assertTrue($this->request->courses->is($this->course));
+    }
+
+    public function test_transaction_belongs_to_course(){
+        $this->assertTrue($this->transaction->courses->is($this->course));
+    }
+
 
     public function request_belongs_to_poster(){
         
