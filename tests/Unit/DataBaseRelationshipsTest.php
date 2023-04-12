@@ -41,42 +41,36 @@ class DataBaseRelationshipsTest extends TestCase
         error_log("setting up");
         // Create a poster that has a one to one relationship with a request, transaction, and job
         $this->poster = Models\Posters::factory()
-                ->has(Models\Requests::factory())
-                ->has(Models\Jobs::factory())
-                ->has(Models\Transactions::factory())
-                ->create()
-                ->first();
+                // ->has(Models\Requests::factory())
+                // ->has(Models\Jobs::factory())
+                // ->has(Models\Transactions::factory())
+                ->create();
 
         $this->course = Models\Courses::factory()
             ->has(Models\Transactions::factory(1))
             ->has(Models\Requests::factory(1))
-            ->create()
-            ->first();
+            ->create();
 
         $this->transaction = Models\Transactions::factory()
             ->for($this->course)
             ->for($this->poster)
-            ->create()
-            ->first();
+            ->create();
         
 
         //Add a request;
         $this->request = Models\Requests::factory()
             ->for($this->poster)
             ->for($this->course)
-            ->create()
-            ->first();
+            ->create();
 
         $this->job = Models\Jobs::factory()
             ->for($this->poster)
-            ->create()
-            ->first();
+            ->create();
 
         
 
         $this->setting = Models\Settings::factory()
-            ->create()
-            ->first();
+            ->create();
 
     }
 

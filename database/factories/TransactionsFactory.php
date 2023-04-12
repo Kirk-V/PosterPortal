@@ -20,7 +20,6 @@ class TransactionsFactory extends Factory
     {
         return [
             //
-         
                 //id auto gen'd
                 'poster_id' => Posters::factory(),
                 'course_id' => Courses::factory(),
