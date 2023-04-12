@@ -29,7 +29,8 @@ class PostersFactory extends Factory
             'discount_eligible' => fake()->randomNumber(5, false),
             'speed_code' => fake()->optional($weight = 0.4)->bothify('?????-#####'),
             'speed_code_approved' => fake()->boolean(),
-            'discount' => fake()->randomFloat(2)
+            'discount' => fake()->randomFloat(2),
+            'cost' => fake()->randomFloat(2),
         ];
     }
 }

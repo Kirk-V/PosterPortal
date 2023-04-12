@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('speed_code')->nullable();
             $table->boolean('speed_code_approved');
             $table->float('discount', 8, 2);
+            $table->float('cost', 8,2);
         });
 
 
@@ -54,14 +55,14 @@ return new class extends Migration
         Schema::create('Jobs', function (Blueprint $table) {
             $table->id('job_id');
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
-            $table->foreignId('request_id')->nullable()->references('request_id')->on('Requests')->nullOnDelete();
             $table->enum('state', ['in_queue', 'printed', 'on_hold']);
-            
-            // $table->boolean('discount');
+            $table->date('print_date')->nullable();
         });
 
         Schema::create('Transactions', function (Blueprint $table) {
-            // $table->id('transaction_id')->first();
+            $table->id('transaction_id')->first();
+            $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
+            $table->foreignId('course_id')->nullable()->references('course_id')->on('Courses')->nullOnDelete();
             $table->date('transaction_date');
             $table->float('total_recieved', 8, 2);
             $table->boolean('reconciled');

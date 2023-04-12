@@ -20,7 +20,7 @@ class CoursesFactory extends Factory
         $year = fake()->numberBetween(2020,2030);
 
         return [
-            //
+            //id auto gen'd
             'number' => fake()->bothify('####?'),
             'year' => "$year/".($year+1),
             'department'=> fake()->word(),

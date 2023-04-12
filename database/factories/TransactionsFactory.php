@@ -6,9 +6,9 @@ use App\Models\Posters;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Jobs>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class JobsFactory extends Factory
+class TransactionsFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,13 +17,12 @@ class JobsFactory extends Factory
      */
     public function definition(): array
     {
-        $state = fake()->randomElement(['in_queue', 'printed', 'on_hold']);
-        $print_date = $state == 'printed' ? fake()->dateTime() :null;
         return [
             //id auto gen'd
             'poster_id' => Posters::factory(),
-            'state' => $state,
-            'print_date' => $print_date,
+            'transaction_date' => fake()->date(),
+            'total_recieved' => fake()->randomFloat(),
+            'reconciled' => fake()->boolean(),
         ];
     }
 }
