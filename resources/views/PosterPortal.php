@@ -23,7 +23,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <a class="navbar-brand" href="#" style="text-align: center;">
-                        <img alt="Western University Social Science Logo" class="stacked-logo-two" src="https://www.uwo.ca/web_standards/img/logos-faculties-stacked/svg/Western_Logo_F_S_SocialScience_RGB.svg" style="width: 220px; margin-top: 10px;">
+                        <img alt="Western University Social Science Logo" 
+                        class="stacked-logo-two" src="https://www.uwo.ca/web_standards/img/logos-faculties-stacked/svg/Western_Logo_F_S_SocialScience_RGB.svg" style="width: 220px; margin-top: 10px;">
                     </a>
                 </div>
             </div>
