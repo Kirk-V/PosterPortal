@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RequestsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,11 +41,15 @@ Route::get('/jobs', function () {
     ]);
 });
 
-Route::get('/requests', function () {
-    return Inertia::render('posterportal', [
-        'currentView' => 'requests'
-    ]);
-});
+Route::get('/requests', [RequestsController::class, 'index']);
+
+// Route::get('/requests/all', [RequestsController::class, 'getAll']);
+
+// Route::get('/requests/all', function () {
+//     return Inertia::render('posterportal', [
+//         'currentView' => 'requests'
+//     ]);
+// });
 
 Route::get('/settings', function () {
     return Inertia::render('posterportal', [
