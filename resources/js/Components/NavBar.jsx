@@ -45,21 +45,21 @@ export default function NavBar() {
                                 <Nav
                                     variant="pills"
                                     className="justify-content-end flex-grow-1 pe-3"
-                                    defaultActiveKey="requests"
+                                    // defaultActiveKey="/requests"
                                 >
-                                    <Nav.Item className="m-2">
-                                        <Nav.Link as={Link} href="/requests" eventKey="requests">
+                                    <Nav.Item className="m-2" >
+                                        <Nav.Link as={Link} href="/requests" >
                                                 requests
                                         </Nav.Link>
                                         
                                     </Nav.Item>
                                     <Nav.Item className="m-2">
-                                        <Nav.Link as={Link} href="/jobs" eventKey="jobs">
+                                        <Nav.Link as={Link} href="/jobs">
                                                 Jobs
                                         </Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item className="m-2">
-                                        <Nav.Link as={Link} href="/settings" eventKey="settings">
+                                        <Nav.Link as={Link} href="/settings">
                                                 Settings
                                         </Nav.Link>
                                     </Nav.Item>
