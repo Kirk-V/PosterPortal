@@ -4,13 +4,11 @@ import NavBar from '@/Components/NavBar';
 
 export default function Primary({ children }) {
     return (     
-        <div>
-            <NavBar>
+        <>
+        <NavBar>
 
-            </NavBar>
-            <Container >
-                {children}
-            </Container>
-        </div>
+        </NavBar>
+        <Container>{children}</Container>
+        </>
     );
 }

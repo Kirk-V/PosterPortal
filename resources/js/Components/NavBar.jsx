@@ -8,9 +8,10 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import { Link } from '@inertiajs/react'
 export default function NavBar() {
     return (
-        <Navbar bg="light" variant="light" fixed="top" expand="md">
+        <Navbar bg="light" variant="light" expand="md">
             <Container>
                 {/* <Row>
                     <Col xs={6}> */}
@@ -44,21 +45,22 @@ export default function NavBar() {
                                 <Nav
                                     variant="pills"
                                     className="justify-content-end flex-grow-1 pe-3"
-                                    defaultActiveKey="/home"
+                                    defaultActiveKey="requests"
                                 >
-                                    <Nav.Item>
-                                        <Nav.Link href="/requests">
-                                            requests
+                                    <Nav.Item className="m-2">
+                                        <Nav.Link as={Link} href="/requests" eventKey="requests">
+                                                requests
+                                        </Nav.Link>
+                                        
+                                    </Nav.Item>
+                                    <Nav.Item className="m-2">
+                                        <Nav.Link as={Link} href="/jobs" eventKey="jobs">
+                                                Jobs
                                         </Nav.Link>
                                     </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="/jobs">
-                                            Jobs
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="/settings">
-                                            Settings
+                                    <Nav.Item className="m-2">
+                                        <Nav.Link as={Link} href="/settings" eventKey="settings">
+                                                Settings
                                         </Nav.Link>
                                     </Nav.Item>
                                 </Nav>
