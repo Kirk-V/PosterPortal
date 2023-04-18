@@ -7,6 +7,11 @@ export default function RequestModalForm({request})
 {
     const [requestData, setRequestData] = useState(null);
 
+    //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
+    // This will allow for users to change the course info attached to the request..
+    // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
+    // can become its own component.
+
     function updateRequest()
     {
         //send the request data in its current form to backend for database update
@@ -17,7 +22,7 @@ export default function RequestModalForm({request})
         //update any changed data and create job
     }
 
-    var undergradInfo = (
+    var GrantHolderInfo = (
         <Row>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
@@ -28,6 +33,23 @@ export default function RequestModalForm({request})
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
                     <Form.Label>Grant Holder Email</Form.Label>
+                    <Form.Control type="text" defaultValue={request.first_name}/>
+                </Form.Group>
+            </Col>
+        </Row>
+    )
+
+    var undergradInfo = (
+        <Row>
+            <Col>
+                <Form.Group className="mb-3" controlId="requestFormFirstName">
+                    <Form.Label>Course Year</Form.Label>
+                    <Form.Control type="text" defaultValue={request.first_name}/>
+                </Form.Group>
+            </Col>
+            <Col>
+                <Form.Group className="mb-3" controlId="requestFormFirstName">
+                    <Form.Label>Course Name</Form.Label>
                     <Form.Control type="text" defaultValue={request.first_name}/>
                 </Form.Group>
             </Col>
@@ -74,7 +96,8 @@ export default function RequestModalForm({request})
                     </Form.Group>
                 </Col>                
             </Row>
-            {request.payment_method == 'speedcode' ? undergradInfo : null}
+            {request.payment_method == 'speedcode' ? GrantHolderInfo : null}
+            {request.position == 'undergraduate' ? undergradInfo: null}
             
         </Form>
     )
