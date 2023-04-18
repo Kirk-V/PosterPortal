@@ -2,13 +2,45 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import RequestModalForm from './RequestModalForm';
 import { useState } from 'react';
 
 export default function RequestModal({requestData, onHide, show}) {
+    const [rejecting, setRejecting] = useState(false);
     console.log("modal made");
     // We have the passed Data already in the requestData Prop, so lets display it in a form
     // for editing
+
+    function onAccept(){
+
+    }
+
+    function onReject(){
+        setRejecting(true);
+    }
+
+    function handleReject(){
+        console.log("delete it");
+    }
+
+    const rejectingConfirm = (
+        <Col>
+            <p>sure you want to reject?</p>
+            <Button onClick={handleReject}>yes</Button>
+            <Button onClick={() => setRejecting(false)}>back</Button>
+        </Col>
+        
+    )
+
+    const footerButtons = (
+        <Col>
+            <Button onClick={onReject}>Reject</Button>
+            <Button onClick={onAccept}>Accept</Button>
+            <Button onClick={onHide}>Close</Button>
+        </Col>
+    )
+
     return (
         <Modal
             show={show}
@@ -27,7 +59,16 @@ export default function RequestModal({requestData, onHide, show}) {
             
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onHide}>Close</Button>
+
+                <Container>
+
+                
+                <Row>
+                    {rejecting ? rejectingConfirm : footerButtons}
+                </Row>   
+
+                </Container>
+                
             </Modal.Footer>
         </Modal>
 

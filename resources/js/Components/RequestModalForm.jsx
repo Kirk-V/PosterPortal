@@ -5,12 +5,13 @@ import Form from 'react-bootstrap/Form';
 
 export default function RequestModalForm({request})
 {
-    const [requestData, setRequestData] = useState(null);
+    const [formData, setformData] = useState(null);
 
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
     // This will allow for users to change the course info attached to the request..
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
     // can become its own component.
+
 
     function updateRequest()
     {
@@ -43,13 +44,13 @@ export default function RequestModalForm({request})
         <Row>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Year</Form.Label>
+                    <Form.Label>Course Year should be select</Form.Label>
                     <Form.Control type="text" defaultValue={request.first_name}/>
                 </Form.Group>
             </Col>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Name</Form.Label>
+                    <Form.Label>Course Name should be select</Form.Label>
                     <Form.Control type="text" defaultValue={request.first_name}/>
                 </Form.Group>
             </Col>
