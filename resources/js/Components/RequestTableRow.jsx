@@ -1,11 +1,7 @@
-export default function RequestTableRow({ rowData }) {
+export default function RequestTableRow({ rowData, handleClick }) {
     console.log(`rowdata: ${JSON.stringify(rowData)}`);
-    function handleClick(){
-        alert('clickked');
-    }
-
     return (
-        <tr onClick={handleClick}>
+        <tr onClick={() => handleClick(rowData)}>
             {Object.values(rowData).map((cell, key) => <td key={key}>{cell}</td>)}
         </tr>
     );

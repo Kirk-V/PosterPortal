@@ -10,6 +10,8 @@ export default function RequestTable() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [headings, setHeadings] = useState(null);
     const [items, setItems] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [modalData, setModalData] = useState(null);
     //Get the table data here
     useEffect(()=> {
         fetch("/requests/headers")
@@ -55,19 +57,21 @@ export default function RequestTable() {
         });
     }, []);
 
-    let table;
-    if(headingsLoaded)
-    {
-        table = (
-            <Table striped>
-                <RequestTableHead headings={headings}></RequestTableHead>
-                {bodyLoaded == true ? <RequestTableBody data={items}></RequestTableBody> :null}
-            </Table>
-        )
+    function handleClick(rowData){
+        alert(`clickedRow ${JSON.stringify(rowData)}`);
+        setModalData(rowData);
+        setShowModal(true);
     }
-    if(error)
-    {
-        table = (<h1>Error getting data</h1>);
-    }
-    return table;
+
+    return (
+        <>
+        <Table striped>
+                {headingsLoaded == true ? <RequestTableHead headings={headings}></RequestTableHead> : null}  
+                {bodyLoaded == true ? <RequestTableBody data={items} handleRowClick={handleClick}></RequestTableBody> :null}
+                {error == true? <h1>error</h1> : null}
+        </Table>
+        <RequestModal show={showModal} requestData={modalData}/>
+        </>
+        
+    )
 }
