@@ -2,13 +2,13 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 
-export default function RequestModal({requestData, handleClose}) {
+export default function RequestModal({requestData, onHide, show}) {
     console.log("modal made");
     return (
         <Modal
-            animation={false}
+            show={show}
+
             size="lg"
-            style={{opacity:1}}
             aria-labelledby="contained-modal-title-vcenter"
             centered>
             <Modal.Header closeButton>
@@ -25,7 +25,7 @@ export default function RequestModal({requestData, handleClose}) {
             </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleClose}>Close</Button>
+        <Button onClick={onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
 

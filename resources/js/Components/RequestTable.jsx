@@ -65,7 +65,10 @@ export default function RequestTable() {
         console.log(`showmodal: ${showModal}`);
     }
 
-    const handleClose = () => setShowModal(false);
+    const handleClose = () => {
+        setShowModal(false);
+        console.log("closing");
+    }
 
     return (
         <>
