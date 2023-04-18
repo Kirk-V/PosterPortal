@@ -34,4 +34,13 @@ class RequestsController extends Controller
     {
         return response(json_encode(schema::getColumnListing('requests')), 200);
     }
+
+    public function updateRequest()
+    {
+
+    }
+
+    public function deleteRequest(){
+        
+    }
 }
