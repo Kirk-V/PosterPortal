@@ -1,14 +1,14 @@
 import RequestTableRow from "./RequestTableRow";
-
+// Takes an array of json objects as data
 export default function RequestTableBody({data}) {
     console.log("making body");
-    console.log(json.parse(data));
     return (
         <tbody>
-            {data.map( (row, key) => (
-                <RequestTableRow key={key} data={row}/>
-                )
-            )}
+            {data.map( (row, key) => {
+                console.log(`row: ${JSON.stringify(row)}`);
+                return <RequestTableRow key={key} rowData={row}/>
+            })}
+                
         </tbody>
     );
 }

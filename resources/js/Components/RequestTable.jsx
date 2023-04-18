@@ -41,8 +41,7 @@ export default function RequestTable() {
                 return Promise.reject(res);            
             })
             .then((response) => {
-            
-                console.log(`okay Heading response: ${JSON.stringify(response)}`);
+                console.log(`okay body response: ${JSON.stringify(response)}`);
                 setItems(response);
                 setBodyLoaded(true);
             },
@@ -50,8 +49,9 @@ export default function RequestTable() {
                 setError(error);
                 console.log("error");
             }
-        ).catch(() => {
+        ).catch((e) => {
             console.log("caught");
+            console.log(e);
         });
     }, []);
 
