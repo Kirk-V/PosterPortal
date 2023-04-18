@@ -1,9 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import RequestModalForm from './RequestModalForm';
 import { useState } from 'react';
 
 export default function RequestModal({requestData, onHide, show}) {
     console.log("modal made");
+    // We have the passed Data already in the requestData Prop, so lets display it in a form
+    // for editing
     return (
         <Modal
             show={show}
@@ -17,17 +22,14 @@ export default function RequestModal({requestData, onHide, show}) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <h4>Centered Modal</h4>
-            <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
-            </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={onHide}>Close</Button>
-      </Modal.Footer>
-    </Modal>
+                
+                {requestData != null ? <RequestModalForm request={requestData}/> : <h1>noData</h1>}
+            
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={onHide}>Close</Button>
+            </Modal.Footer>
+        </Modal>
 
     );
 }
