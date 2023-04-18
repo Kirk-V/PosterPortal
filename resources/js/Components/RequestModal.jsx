@@ -13,7 +13,7 @@ export default function RequestModal({requestData, onHide, show}) {
             centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Modal
+                    {requestData != null ? requestData.request_id : null} {requestData != null ? requestData.first_name : null} {requestData != null ? requestData.last_name : null} 
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
