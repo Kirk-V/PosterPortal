@@ -2,6 +2,7 @@ import Table from 'react-bootstrap/Table';
 import RequestTableHead from './RequestTableHead';
 import { useEffect, useState } from 'react';
 import RequestTableBody from './RequestTableBody';
+import RequestModal from './RequestModal';
 
 export default function RequestTable() {
     const [error, setError] = useState(null);
@@ -58,10 +59,13 @@ export default function RequestTable() {
     }, []);
 
     function handleClick(rowData){
-        alert(`clickedRow ${JSON.stringify(rowData)}`);
+        // alert(`clickedRow ${JSON.stringify(rowData)}`);
         setModalData(rowData);
         setShowModal(true);
+        console.log(`showmodal: ${showModal}`);
     }
+
+    const handleClose = () => setShowModal(false);
 
     return (
         <>
@@ -70,7 +74,7 @@ export default function RequestTable() {
                 {bodyLoaded == true ? <RequestTableBody data={items} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
-        <RequestModal show={showModal} requestData={modalData}/>
+        <RequestModal show={showModal} requestData={modalData} onHide={handleClose}/>
         </>
         
     )

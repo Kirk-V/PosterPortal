@@ -5,7 +5,7 @@ export default function RequestTableBody({data, handleRowClick}) {
     return (
         <tbody>
             {data.map( (row, key) => {
-                console.log(`row: ${JSON.stringify(row)}`);
+                // console.log(`row: ${JSON.stringify(row)}`);
                 return <RequestTableRow key={key} rowData={row} handleClick={handleRowClick}/>
             })}
                 
