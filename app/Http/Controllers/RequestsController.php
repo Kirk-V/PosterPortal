@@ -41,6 +41,10 @@ class RequestsController extends Controller
     }
 
     public function deleteRequest(){
-        
+
+    }
+
+    public function getFormData(){
+        //for front end form
     }
 }
