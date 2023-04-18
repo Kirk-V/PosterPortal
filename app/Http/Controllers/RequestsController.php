@@ -47,4 +47,12 @@ class RequestsController extends Controller
     public function getFormData(){
         //for front end form
     }
+
+    public function acceptRequest(){
+
+    }
+
+    public function requestIsReady(){
+        
+    }
 }
