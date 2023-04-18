@@ -1,9 +1,8 @@
-export default function RequestTableRow({ requestData }) {
+export default function RequestTableRow({ rowData }) {
+    console.log(JSON.stringify(rowData));
     return (
         <tr>
-            <td>{requestData.first_name}</td>
-            <td>{requestData.last_name}</td>
-            <td>{requestData.request_id}</td>
+            {rowData.map((cell, key) => <td key={key}>{cell}</td>)}
         </tr>
     );
 }

@@ -43,6 +43,9 @@ Route::get('/jobs', function () {
 
 Route::get('/requests', [RequestsController::class, 'index']);
 
+Route::get('/requests/headers', [RequestsController::class, 'getHeaders']);
+
+Route::get('/requests/data', [RequestsController::class, 'getAll']);
 // Route::get('/requests/all', [RequestsController::class, 'getAll']);
 
 // Route::get('/requests/all', function () {
@@ -56,6 +59,8 @@ Route::get('/settings', function () {
         'currentView' => 'settings'
     ]);
 });
+
+
 
 
 Route::get('/dashboard', function () {
