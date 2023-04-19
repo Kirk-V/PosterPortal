@@ -41,11 +41,23 @@ Route::get('/jobs', function () {
     ]);
 });
 
-Route::get('/requests', [RequestsController::class, 'index']);
 
-Route::get('/requests/headers', [RequestsController::class, 'getHeaders']);
+Route::controller(RequestsController::class)->group(function () {
+    Route::get('/requests', 'index');
+    Route::get('/requests&id={id}',  'getRequest');
+    Route::get('/requests/headers', 'getHeaders');
+    Route::get('/requests/data', 'getAll');
+    });
 
-Route::get('/requests/data', [RequestsController::class, 'getAll']);
+// Route::get('/requests', [RequestsController::class, 'index']);
+
+// Route::get('/requests&id={id}', [RequestsController::class, 'getRequest(id)']);
+
+// Route::get('/requests/headers', [RequestsController::class, 'getHeaders']);
+
+// Route::get('/requests/data', [RequestsController::class, 'getAll']);
+
+
 // Route::get('/requests/all', [RequestsController::class, 'getAll']);
 
 // Route::get('/requests/all', function () {
