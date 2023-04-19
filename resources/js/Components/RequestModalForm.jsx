@@ -60,7 +60,6 @@ export default function RequestModalForm({request})
 
     //display request data in a form
     return (
-
         <Form>
             <Row>
                 <Col>
