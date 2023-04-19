@@ -32,7 +32,7 @@ export default function RequestModalForm({request})
                 </Form.Group>
             </Col>
             <Col>
-                <Form.Group className="mb-3" controlId="requestFormFirstName">
+                <Form.Group className="mb-3" controlId="requestFormGrantFirstName">
                     <Form.Label>Grant Holder Email</Form.Label>
                     <Form.Control type="text" defaultValue={request.first_name}/>
                 </Form.Group>
