@@ -47,6 +47,9 @@ Route::controller(RequestsController::class)->group(function () {
     Route::get('/requests&id={id}',  'getRequest');
     Route::get('/requests/headers', 'getHeaders');
     Route::get('/requests/data', 'getAll');
+    Route::get('/requests/pending', 'getPendingRequests');
+    Route::get('/requests/pendingHeaders', 'getPendingRequestsHeaders');
+    
     });
 
 // Route::get('/requests', [RequestsController::class, 'index']);

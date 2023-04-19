@@ -3,7 +3,7 @@ export default function RequestTableHead({headings}) {
     return (
         <thead>
             <tr>
-                {headings.map((v, key) => 
+                {Object.keys(headings).map((v, key) => 
                     (
                         <th key={key}>{v}</th>
                     ))}

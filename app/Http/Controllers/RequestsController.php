@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Requests;
+use App\Models\Posters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -59,4 +60,15 @@ class RequestsController extends Controller
         
     }
 
+    // This function should retrieve all posters that have a pending state. These posters are joined with Requests
+    // such that they can be sent to the front-end for changes
+    public function getPendingRequests(){
+        // $r = Posters::with(['requests'])->whereIn('state', 'pending')->all();
+
+        return Posters::with(['requests'])->get();
+    }
+
+    public function getPendingRequestsHeaders(){
+        return ['Poster'=>'poster_id', 'First'=>'requests.first_name', 'Last'=>'requests.last_name', 'Email'=>'requests.email', 'Position'=>'requests.position', 'Status'=>'state'];
+    }
 }

@@ -15,7 +15,7 @@ export default function RequestTable() {
     const [modalData, setModalData] = useState(null);
     //Get the table data here
     useEffect(()=> {
-        fetch("/requests/headers")
+        fetch("/requests/pendingHeaders")
             .then( (res) => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -25,6 +25,7 @@ export default function RequestTable() {
             .then((response) => {
                 
                 console.log(`okay Heading response: ${JSON.stringify(response)}`);
+                console.log(`passing keys: ${Object.keys(response)}`)
                 setHeadings(response);
                 setHeadingsLoaded(true);
             },
@@ -35,7 +36,7 @@ export default function RequestTable() {
     }, []);
 
     useEffect(() => {
-        fetch("/requests/data")
+        fetch("/requests/pending")
             .then( (res) => {
                 if (res.ok) {
                     return res.json()
@@ -74,7 +75,7 @@ export default function RequestTable() {
         <>
         <Table striped>
                 {headingsLoaded == true ? <RequestTableHead headings={headings}></RequestTableHead> : null}  
-                {bodyLoaded == true ? <RequestTableBody data={items} handleRowClick={handleClick}></RequestTableBody> :null}
+                {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
         <RequestModal show={showModal} requestData={modalData} onHide={handleClose}/>
