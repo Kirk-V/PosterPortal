@@ -21,7 +21,9 @@ export default function RequestModal({requestData, onHide, show}) {
     useEffect(() => {
         if(requestData != null)
         {
-            fetch(`/requests&id=${requestData.requests.request_id}`)
+            // /requests/pending&id={id}
+            // fetch(`/requests&id=${requestData.requests.request_id}`)
+            fetch(`/requests/pending&id=${requestData.requests.request_id}`)
             .then( (res) => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -29,16 +31,20 @@ export default function RequestModal({requestData, onHide, show}) {
                 return res.json()
             })
             .then((response) => {
-                
+                console.log("req data:");
                 console.log(`okay, Req data: ${JSON.stringify(response)}`);
                 setRequest(response);
             },
             (error) => {
-                setError(error);
+                console.log(error)
             }
             )
 
-            }     
+        }
+        else
+        {
+            setRequest(null);
+        }   
     }, [requestData]);
 
     function onAccept(){
@@ -86,7 +92,7 @@ export default function RequestModal({requestData, onHide, show}) {
             centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    {requestData != null ? request.request_id : null} {requestData != null ? request.first_name : null} {requestData != null ? request.last_name : null} 
+                    {request != null ? request.request_id : null} {request != null ? request.first_name : null} {request != null ? request.last_name : null} 
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>          

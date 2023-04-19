@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Requests;
 use App\Models\Posters;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
@@ -64,8 +65,21 @@ class RequestsController extends Controller
     // such that they can be sent to the front-end for changes
     public function getPendingRequests(){
         // $r = Posters::with(['requests'])->whereIn('state', 'pending')->all();
+        return Posters::with(['requests'])->where('state', 'pending')->get();
+    }
 
-        return Posters::with(['requests'])->get();
+    //We need to get all assocaited data with a pending request, joined on the various relationships
+    public function getPendingRequestData($id){
+        log::info("got requests");
+        $r = DB::table('Posters')
+            ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.request_id')
+            ->leftJoin('Courses', 'Requests.course_id', '=', 'Courses.course_id')
+            ->where('Requests.request_id', $id)->first();
+        log::info(DB::table('Posters')
+        ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.request_id')
+        ->leftJoin('Courses', 'Requests.course_id', '=', 'Courses.course_id')
+        ->where('Requests.request_id', $id)->toSql());
+        return $r;
     }
 
     public function getPendingRequestsHeaders(){

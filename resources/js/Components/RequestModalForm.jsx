@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 export default function RequestModalForm({request})
 {
@@ -45,14 +46,28 @@ export default function RequestModalForm({request})
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
                     <Form.Label>Course Number</Form.Label>
-                    <Form.Control type="text" defaultValue={request.courses.number}/>
+                    <Form.Control type="text" defaultValue={request.number}/>
                 </Form.Group>
             </Col>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
                     <Form.Label>Course Department</Form.Label>
-                    <Form.Control type="text" defaultValue={request.courses.department}/>
+                    <Form.Control type="text" defaultValue={request.department}/>
                 </Form.Group>
+            </Col>
+        </Row>
+    )
+
+    var posterInfo = (
+        <Row>
+            <Col>
+            <Form.Label htmlFor="basic-url">Your vanity URL</Form.Label>
+            <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon3">Width</InputGroup.Text>
+                <Form.Control type="text" defaultValue={request.width}/>
+                <InputGroup.Text id="basic-addon3">Height</InputGroup.Text>
+                <Form.Control type="text" defaultValue={request.height}/>
+            </InputGroup>
             </Col>
         </Row>
     )
