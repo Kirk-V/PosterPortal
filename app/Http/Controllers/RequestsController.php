@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
@@ -24,9 +25,10 @@ class RequestsController extends Controller
         return Requests::all();
     }
 
-    public function getOne($id)
+    public function getRequest($id)
     {
-        $r = Requests::with('course_id	')->get($id);
+        $r = Requests::with(['courses'])->find($id);
+        Log::info($r);
         return response($r);
     }
 
@@ -56,4 +58,5 @@ class RequestsController extends Controller
     public function requestIsReady(){
         
     }
+
 }

@@ -40,7 +40,7 @@ export default function RequestModal({requestData, onHide, show}) {
 
             }
         
-    }, [request, requestData]);
+    }, [requestData]);
 
     function onAccept(){
 

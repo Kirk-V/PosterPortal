@@ -44,14 +44,14 @@ export default function RequestModalForm({request})
         <Row>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Year should be select</Form.Label>
-                    <Form.Control type="text" defaultValue={request.first_name}/>
+                    <Form.Label>Course Number</Form.Label>
+                    <Form.Control type="text" defaultValue={request.courses.number}/>
                 </Form.Group>
             </Col>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Name should be select</Form.Label>
-                    <Form.Control type="text" defaultValue={request.first_name}/>
+                    <Form.Label>Course Department</Form.Label>
+                    <Form.Control type="text" defaultValue={request.courses.department}/>
                 </Form.Group>
             </Col>
         </Row>
