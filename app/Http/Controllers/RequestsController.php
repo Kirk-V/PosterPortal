@@ -24,16 +24,17 @@ class RequestsController extends Controller
         return Requests::all();
     }
 
-    public function getOne()
+    public function getOne($id)
     {
-        $r = Requests::factory()->create();
-        return $r;
+        $r = Requests::with('course_id	')->get($id);
+        return response($r);
     }
 
     public function getHeaders()
     {
         return response(json_encode(schema::getColumnListing('requests')), 200);
     }
+
 
     public function updateRequest()
     {
