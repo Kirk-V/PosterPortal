@@ -1,5 +1,5 @@
 export default function RequestTableRow({ rowData, headers, handleClick }) {
-    // console.log(`rowdata: ${JSON.stringify(rowData)}`);
+    console.log(`rowdata: ${JSON.stringify(rowData)}`);
 
 
     return (

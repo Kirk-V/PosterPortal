@@ -86,25 +86,18 @@ export default function RequestModal({requestData, onHide, show}) {
             centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    {requestData != null ? requestData.requests.request_id : null} {requestData != null ? requestData.requests.first_name : null} {requestData != null ? requestData.requests.last_name : null} 
+                    {requestData != null ? request.request_id : null} {requestData != null ? request.first_name : null} {requestData != null ? request.last_name : null} 
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                
+            <Modal.Body>          
                 {request != null ? <RequestModalForm request={request}/> : <h1>noData</h1>}
-            
             </Modal.Body>
             <Modal.Footer>
-
                 <Container>
-
-                
-                <Row>
-                    {rejecting ? rejectingConfirm : footerButtons}
-                </Row>   
-
+                    <Row>
+                        {rejecting ? rejectingConfirm : footerButtons}
+                    </Row>   
                 </Container>
-                
             </Modal.Footer>
         </Modal>
 
