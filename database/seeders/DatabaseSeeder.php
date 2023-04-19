@@ -25,12 +25,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         // error_log('Some message here.');
-        Posters::factory(10)->create();
-        Transactions::factory(10)->create();
+        // Posters::factory(10)->create();
+        // Transactions::factory(10)->create();
         Courses::factory(10)->create();
-        Requests::factory(10)->create();
-
-       
-
+        Requests::factory(100)->create();
     }
 }
