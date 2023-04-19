@@ -6,13 +6,27 @@ import Container from 'react-bootstrap/Container';
 import RequestModalForm from './RequestModalForm';
 import { useState } from 'react';
 
+
+//This component holds request data, and should call for extra data related to a request when needed
+// ie. if the request is undergrad and needs to be combined with course info.
 export default function RequestModal({requestData, onHide, show}) {
     const [rejecting, setRejecting] = useState(false);
+    const [request, setRequest] = useState(null);
     console.log("modal made");
     // We have the passed Data already in the requestData Prop, so lets display it in a form
     // for editing
 
+    //When rendered, we need to call for the updated version of the data, joined with the course 
+    // if undergrad.
+
     function onAccept(){
+
+    }
+
+    // Handles the form being updated. Sets the poster state so that
+    // it remains consistent with the form, and ready to be sent to back end
+    // if update is requested.
+    function onUpdate(){
 
     }
 
