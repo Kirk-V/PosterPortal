@@ -65,19 +65,19 @@ export default function RequestModal({requestData, onHide, show}) {
     }
 
     const rejectingConfirm = (
-        <Col>
-            <p>sure you want to reject?</p>
-            <Button onClick={handleReject}>yes</Button>
-            <Button onClick={() => setRejecting(false)}>back</Button>
-        </Col>
+        <>
+            {/* <p>sure you want to reject?</p> */}
+            <Button variant="danger" onClick={handleReject}>Reject and Delete</Button>
+            <Button variant="primary" className={'ms-auto'} onClick={() => setRejecting(false)}>no, Go Back</Button>
+        </>
         
     )
 
     const footerButtons = (
         <>
-        <Button variant="primary" onClick={onReject}>Reject</Button>
+            <Button variant="primary" onClick={onReject}>Reject</Button>
             <Button variant="primary" onClick={onAccept}>Accept</Button>
-            <Button variant="primary" onClick={onHide}>Close</Button>
+            <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>
         </>
     )
 
