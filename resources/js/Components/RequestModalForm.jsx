@@ -112,7 +112,11 @@ export default function RequestModalForm({ request }) {
     }
 
     const handleUnitsChange = (event) => {
-        
+        const value = event.target.value;
+        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
+        data.units = value;
+        setformData(data);
+        console.log(JSON.stringify(formData));
     }
 
     //display request data in a form
