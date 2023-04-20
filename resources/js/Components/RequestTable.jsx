@@ -61,6 +61,29 @@ export default function RequestTable() {
         });
     }, []);
 
+    useEffect(() => {
+        fetch("/courses/all")
+            .then( (res) => {
+                if (res.ok) {
+                    return res.json()
+                }
+                console.log("rejecting promise");
+                return Promise.reject(res);            
+            })
+            .then((response) => {
+                console.log(`okay courses: ${JSON.stringify(response)}`);
+                setCourseData(response);
+            },
+            (error) => {
+                setError(error);
+                console.log("error");
+            }
+        ).catch((e) => {
+            console.log("caught");
+            console.log(e);
+        });
+    }, []);
+    
     function handleClick(rowData){
         // alert(`clickedRow ${JSON.stringify(rowData)}`);
         setModalData(rowData);
@@ -81,7 +104,7 @@ export default function RequestTable() {
                 {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
-        <RequestModal show={showModal} requestData={modalData} onHide={handleClose}/>
+        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData}/>
         </>
         
     )

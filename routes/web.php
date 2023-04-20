@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestsController;
 use Illuminate\Foundation\Application;
@@ -51,6 +52,11 @@ Route::controller(RequestsController::class)->group(function () {
     Route::get('/requests/pendingHeaders', 'getPendingRequestsHeaders');
     Route::get('/requests/pending&id={id}', 'getPendingRequestData');    
     });
+
+Route::controller(CoursesController::class)->group(function () {
+    Route::get('/courses/all', 'getAllCourses');
+    Route::get('/courses/year={year}',  'getAllCoursesInYear');
+});
 
 // Route::get('/requests', [RequestsController::class, 'index']);
 

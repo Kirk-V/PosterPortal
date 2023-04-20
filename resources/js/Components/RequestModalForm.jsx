@@ -6,9 +6,9 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Fade from 'react-bootstrap/Fade';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import CourseSelect from './CourseSelect';
 
-
-export default function RequestModalForm({ request, settings, courses }) {
+export default function RequestModalForm({ request, settings, courseData }) {
     const [formData, setformData] = useState(request);
     const [isSpeedCode, setIsSpeedCode] = useState(false)
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
@@ -62,16 +62,7 @@ export default function RequestModalForm({ request, settings, courses }) {
     var undergradInfo = (
         <>
             <Col xs={3}>
-                <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Number</Form.Label>
-                    <Form.Control type="text" defaultValue={request.number} />
-                </Form.Group>
-            </Col>
-            <Col xs={3}>
-                <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Department</Form.Label>
-                    <Form.Control type="text" defaultValue={request.department} />
-                </Form.Group>
+                <CourseSelect courseData={courseData} value={formData.course_id}/>
             </Col>
         </>
 
@@ -179,7 +170,7 @@ export default function RequestModalForm({ request, settings, courses }) {
                             defaultValue={request.payment_method}
                             aria-describedby="basic-addon2"
                         />
-                        <Button variant="outline-secondary" id="button-addon2" onClik={handleOpenFile}>
+                        <Button variant="outline-secondary" id="button-addon2" onClick={handleOpenFile}>
                             open
                         </Button>
                         
