@@ -13,4 +13,11 @@ class modelRequestsTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+
+    // Test that we can make the models
+    public function test_make(): void
+    {
+        $this->assertTrue(true);
+    }
 }
