@@ -3,10 +3,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Fade from 'react-bootstrap/Fade';
 
 export default function RequestModalForm({request})
 {
     const [formData, setformData] = useState(request);
+    const [isSpeedCode, setIsSpeedCode] = useState(false)
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
     // This will allow for users to change the course info attached to the request..
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
@@ -41,20 +43,22 @@ export default function RequestModalForm({request})
     )
 
     var undergradInfo = (
-        <Row>
-            <Col>
-                <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Number</Form.Label>
-                    <Form.Control type="text" defaultValue={request.number}/>
-                </Form.Group>
-            </Col>
-            <Col>
-                <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Course Department</Form.Label>
-                    <Form.Control type="text" defaultValue={request.department}/>
-                </Form.Group>
-            </Col>
-        </Row>
+        <>
+        
+        <Col xs={3}>
+            <Form.Group className="mb-3" controlId="requestFormFirstName">
+                <Form.Label>Course Number</Form.Label>
+                <Form.Control type="text" defaultValue={request.number}/>
+            </Form.Group>
+        </Col>
+        <Col xs={3}>
+            <Form.Group className="mb-3" controlId="requestFormFirstName">
+                <Form.Label>Course Department</Form.Label>
+                <Form.Control type="text" defaultValue={request.department}/>
+            </Form.Group>
+        </Col>
+        </>
+
     )
 
     var posterInfo = (
@@ -77,6 +81,19 @@ export default function RequestModalForm({request})
         let data = {...formData}; //Deep copy so that setformData will trigger rerender
         data.payment_method = value;
         setformData(data);
+        if(value == 'speedcode')
+        {
+            setIsSpeedCode(true);
+        }
+        console.log(JSON.stringify(formData));
+    }
+
+    const handlePositionChange = (event) =>
+    {
+        const value = event.target.value;
+        let data = {...formData}; //Deep copy so that setformData will trigger rerender
+        data.position = value;
+        setformData(data);
         console.log(JSON.stringify(formData));
     }
 
@@ -84,7 +101,7 @@ export default function RequestModalForm({request})
     //display request data in a form
     return (
         <Form>
-            <Row>
+            <Row className="mb-3">
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormFirstName">
                         <Form.Label>First Name</Form.Label>
@@ -103,16 +120,25 @@ export default function RequestModalForm({request})
                         <Form.Control type="text"  defaultValue={request.email}/>
                     </Form.Group>
                 </Col>
-                
             </Row>
-            <Row>
-                <Col>
+            <Row className="mb-3">
+                <Col xs={3} >
                     <Form.Group className="mb-3" controlId="requestFormFirstName">
                         <Form.Label>Position</Form.Label>
-                        <Form.Control type="text" defaultValue={request.position}/>
+                        <Form.Select defaultValue={request.position} onChange={(e) => handlePositionChange(e)}>
+                            <option value="undergraduate">undergraduate</option>
+                            <option value="graduate">graduate</option>
+                            <option value="faculty">faculty</option>
+                            <option value="staff">staff</option>
+                        </Form.Select>
                     </Form.Group>
+                     
                 </Col>
-                <Col>
+                {formData.position == 'undergraduate' ? undergradInfo: null} 
+            </Row>
+
+            <Row className="mb-3">
+                <Col xs={3}>
                     <Form.Group className="mb-3" controlId="requestFormLastName">
                         <Form.Label>Payment</Form.Label>
                         <Form.Select defaultValue={request.payment_method} onChange={(e) => handlePaymentChange(e)}>
@@ -120,10 +146,12 @@ export default function RequestModalForm({request})
                             <option value="cash">Cash</option>
                         </Form.Select>
                     </Form.Group>
-                </Col>                
+                </Col>
+                <Col>{formData.payment_method == 'speedcode' ? GrantHolderInfo : null}   </Col>         
+                    
             </Row>
-            {formData.payment_method == 'speedcode' ? GrantHolderInfo : null}
-            {formData.position == 'undergraduate' ? undergradInfo: null}   
+            
+             
         </Form>
     )
 
