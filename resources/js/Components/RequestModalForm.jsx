@@ -8,7 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 
 
-export default function RequestModalForm({ request }) {
+export default function RequestModalForm({ request, settings, courses }) {
     const [formData, setformData] = useState(request);
     const [isSpeedCode, setIsSpeedCode] = useState(false)
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
@@ -61,7 +61,6 @@ export default function RequestModalForm({ request }) {
 
     var undergradInfo = (
         <>
-
             <Col xs={3}>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
                     <Form.Label>Course Number</Form.Label>
