@@ -51,10 +51,8 @@ export default function RequestModal({requestData, onHide, show}) {
 
     }
 
-    // Handles the form being updated. Sets the poster state so that
-    // it remains consistent with the form, and ready to be sent to back end
-    // if update is requested.
-    function onUpdate(){
+    // Handles the form being updated.
+    function handleFromValueUpdate(event, key){
 
     }
 
@@ -76,17 +74,17 @@ export default function RequestModal({requestData, onHide, show}) {
     )
 
     const footerButtons = (
-        <Col>
-            <Button onClick={onReject}>Reject</Button>
-            <Button onClick={onAccept}>Accept</Button>
-            <Button onClick={onHide}>Close</Button>
-        </Col>
+        <>
+        <Button variant="primary" onClick={onReject}>Reject</Button>
+            <Button variant="primary" onClick={onAccept}>Accept</Button>
+            <Button variant="primary" onClick={onHide}>Close</Button>
+        </>
     )
 
     return (
         <Modal
             show={show}
-
+            onHide={onHide}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered>
@@ -99,11 +97,9 @@ export default function RequestModal({requestData, onHide, show}) {
                 {request != null ? <RequestModalForm request={request}/> : <h1>noData</h1>}
             </Modal.Body>
             <Modal.Footer>
-                <Container>
-                    <Row>
+
                         {rejecting ? rejectingConfirm : footerButtons}
-                    </Row>   
-                </Container>
+
             </Modal.Footer>
         </Modal>
 

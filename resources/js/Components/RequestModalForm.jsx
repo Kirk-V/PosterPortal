@@ -6,8 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 export default function RequestModalForm({request})
 {
-    const [formData, setformData] = useState(null);
-
+    const [formData, setformData] = useState(request);
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
     // This will allow for users to change the course info attached to the request..
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
@@ -72,6 +71,15 @@ export default function RequestModalForm({request})
         </Row>
     )
 
+    const handlePaymentChange = (event) =>
+    {
+        const value = event.target.value;
+        let data = {...formData}; //Deep copy so that setformData will trigger rerender
+        data.payment_method = value;
+        setformData(data);
+        console.log(JSON.stringify(formData));
+    }
+
 
     //display request data in a form
     return (
@@ -101,19 +109,21 @@ export default function RequestModalForm({request})
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormFirstName">
                         <Form.Label>Position</Form.Label>
-                        <Form.Control type="text" defaultValue={request.first_name}/>
+                        <Form.Control type="text" defaultValue={request.position}/>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormLastName">
                         <Form.Label>Payment</Form.Label>
-                        <Form.Control type="text" defaultValue={request.last_name}/>
+                        <Form.Select defaultValue={request.payment_method} onChange={(e) => handlePaymentChange(e)}>
+                            <option value="speedcode">Speedcode</option>
+                            <option value="cash">Cash</option>
+                        </Form.Select>
                     </Form.Group>
                 </Col>                
             </Row>
-            {request.payment_method == 'speedcode' ? GrantHolderInfo : null}
-            {request.position == 'undergraduate' ? undergradInfo: null}
-            
+            {formData.payment_method == 'speedcode' ? GrantHolderInfo : null}
+            {formData.position == 'undergraduate' ? undergradInfo: null}   
         </Form>
     )
 
