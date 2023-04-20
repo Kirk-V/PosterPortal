@@ -74,7 +74,7 @@ export default function RequestTable() {
 
     return (
         <>
-        <Table striped>
+        <Table striped hover={true}>
                 {headingsLoaded == true ? <RequestTableHead headings={headings}></RequestTableHead> : null}  
                 {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
