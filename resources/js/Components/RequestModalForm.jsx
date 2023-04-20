@@ -4,9 +4,11 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Fade from 'react-bootstrap/Fade';
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 
-export default function RequestModalForm({request})
-{
+
+export default function RequestModalForm({ request }) {
     const [formData, setformData] = useState(request);
     const [isSpeedCode, setIsSpeedCode] = useState(false)
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
@@ -14,49 +16,64 @@ export default function RequestModalForm({request})
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
     // can become its own component.
 
+    function handleOpenFile(){
+        console.log("file opening");
+    }
 
-    function updateRequest()
-    {
+
+    function updateRequest() {
         //send the request data in its current form to backend for database update
     }
 
-    function acceptRequest()
-    {
+    function acceptRequest() {
         //update any changed data and create job
     }
 
     var GrantHolderInfo = (
-        <Row>
+        <>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
                     <Form.Label>Grant Holder</Form.Label>
-                    <Form.Control type="text" defaultValue={request.first_name}/>
+                    <Form.Control type="text" defaultValue={request.first_name} />
                 </Form.Group>
             </Col>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormGrantFirstName">
                     <Form.Label>Grant Holder Email</Form.Label>
-                    <Form.Control type="text" defaultValue={request.first_name}/>
+                    <Form.Control type="text" defaultValue={request.first_name} />
                 </Form.Group>
             </Col>
-        </Row>
+            <Row>
+                <Col xs={5}>
+                    <Alert className={"mt-3"} variant={formData.speed_code_approved == 0 ? 'danger' : 'success'}>
+                        Speedcode has {formData.speed_code_approved == 0 ? 'not' : null} been approved
+                    </Alert>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="requestFormGrantFirstName">
+                        <Form.Label>SpeedCode</Form.Label>
+                        <Form.Control type="text" defaultValue={request.speed_code} />
+                    </Form.Group>
+                </Col>
+            </Row>
+        </>
     )
 
     var undergradInfo = (
         <>
-        
-        <Col xs={3}>
-            <Form.Group className="mb-3" controlId="requestFormFirstName">
-                <Form.Label>Course Number</Form.Label>
-                <Form.Control type="text" defaultValue={request.number}/>
-            </Form.Group>
-        </Col>
-        <Col xs={3}>
-            <Form.Group className="mb-3" controlId="requestFormFirstName">
-                <Form.Label>Course Department</Form.Label>
-                <Form.Control type="text" defaultValue={request.department}/>
-            </Form.Group>
-        </Col>
+
+            <Col xs={3}>
+                <Form.Group className="mb-3" controlId="requestFormFirstName">
+                    <Form.Label>Course Number</Form.Label>
+                    <Form.Control type="text" defaultValue={request.number} />
+                </Form.Group>
+            </Col>
+            <Col xs={3}>
+                <Form.Group className="mb-3" controlId="requestFormFirstName">
+                    <Form.Label>Course Department</Form.Label>
+                    <Form.Control type="text" defaultValue={request.department} />
+                </Form.Group>
+            </Col>
         </>
 
     )
@@ -64,39 +81,39 @@ export default function RequestModalForm({request})
     var posterInfo = (
         <Row>
             <Col>
-            <Form.Label htmlFor="basic-url">Your vanity URL</Form.Label>
-            <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon3">Width</InputGroup.Text>
-                <Form.Control type="text" defaultValue={request.width}/>
-                <InputGroup.Text id="basic-addon3">Height</InputGroup.Text>
-                <Form.Control type="text" defaultValue={request.height}/>
-            </InputGroup>
+                <Form.Label htmlFor="basic-url">Your vanity URL</Form.Label>
+                <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon3">Width</InputGroup.Text>
+                    <Form.Control type="text" defaultValue={request.width} />
+                    <InputGroup.Text id="basic-addon3">Height</InputGroup.Text>
+                    <Form.Control type="text" defaultValue={request.height} />
+                </InputGroup>
             </Col>
         </Row>
     )
 
-    const handlePaymentChange = (event) =>
-    {
+    const handlePaymentChange = (event) => {
         const value = event.target.value;
-        let data = {...formData}; //Deep copy so that setformData will trigger rerender
+        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
         data.payment_method = value;
         setformData(data);
-        if(value == 'speedcode')
-        {
+        if (value == 'speedcode') {
             setIsSpeedCode(true);
         }
         console.log(JSON.stringify(formData));
     }
 
-    const handlePositionChange = (event) =>
-    {
+    const handlePositionChange = (event) => {
         const value = event.target.value;
-        let data = {...formData}; //Deep copy so that setformData will trigger rerender
+        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
         data.position = value;
         setformData(data);
         console.log(JSON.stringify(formData));
     }
 
+    const handleUnitsChange = (event) => {
+        
+    }
 
     //display request data in a form
     return (
@@ -105,19 +122,19 @@ export default function RequestModalForm({request})
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormFirstName">
                         <Form.Label>First Name</Form.Label>
-                        <Form.Control type="text" defaultValue={request.first_name}/>
+                        <Form.Control type="text" defaultValue={request.first_name} />
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormLastName">
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="text" defaultValue={request.last_name}/>
+                        <Form.Control type="text" defaultValue={request.last_name} />
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormEmail">
                         <Form.Label>First Name</Form.Label>
-                        <Form.Control type="text"  defaultValue={request.email}/>
+                        <Form.Control type="text" defaultValue={request.email} />
                     </Form.Group>
                 </Col>
             </Row>
@@ -132,13 +149,14 @@ export default function RequestModalForm({request})
                             <option value="staff">staff</option>
                         </Form.Select>
                     </Form.Group>
-                     
+
                 </Col>
-                {formData.position == 'undergraduate' ? undergradInfo: null} 
+                {formData.position == 'undergraduate' ? undergradInfo : null}
             </Row>
 
             <Row className="mb-3">
                 <Col xs={3}>
+                    
                     <Form.Group className="mb-3" controlId="requestFormLastName">
                         <Form.Label>Payment</Form.Label>
                         <Form.Select defaultValue={request.payment_method} onChange={(e) => handlePaymentChange(e)}>
@@ -147,11 +165,49 @@ export default function RequestModalForm({request})
                         </Form.Select>
                     </Form.Group>
                 </Col>
-                <Col>{formData.payment_method == 'speedcode' ? GrantHolderInfo : null}   </Col>         
-                    
+                {formData.payment_method == 'speedcode' ? GrantHolderInfo : null}
+
             </Row>
-            
-             
+            <Row>
+                <Col xs={5}>
+                    <Form.Label>File</Form.Label>
+                    <InputGroup className="mb-3">
+                        <Form.Control
+                            defaultValue={request.payment_method}
+                            aria-describedby="basic-addon2"
+                        />
+                        <Button variant="outline-secondary" id="button-addon2" onClik={handleOpenFile}>
+                            open
+                        </Button>
+                        
+                    </InputGroup>
+                </Col>
+                <Col xs={5}>
+                    <Form.Label>Dimensions</Form.Label>
+                    <InputGroup className="mb-3">
+                        <Form.Control
+                            defaultValue={request.width}
+                            aria-describedby="basic-addon2"
+                        />
+                        <InputGroup.Text id="basic-addon2">X</InputGroup.Text>
+                        <Form.Control
+                            defaultValue={request.height}
+                            aria-describedby="basic-addon2"
+                        />
+                    </InputGroup>
+                </Col>
+                <Col xs={2}>
+                    <Form.Group className="mb-3" controlId="requestFormFirstName">
+                        <Form.Label>Unit</Form.Label>
+                        <Form.Select defaultValue={request.units} onChange={(e) => handleUnitsChange(e)}>
+                            <option value="cm">cm</option>
+                            <option value="inches">inches</option>
+                        </Form.Select>
+                    </Form.Group>
+                </Col>
+            </Row>
+
+
         </Form>
     )
 
