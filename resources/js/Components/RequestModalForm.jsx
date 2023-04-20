@@ -210,6 +210,32 @@ export default function RequestModalForm({ request }) {
                     </Form.Group>
                 </Col>
             </Row>
+            <Row>
+                <Col>
+                    <Form.Group className="mb-3" controlId="requestFormEmail">
+                        <Form.Label>Cost Per Poster</Form.Label>
+                        <Form.Control type="text" defaultValue={request.email} />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="requestFormEmail">
+                        <Form.Label>Cost Per Poster</Form.Label>
+                        <Form.Control type="number" defaultValue={request.email} />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="requestFormEmail">
+                        <Form.Label>Quantity</Form.Label>
+                        <Form.Control type="number" defaultValue={request.quantity} />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="requestFormEmail">
+                        <Form.Label>Discount</Form.Label>
+                        <Form.Control type="number" defaultValue={request.quantity} disabled={request.discount_elgible ? true : false}/>
+                    </Form.Group>
+                </Col>
+            </Row>
 
 
         </Form>
