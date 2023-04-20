@@ -30,6 +30,7 @@ class PostersFactory extends Factory
             'speed_code_approved' => fake()->boolean(),
             'discount' => fake()->randomFloat(2),
             'cost' => fake()->randomFloat(2),
+            'file_location' => fake()->word()."/".fake()->fileExtension(),
         ];
     }
 }

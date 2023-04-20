@@ -13,6 +13,8 @@ export default function RequestTable() {
     const [items, setItems] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [modalData, setModalData] = useState(null);
+    const [settingsData, setSettingsData] = useState(null);
+    const [courseData, setCourseData] = useState(null);
     //Get the table data here
     useEffect(()=> {
         fetch("/requests/pendingHeaders")
