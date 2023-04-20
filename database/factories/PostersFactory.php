@@ -16,6 +16,7 @@ class PostersFactory extends Factory
      */
     public function definition(): array
     {
+        fake()->seed(random_int(1,1000));
         return [
             // 'poster_id' => fake()->randomNumber(5, false),
             // 'request_id' => fake()->randomNumber(5, false),

@@ -72,9 +72,10 @@ class RequestsController extends Controller
     public function getPendingRequestData($id){
         log::info("got requests");
         $r = DB::table('Posters')
-            ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.request_id')
+            ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.poster_id')
             ->leftJoin('Courses', 'Requests.course_id', '=', 'Courses.course_id')
             ->where('Requests.request_id', $id)->first();
+
         log::info(DB::table('Posters')
         ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.request_id')
         ->leftJoin('Courses', 'Requests.course_id', '=', 'Courses.course_id')
