@@ -19,11 +19,11 @@ use function PHPUnit\Framework\assertEquals;
  */
 class controllerRequestsTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      */
-    public function stest_example(): void
+    public function test_example(): void
     {
         $this->assertTrue(true);
     }
@@ -33,7 +33,7 @@ class controllerRequestsTest extends TestCase
      * Summary of test_getAll
      * @return void
      */
-    public function stest_getAll():void
+    public function test_getAll():void
     {
         //make a random number of Requests, add to db.
         $requestsCount = random_int(10,100);
@@ -49,7 +49,7 @@ class controllerRequestsTest extends TestCase
      * Tests that the correct number of inserted 
      * @return void
      */
-    public function stest_getPendingRequests():void
+    public function test_getPendingRequests():void
     {
         $pendingPosters = [];
         // Make 100 request models where some of them have the 'pending' state
@@ -111,4 +111,7 @@ class controllerRequestsTest extends TestCase
             $this->assertEquals($request->course_id, $id["course_id"], "retrieved request with course id:".$request->course_id." but expected: ".$id["course_id"] );
         }
     }
+
+
+
 }

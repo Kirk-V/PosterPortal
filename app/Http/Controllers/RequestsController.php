@@ -23,7 +23,6 @@ class RequestsController extends Controller
 
     public function getAll()
     {
-        // Requests::factory(10)->create();
         return Requests::all();
     }
 
