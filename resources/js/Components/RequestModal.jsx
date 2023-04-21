@@ -12,12 +12,13 @@ import { useState, useEffect } from 'react';
 export default function RequestModal({requestData, onHide, show, courseData}) {
     const [rejecting, setRejecting] = useState(false);
     const [request, setRequest] = useState(null);
+    const [formData, setFormData] = useState(null); // originally comes from request.
     console.log("modal made");
     // We have the passed Data already in the requestData Prop, so lets display it in a form
     // for editing
 
     //When rendered, we need to call for the updated version of the data, joined with the course
-    // if undergrad.
+    // This should only occur on modal open. Subsequent changes to the form will be passed back to the form component
     useEffect(() => {
         if(requestData != null)
         {
@@ -33,7 +34,8 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
             .then((response) => {
                 console.log("req data:");
                 console.log(`okay, Req data: ${JSON.stringify(response)}`);
-                setRequest(response);
+                // setRequest(response);
+                setFormData(response);
             },
             (error) => {
                 console.log(error)
@@ -43,7 +45,8 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
         }
         else
         {
-            setRequest(null);
+            // setRequest(null);
+            setFormData(null);
         }
     }, [requestData]);
 
@@ -51,9 +54,18 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
 
     }
 
-    // Handles the form being updated.
-    function handleFromValueUpdate(event, key){
+    // Here we will handle form updates from the form. The entire process is:
+    // 1) request data gets sent to form object
+    // 2) form control is updated
+    // 2) Within the form component (child of this guy), handlers are set up
+    // 3) the handlers in the form component will propgate the changed data up to this component
+    // 4) this component updateas its form object state
+    // 5) this component re-renders, sending the
+    function handleFromUpdate(newData){
+        console.log("update form in modal");
+        console.log(JSON.stringify(newData));
 
+        setFormData(newData);
     }
 
     function onReject(){
@@ -94,7 +106,7 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {request != null ? <RequestModalForm request={request} courseData={courseData}/> : <h1>noData</h1>}
+                {formData != null ? <RequestModalForm formD={formData} courseData={courseData} onUpdate={handleFromUpdate}/> : <h1>noData</h1>}
             </Modal.Body>
             <Modal.Footer>
                         {rejecting ? rejectingConfirm : footerButtons}

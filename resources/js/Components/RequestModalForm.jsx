@@ -7,15 +7,18 @@ import Fade from "react-bootstrap/Fade";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import CourseSelect from "./CourseSelect";
+import { useEffect } from "react";
 
-export default function RequestModalForm({ request, settings, courseData }) {
-    const [formData, setformData] = useState(request);
+export default function RequestModalForm({formD, settings, courseData, onUpdate }) {
+    const [formData, setformData] = useState(formD);
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
     // This will allow for users to change the course info attached to the request..
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
     // can become its own component.
+
+    console.log("Re-render form");
 
     function handleOpenFile() {
         console.log("file opening");
@@ -36,7 +39,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     <Form.Label>Grant Holder</Form.Label>
                     <Form.Control
                         type="text"
-                        defaultValue={request.first_name}
+                        defaultValue={formD.first_name}
                     />
                 </Form.Group>
             </Col>
@@ -48,7 +51,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     <Form.Label>Grant Holder Email</Form.Label>
                     <Form.Control
                         type="text"
-                        defaultValue={request.first_name}
+                        defaultValue={formD.first_name}
                     />
                 </Form.Group>
             </Col>
@@ -57,13 +60,13 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     <Alert
                         className={"mt-3"}
                         variant={
-                            formData.speed_code_approved == 0
+                            formD.speed_code_approved == 0
                                 ? "danger"
                                 : "success"
                         }
                     >
                         Speedcode has{" "}
-                        {formData.speed_code_approved == 0 ? "not" : null} been
+                        {formD.speed_code_approved == 0 ? "not" : null} been
                         approved
                     </Alert>
                 </Col>
@@ -75,7 +78,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                         <Form.Label>SpeedCode</Form.Label>
                         <Form.Control
                             type="text"
-                            defaultValue={request.speed_code}
+                            defaultValue={formD.speed_code}
                         />
                     </Form.Group>
                 </Col>
@@ -88,7 +91,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
             <Col xs={6}>
                 <CourseSelect
                     courseData={courseData}
-                    value={formData.course_id}
+                    value={formD.course_id}
                 />
             </Col>
         </>
@@ -100,48 +103,52 @@ export default function RequestModalForm({ request, settings, courseData }) {
                 <Form.Label htmlFor="basic-url">Your vanity URL</Form.Label>
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon3">Width</InputGroup.Text>
-                    <Form.Control type="text" defaultValue={request.width} />
+                    <Form.Control type="text" defaultValue={formD.width} />
                     <InputGroup.Text id="basic-addon3">Height</InputGroup.Text>
-                    <Form.Control type="text" defaultValue={request.height} />
+                    <Form.Control type="text" defaultValue={formD.height} />
                 </InputGroup>
             </Col>
         </Row>
     );
 
-    const handleQuantityChange = (event) => {
-        const value = event.target.value;
-        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
-        data.quantity = value;
-        setformData(data);
-        setTotal(calculateTotal());
-        // console.log(JSON.stringify(formData));
-    };
-
     const calculateTotal = () => {
-        let costPer = formData.cost;
-        let quantity = formData.quantity;
-        let discount = formData.discount_eligible == "1" ? formData.discount : 0;
+        let costPer = formD.cost;
+        let quantity = formD.quantity;
+        let discount = formD.discount_eligible == "1" ? formD.discount : 0;
         console.log(`cist: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total"+(costPer - discount) * quantity);
         return (costPer - discount) * quantity;
     };
 
+    const handleQuantityChange = (event) => {
+        const value = event.target.value;
+        let data = { ...formD }; //Deep copy so that setformD will trigger rerender
+        data.quantity = value;
+        // setformD(data);
+        onUpdate(data);
+        // setTotal(calculateTotal());
+        // console.log(JSON.stringify(formD));
+    };
+
+
     const handleCostChange = (event) => {
         const value = event.target.value;
-        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
+        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
         data.cost = value;
-        setformData(data);
-        let newTotal = calculateTotal();
-        setTotal(newTotal);
+        onUpdate(data);
+        // setformData(data);
+        // let newTotal = calculateTotal();
+        // setTotal(newTotal);
         // console.log(JSON.stringify(formData));
     };
 
     const handleDiscountChange = (event) => {
         const value = event.target.value;
-        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
+        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
         data.discount = value;
-        setformData(data);
-        setTotal(calculateTotal());
+        // setformData(data);
+        onUpdate(data);
+        // setTotal(calculateTotal());
         // console.log(JSON.stringify(formData));
     };
 
@@ -149,27 +156,30 @@ export default function RequestModalForm({ request, settings, courseData }) {
         const value = event.target.value;
         let data = { ...formData }; //Deep copy so that setformData will trigger rerender
         data.payment_method = value;
-        setformData(data);
-        if (value == "speedcode") {
-            setIsSpeedCode(true);
-        }
+        // setformData(data);
+        onUpdate(data);
+        // if (value == "speedcode") {
+        //     setIsSpeedCode(true);
+        // }
         // console.log(JSON.stringify(formData));
     };
 
     const handlePositionChange = (event) => {
         const value = event.target.value;
-        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
+        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
         data.position = value;
         data.discount_eligible = data.position == "undergraduate" ? "1":0;
-        setformData(data);
+        onUpdate(data);
+        // setformData(data);
         // console.log(JSON.stringify(formData));
     };
 
     const handleUnitsChange = (event) => {
         const value = event.target.value;
-        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
+        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
         data.units = value;
-        setformData(data);
+        onUpdate(data);
+        // setformData(data);
         // console.log(JSON.stringify(formData));
     };
 
@@ -190,7 +200,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
                             type="text"
-                            defaultValue={request.first_name}
+                            defaultValue={formD.first_name}
                         />
                     </Form.Group>
                 </Col>
@@ -202,7 +212,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                         <Form.Label>Last Name</Form.Label>
                         <Form.Control
                             type="text"
-                            defaultValue={request.last_name}
+                            defaultValue={formD.last_name}
                         />
                     </Form.Group>
                 </Col>
@@ -211,7 +221,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
                             type="text"
-                            defaultValue={request.email}
+                            defaultValue={formD.email}
                         />
                     </Form.Group>
                 </Col>
@@ -222,7 +232,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     >
                         <Form.Label>Position</Form.Label>
                         <Form.Select
-                            defaultValue={request.position}
+                            defaultValue={formD.position}
                             onChange={(e) => handlePositionChange(e)}
                         >
                             <option value="undergraduate">undergraduate</option>
@@ -234,7 +244,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                 </Col>
             </Row>
             <Row className="mb-3">
-                {formData.position == "undergraduate" ? undergradInfo : null}
+                {formD.position == "undergraduate" ? undergradInfo : null}
             </Row>
             <Row>
                 <Col>
@@ -250,7 +260,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     >
                         <Form.Label>Payment</Form.Label>
                         <Form.Select
-                            defaultValue={request.payment_method}
+                            defaultValue={formD.payment_method}
                             onChange={(e) => handlePaymentChange(e)}
                         >
                             <option value="speedcode">Speedcode</option>
@@ -258,7 +268,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                         </Form.Select>
                     </Form.Group>
                 </Col>
-                {formData.payment_method == "speedcode"
+                {formD.payment_method == "speedcode"
                     ? GrantHolderInfo
                     : null}
             </Row>
@@ -272,7 +282,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     <Form.Label>File</Form.Label>
                     <InputGroup className="mb-3">
                         <Form.Control
-                            defaultValue={request.payment_method}
+                            defaultValue={formD.payment_method}
                             aria-describedby="basic-addon2"
                         />
                         <Button
@@ -288,12 +298,12 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     <Form.Label>Dimensions</Form.Label>
                     <InputGroup className="mb-3">
                         <Form.Control
-                            defaultValue={request.width}
+                            defaultValue={formD.width}
                             aria-describedby="basic-addon2"
                         />
                         <InputGroup.Text id="basic-addon2">X</InputGroup.Text>
                         <Form.Control
-                            defaultValue={request.height}
+                            defaultValue={formD.height}
                             aria-describedby="basic-addon2"
                         />
                     </InputGroup>
@@ -305,7 +315,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                     >
                         <Form.Label>Unit</Form.Label>
                         <Form.Select
-                            defaultValue={request.units}
+                            defaultValue={formD.units}
                             onChange={(e) => handleUnitsChange(e)}
                         >
                             <option value="cm">cm</option>
@@ -329,7 +339,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                             </InputGroup.Text>
                             <Form.Control
                                 type="number"
-                                defaultValue={request.cost}
+                                value={formD.cost}
                                 onChange={handleCostChange}
                             />
                         </InputGroup>
@@ -344,7 +354,7 @@ export default function RequestModalForm({ request, settings, courseData }) {
                             </InputGroup.Text>
                             <Form.Control
                                 type="number"
-                                defaultValue={request.quantity}
+                                value={formD.quantity}
                                 onChange={handleQuantityChange}
                             />
                         </InputGroup>
@@ -359,9 +369,9 @@ export default function RequestModalForm({ request, settings, courseData }) {
                             </InputGroup.Text>
                             <Form.Control
                                 type="number"
-                                defaultValue={formData.discount_eligible == "0" ? null : formData.discount}
+                                value={formD.discount_eligible == "0" ? null : formD.discount}
                                 onChange={handleDiscountChange}
-                                disabled={formData.discount_eligible == "0" ? true:false}
+                                disabled={formD.discount_eligible == "0" ? true:false}
                             />
                         </InputGroup>
                     </Form.Group>
