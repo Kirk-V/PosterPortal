@@ -50,8 +50,38 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
         }
     }, [requestData]);
 
-    function onAccept(){
 
+    //When a poster is accepted, this function will make the call to persist the new data to the DB
+    function onAccept(){
+        if(requestData != null)
+        {
+            let options = {
+                method: 'POST',
+                body: JSON.stringify(formData['now'] = "12345"),
+                'Content-Type': 'application/json'
+            }
+            fetch(`api/posters/acceptPending`, options)
+            .then( (res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return res.json()
+            })
+            .then((response) => {
+                console.log("req data:");
+                console.log(`okay, Req data: ${JSON.stringify(response)}`);
+                // setRequest(response);
+                setFormData(response);
+            },
+            (error) => {
+                console.log(error)
+            }
+            )
+        }
+        else
+        {
+            console.log("Cannot post null body")
+        }
     }
 
     // Here we will handle form updates from the form. The entire process is:

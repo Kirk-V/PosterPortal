@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\PosterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestsController;
 use Illuminate\Foundation\Application;
@@ -51,6 +52,7 @@ Route::controller(RequestsController::class)->group(function () {
     Route::get('/requests/pending', 'getPendingRequests');
     Route::get('/requests/pendingHeaders', 'getPendingRequestsHeaders');
     Route::get('/requests/pending&id={id}', 'getPendingRequestData');
+
     });
 
 Route::controller(CoursesController::class)->group(function () {
@@ -60,7 +62,10 @@ Route::controller(CoursesController::class)->group(function () {
 
 Route::controller(PostersController::class)->group(function (){
     Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
+    // Route::post('/posters/acceptPending', 'acceptPendingPoster');
 });
+
+
 
 // Route::get('/requests', [RequestsController::class, 'index']);
 

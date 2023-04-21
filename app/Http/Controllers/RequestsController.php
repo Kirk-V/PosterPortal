@@ -15,6 +15,7 @@ class RequestsController extends Controller
     //
     public function index()
     {
+        log::info("returning index interia");
         return Inertia::render('posterportal', [
             'currentView' => 'requests',
             'data' => $this->getAll(),
@@ -57,7 +58,7 @@ class RequestsController extends Controller
     }
 
     public function requestIsReady(){
-        
+
     }
 
     // This function should retrieve all posters that have a pending state. These posters are joined with Requests
