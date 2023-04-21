@@ -50,12 +50,16 @@ Route::controller(RequestsController::class)->group(function () {
     Route::get('/requests/data', 'getAll');
     Route::get('/requests/pending', 'getPendingRequests');
     Route::get('/requests/pendingHeaders', 'getPendingRequestsHeaders');
-    Route::get('/requests/pending&id={id}', 'getPendingRequestData');    
+    Route::get('/requests/pending&id={id}', 'getPendingRequestData');
     });
 
 Route::controller(CoursesController::class)->group(function () {
     Route::get('/courses/all', 'getAllCourses');
     Route::get('/courses/year={year}',  'getAllCoursesInYear');
+});
+
+Route::controller(PostersController::class)->group(function (){
+    Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
 });
 
 // Route::get('/requests', [RequestsController::class, 'index']);

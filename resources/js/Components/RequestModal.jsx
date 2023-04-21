@@ -16,7 +16,7 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
     // We have the passed Data already in the requestData Prop, so lets display it in a form
     // for editing
 
-    //When rendered, we need to call for the updated version of the data, joined with the course 
+    //When rendered, we need to call for the updated version of the data, joined with the course
     // if undergrad.
     useEffect(() => {
         if(requestData != null)
@@ -44,7 +44,7 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
         else
         {
             setRequest(null);
-        }   
+        }
     }, [requestData]);
 
     function onAccept(){
@@ -70,7 +70,7 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
             <Button variant="danger" onClick={handleReject}>Reject and Delete</Button>
             <Button variant="primary" className={'ms-auto'} onClick={() => setRejecting(false)}>no, Go Back</Button>
         </>
-        
+
     )
 
     const footerButtons = (
@@ -90,16 +90,14 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
             centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    {request != null ? request.request_id : null} {request != null ? request.first_name : null} {request != null ? request.last_name : null} 
+                    {request != null ? request.request_id : null} {request != null ? request.first_name : null} {request != null ? request.last_name : null}
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>          
+            <Modal.Body>
                 {request != null ? <RequestModalForm request={request} courseData={courseData}/> : <h1>noData</h1>}
             </Modal.Body>
             <Modal.Footer>
-
                         {rejecting ? rejectingConfirm : footerButtons}
-
             </Modal.Footer>
         </Modal>
 

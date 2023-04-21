@@ -36,5 +36,19 @@ class Posters extends Model
         return $this->hasOne(Jobs::class, 'poster_id');
     }
 
+    // Function to calculate the total cost estimate for a poster given the provided width,
+    // height. Applies discount if the poster has a valid discount setting.
+    // public function calculateTotal()
+
+    //Retrieves the cost per poster, width, height, discount, and total for the poster
+    public static function getPosterCostDetails($id)
+    {
+        $poster = Posters::find($id);
+        $costPer = $poster->cost;
+        $discount = $poster->discount_eligible ==  1 ? $poster->discount : 0;
+        $total = ($poster->cost - $discount) * $poster->requests->quantity;
+        return array('cost'=>$costPer, 'discount' => $discount, 'total' => $total);
+    }
+
     #endregion
 }
