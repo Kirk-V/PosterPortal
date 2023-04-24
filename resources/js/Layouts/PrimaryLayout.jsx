@@ -2,10 +2,10 @@
 import Container from 'react-bootstrap/Container';
 import NavBar from '@/Components/NavBar';
 
-export default function Primary({ children }) {
+export default function Primary({ onPage, children }) {
     return (     
         <>
-        <NavBar>
+        <NavBar currentView={onPage}>
 
         </NavBar>
         <Container>{children}</Container>

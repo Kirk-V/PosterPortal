@@ -9,7 +9,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import { Link } from '@inertiajs/react'
-export default function NavBar() {
+export default function NavBar({currentView}) {
+    console.log("currentview: "+currentView);
     return (
         <Navbar bg="light" variant="light" expand="md">
             <Container>
@@ -45,29 +46,27 @@ export default function NavBar() {
                                 <Nav
                                     variant="pills"
                                     className="justify-content-end flex-grow-1 pe-3"
-                                    // defaultActiveKey="/requests"
+                                    activeKey={currentView}
                                 >
                                     <Nav.Item className="m-2" >
-                                        <Nav.Link as={Link} href="/requests" >
+                                        <Nav.Link as={Link} eventKey="requests" href="/requests" >
                                                 requests
                                         </Nav.Link>
                                         
                                     </Nav.Item>
                                     <Nav.Item className="m-2">
-                                        <Nav.Link as={Link} href="/jobs">
+                                        <Nav.Link as={Link} eventKey="jobs" href="/jobs">
                                                 Jobs
                                         </Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item className="m-2">
-                                        <Nav.Link as={Link} href="/settings">
+                                        <Nav.Link as={Link} eventKey="settings" href="/settings">
                                                 Settings
                                         </Nav.Link>
                                     </Nav.Item>
                                 </Nav>
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>
-                    {/* </Col>
-                </Row> */}
             </Container>
         </Navbar>
     );
