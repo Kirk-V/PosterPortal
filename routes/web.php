@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\JobsController;
 use App\Http\Controllers\PosterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestsController;
@@ -37,12 +38,14 @@ Route::get('/posterportal', function () {
     return Inertia::render('posterportal');
 });
 
-Route::get('/jobs', function () {
-    return Inertia::render('posterportal', [
-        'currentView' => 'jobs'
-    ]);
+// Route::get('/jobs', function () {
+//     return Inertia::render('posterportal', [
+//         'currentView' => 'jobs'
+//     ]);
+// });
+Route::controller(JobsController::class)->group(function () {
+    Route::get('/jobs', 'index');
 });
-
 
 Route::controller(RequestsController::class)->group(function () {
     Route::get('/requests', 'index');

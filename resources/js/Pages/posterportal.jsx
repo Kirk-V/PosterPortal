@@ -1,5 +1,6 @@
 import PrimaryLayout from '@/Layouts/PrimaryLayout';
 import Requests from './requests';
+import Jobs from './jobs';
 
 function PosterPortal({ auth , currentView, data}) {
     let pageView;
@@ -11,9 +12,13 @@ function PosterPortal({ auth , currentView, data}) {
     {
         pageView = <h1>settings</h1>;
     }
+    else if(currentView === 'jobs')
+    {
+        pageView = <Jobs/>;
+    }
     else
     {
-        pageView = <h1>defaults</h1>;
+        pageView = <Requests data={data} />;
     }
     return (
         <PrimaryLayout onPage={currentView} >
