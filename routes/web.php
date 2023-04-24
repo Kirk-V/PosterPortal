@@ -45,6 +45,7 @@ Route::get('/posterportal', function () {
 // });
 Route::controller(JobsController::class)->group(function () {
     Route::get('/jobs', 'index');
+    Route::get('/jobs/jobsHeaders', 'getJobsHeadings');
 });
 
 Route::controller(RequestsController::class)->group(function () {

@@ -7,11 +7,30 @@ import { useEffect, useState } from 'react';
 export default function JobsTable() {
     // Two objects for the headings and data within a table.
     const [headings, setHeadings] = useState(null);
+    const [headingsLoaded, setHeadingsLoaded] = useState(false);
     const [data, setData] = useState(null);
     const [showingModal, setShowingModal] = useState(false);
 
     //Fetch the headings and data.
-
+    useEffect(()=> {
+        fetch("/jobs/jobsHeaders")
+            .then( (res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return res.json()
+            })
+            .then((response) => {
+                console.log(`okay Heading response: ${JSON.stringify(response)}`);
+                console.log(`passing keys: ${Object.keys(response)}`)
+                setHeadings(response);
+                setHeadingsLoaded(true);
+            },
+            (error) => {
+                setError(error);
+            }
+            )
+    }, []);
 
     return (
         <>
