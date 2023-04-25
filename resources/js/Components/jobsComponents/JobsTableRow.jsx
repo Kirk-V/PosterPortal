@@ -2,11 +2,18 @@ export default function JobsTableRow({ rowData, headers, handleClick }) {
     // console.log(`rowdata: ${JSON.stringify(rowData)}`);
 
     function rowColor(){
-        // if(rowData.requests.payment_method == 'speedcode' && rowData.speed_code_approved == '1')
-        // {
-        //     return 'table-danger'
-        // }
-        return 'table-danger';
+        switch (rowData.state)
+        {
+            case 'printed':
+                return 'table-success';
+                break;
+            case 'on_hold':
+                return 'table-warning';
+            case 'in_queue':
+                return 'table-danger';
+            default:
+                return 'table-secondary';
+        }
     }
     return (
         <tr onClick={() => handleClick(rowData)} className={rowColor()}>
