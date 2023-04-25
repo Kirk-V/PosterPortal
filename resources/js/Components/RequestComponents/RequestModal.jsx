@@ -57,8 +57,13 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
         {
             let options = {
                 method: 'POST',
-                body: JSON.stringify(formData['now'] = "12345"),
-                'Content-Type': 'application/json'
+                body: JSON.stringify(formData),
+                headers: {
+                    // the content type header value is usually auto-set
+                    // depending on the request body
+                    "Content-Type": 'application/json',
+                    'Accept': 'application/json'
+                  },
             }
             fetch(`api/posters/acceptPending`, options)
             .then( (res) => {
