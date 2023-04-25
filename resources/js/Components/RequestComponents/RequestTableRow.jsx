@@ -4,7 +4,11 @@ export default function RequestTableRow({ rowData, headers, handleClick }) {
     function rowColor(){
         if(rowData.requests.payment_method == 'speedcode' && rowData.speed_code_approved == '1')
         {
-            return 'table-danger'
+            return 'table-danger';
+        }
+        if(rowData.requests.payment_method == "cash" && rowData.state == 'ready')
+        {
+            return 'table-danger';
         }
     }
     return (

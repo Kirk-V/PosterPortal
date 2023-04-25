@@ -21,7 +21,7 @@ class PostersFactory extends Factory
             // 'poster_id' => fake()->randomNumber(5, false),
             // 'request_id' => fake()->randomNumber(5, false),
             // 'job_id' => fake()->randomNumber(5, false),
-            'state' => fake()->randomElement(['pending', 'rejected', 'accepted', 'printed', 'paid', 'complete']),
+            'state' => fake()->randomElement(['pending', 'ready', 'rejected', 'accepted', 'printed', 'paid', 'complete']),
             'width' => fake()->randomFloat(2),
             'height' => fake()->randomFloat(2),
             // 'transaction_id' => fake()->randomNumber(5, false),
