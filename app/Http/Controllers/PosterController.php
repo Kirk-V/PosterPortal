@@ -35,6 +35,12 @@ class PosterController extends Controller
      */
     public function acceptPendingPoster(Request $request)
     {
+        $posterID = $request->poster_id;
+        //Move Poster To accepted State:
+        $poster = Posters::find($posterID);
+        $poster->state = "accepted";
+        $poster->save();
+        Log::info("Found poster".$poster->poster_id);
         $name = $request->input('first_name');
         // Log::info("NAMe: ".$name);
         Log::info($request->header('content-type'));
