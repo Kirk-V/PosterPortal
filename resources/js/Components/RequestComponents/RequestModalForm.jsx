@@ -6,7 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Fade from "react-bootstrap/Fade";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
-import CourseSelect from "./CourseSelect";
+import CourseSelect from "../CourseSelect";
 import { useEffect } from "react";
 
 export default function RequestModalForm({formD, settings, courseData, onUpdate }) {
