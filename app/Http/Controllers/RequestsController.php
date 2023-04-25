@@ -65,7 +65,10 @@ class RequestsController extends Controller
     // such that they can be sent to the front-end for changes
     public function getPendingRequests(){
         // $r = Posters::with(['requests'])->whereIn('state', 'pending')->all();
-        return Posters::with(['requests'])->where('state', 'pending')->get();
+        return Posters::with(['requests'])
+                    ->where('state', 'pending')
+                    ->orWhere('state', 'ready')
+                    ->get();
     }
 
     //We need to get all assocaited data with a pending request, joined on the various relationships
@@ -84,6 +87,6 @@ class RequestsController extends Controller
     }
 
     public function getPendingRequestsHeaders(){
-        return ['Poster'=>'poster_id', 'First'=>'requests.first_name', 'Last'=>'requests.last_name', 'Email'=>'requests.email', 'Position'=>'requests.position', 'Status'=>'state'];
+        return ['Poster'=>'poster_id', 'First'=>'requests.first_name', 'Last'=>'requests.last_name', 'Email'=>'requests.email', 'Payment'=>'requests.payment_method', 'Position'=>'requests.position', 'Status'=>'state'];
     }
 }
