@@ -53,6 +53,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
+            $table->string('department');
             $table->enum('payment_method', ['cash','speedcode']);
             $table->string('grant_holder_name')->nullable();
             $table->string('grant_holder_email')->nullable();
