@@ -1,8 +1,9 @@
 import Table from 'react-bootstrap/Table';
-import RequestTableHead from '../RequestTableHead';
+// import RequestTableBody from '/Components/RequestComponents/RequestTable';
+import RequestTableHead from '@/Components/RequestComponents/RequestTableHead';
 import { useEffect, useState } from 'react';
-import RequestTableBody from '../RequestTableBody';
-import RequestModal from './RequestModal';
+import RequestTableBody from '@/Components/RequestComponents//RequestTableBody';
+import RequestModal from '@/Components/RequestComponents/RequestModal';
 
 export default function RequestTable() {
     const [error, setError] = useState(null);

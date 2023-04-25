@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -30,5 +31,13 @@ class JobsController extends Controller
      */
     public function getJobsHeadings(){
         return  ['Poster No.'=> 'poster_id','State'=>'state', 'Payment Type' => 'payment_method', 'Requisitioner' => 'First_name', 'Requisition type' => 'position', 'Requisitioner Eamil' => 'email', 'Department' => 'department', 'Print Date' => 'print_date'];
+    }
+
+    public function getJobsData($page, $entriesPerPage = 50){
+        $jobs = DB::table('Posters')
+        ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
+        ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')->skip(($page-1)*$entriesPerPage)->take($entriesPerPage)->get();
+
+        return response($jobs);
     }
 }

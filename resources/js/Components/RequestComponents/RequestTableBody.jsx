@@ -1,4 +1,4 @@
-import RequestTableRow from "./RequestTableRow";
+import RequestTableRow from "@/Components/RequestComponents/RequestTableRow";
 // Takes an array of json objects as data
 export default function RequestTableBody({data, handleRowClick, headers, courses}) {
     console.log("making body");

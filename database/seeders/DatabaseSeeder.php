@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models;
 use App\Models\Courses;
+use App\Models\Jobs;
 use App\Models\Posters;
 use App\Models\Requests;
 use App\Models\Transactions;
@@ -25,9 +26,13 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         // error_log('Some message here.');
-        // Posters::factory(10)->create();
+        Posters::factory()
+        ->has(Requests::factory())
+        ->has(Jobs::factory())
+        ->count(100)
+        ->create();
         // Transactions::factory(10)->create();
-        Courses::factory(10)->create();
-        Requests::factory(100)->create();
+        // Courses::factory(10)->create();
+        // Requests::factory(100)->create();
     }
 }

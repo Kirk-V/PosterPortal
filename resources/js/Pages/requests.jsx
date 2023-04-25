@@ -1,4 +1,4 @@
-import RequestTableRow from '@/Components/RequestTableRow';
+// import RequestTableRow from '@/Components/RequestTableRow';
 import { router } from '@inertiajs/react'
 import RequestTable from '@/Components/RequestComponents/RequestTable';
 function Requests({ auth, data }) {
