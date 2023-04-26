@@ -27,8 +27,8 @@ export default function RequestTable({settings}) {
             })
             .then((response) => {
                 
-                console.log(`okay Heading response: ${JSON.stringify(response)}`);
-                console.log(`passing keys: ${Object.keys(response)}`)
+                // console.log(`okay Heading response: ${JSON.stringify(response)}`);
+                // console.log(`passing keys: ${Object.keys(response)}`)
                 setHeadings(response);
                 setHeadingsLoaded(true);
             },
@@ -48,7 +48,7 @@ export default function RequestTable({settings}) {
                 return Promise.reject(res);            
             })
             .then((response) => {
-                console.log(`okay body response: ${JSON.stringify(response)}`);
+                // console.log(`okay body response: ${JSON.stringify(response)}`);
                 setItems(response);
                 setBodyLoaded(true);
             },
@@ -105,7 +105,7 @@ export default function RequestTable({settings}) {
                 {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
-        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData}/>
+        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings}/>
         </>
         
     )

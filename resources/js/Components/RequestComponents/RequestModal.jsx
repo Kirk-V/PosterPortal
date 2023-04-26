@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
-export default function RequestModal({requestData, onHide, show, courseData}) {
+export default function RequestModal({requestData, onHide, show, courseData, settings}) {
     const [rejecting, setRejecting] = useState(false);
     const [request, setRequest] = useState(null);
     const [formData, setFormData] = useState(null); // originally comes from request.
@@ -142,7 +142,7 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {formData != null ? <RequestModalForm formD={formData} courseData={courseData} onUpdate={handleFromUpdate}/> : <h1>noData</h1>}
+                {formData != null ? <RequestModalForm formD={formData} courseData={courseData} onUpdate={handleFromUpdate} settings={settings}/> : <h1>noData</h1>}
             </Modal.Body>
             <Modal.Footer>
                         {rejecting ? rejectingConfirm : footerButtons}

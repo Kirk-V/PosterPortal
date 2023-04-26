@@ -1,5 +1,5 @@
 export default function RequestTableRow({ rowData, headers, handleClick }) {
-    console.log(`rowdata: ${JSON.stringify(rowData)}`);
+    // console.log(`rowdata: ${JSON.stringify(rowData)}`);
 
     function rowColor(){
         if(rowData.requests.payment_method == 'speedcode' && rowData.speed_code_approved == '1')

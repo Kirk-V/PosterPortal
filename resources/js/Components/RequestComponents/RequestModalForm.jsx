@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import CourseSelect from "@/Components/RequestComponents/CourseSelect";
 import { useEffect } from "react";
 
-export default function RequestModalForm({formD, settings, courseData, onUpdate, pricePerFoot }) {
+export default function RequestModalForm({formD, settings, courseData, onUpdate }) {
     const [formData, setformData] = useState(formD);
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
@@ -41,12 +41,25 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate,
         return (costPer - discount) * quantity;
     };
 
+    const calculateCost = (data) => {
+        console.log(JSON.stringify(settings));
+        let pricePerFoot = settings.cost;
+        //must convert to inches first
+        let inchWidth = data.units == "cms" ? 0.3937007874 * data.width : data.width;
+        let inchHeight = data.units == "cms" ? 0.3937007874 * data.height : data.height;
+        return (((inchWidth * inchHeight)/144) * pricePerFoot).toFixed(2);
+    }
+
     const handleControlChange = (event) => 
     {
         const value = event.target.value;
         const name = event.target.name;
         let data = { ...formD }; //Deep copy so that setformD will trigger rerender
         data[`${name}`] = value;
+        if(["width", "height", "units"].includes(name))
+        {
+            data.cost = calculateCost(data);
+        }
         // setformD(data);
         onUpdate(data);
     }
@@ -58,6 +71,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate,
         // setformD(data);
         onUpdate(data);
     }
+
 
     // const handleQuantityChange = (event) => {
     //     const value = event.target.value;

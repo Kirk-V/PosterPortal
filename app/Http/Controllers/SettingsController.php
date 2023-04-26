@@ -12,6 +12,6 @@ class SettingsController extends Controller
 
     static function getAllSettings()
     {
-        return response()->json(Settings::all());
+        return response()->json(Settings::all()->pluck('value', 'setting'));
     }
 }
