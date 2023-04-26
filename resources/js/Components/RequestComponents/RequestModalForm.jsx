@@ -49,7 +49,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
         const value = event.target.value;
         const name = event.target.name;
         let data = { ...formD }; //Deep copy so that setformD will trigger rerender
-        data.name = value;
+        data[`${name}`] = value;
         // setformD(data);
         onUpdate(data);
     }
@@ -350,12 +350,14 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     <Form.Label>Dimensions</Form.Label>
                     <InputGroup className="mb-3">
                         <Form.Control
+                            onChange={(e) => handleControlChange(e)}
                             name="width"
                             defaultValue={formD.width}
                             aria-describedby="basic-addon2"
                         />
                         <InputGroup.Text id="basic-addon2">X</InputGroup.Text>
                         <Form.Control
+                            onChange={(e) => handleControlChange(e)}
                             name="height"
                             defaultValue={formD.height}
                             aria-describedby="basic-addon2"

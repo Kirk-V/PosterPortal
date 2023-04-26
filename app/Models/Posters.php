@@ -74,6 +74,7 @@ class Posters extends Model
                 $poster->$key = $value;
             }
         }
+        $poster->save();
     }
 
     #endregion
