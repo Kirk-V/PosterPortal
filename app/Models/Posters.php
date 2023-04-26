@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 
 // Poster class is parent to request, jobs, and transactions
@@ -48,6 +50,30 @@ class Posters extends Model
         $discount = $poster->discount_eligible ==  1 ? $poster->discount : 0;
         $total = ($poster->cost - $discount) * $poster->requests->quantity;
         return array('cost'=>$costPer, 'discount' => $discount, 'total' => $total);
+    }
+
+    public static function acceptPoster($id)
+    {
+        $poster = Posters::find($id);
+        $poster->state = 'accepted';
+        $poster->save();
+    }
+
+
+    public static function updatePoster($id, $updateArray)
+    {
+        $poster = Posters::findOrFail($id);
+        $columnNames = Schema::getColumnListing('Posters');
+        foreach ($updateArray as $key => $value)
+        {
+            Log::info("Attempting to Update Poster $id -- $key => $value");
+            if(in_array($key , $columnNames))
+            {
+                //Should check that key is valid
+                Log::info("Updating Poster $id -- $key => $value");
+                $poster->$key = $value;
+            }
+        }
     }
 
     #endregion

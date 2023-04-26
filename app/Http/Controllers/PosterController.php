@@ -37,14 +37,8 @@ class PosterController extends Controller
     {
         $posterID = $request->poster_id;
         //Move Poster To accepted State:
-        $poster = Posters::find($posterID);
-        $poster->state = "accepted";
-        $poster->width = $request->input('width');
-        $poster->save();
-
-
-        Log::info("Found poster".$poster->poster_id);
-        $name = $request->input('first_name');
+        Posters::acceptPoster($posterID);
+        Posters::updatePoster($posterID, $request->all());
         // Log::info("NAMe: ".$name);
         Log::info($request->header('content-type'));
         // Log::info($request->getAll());
