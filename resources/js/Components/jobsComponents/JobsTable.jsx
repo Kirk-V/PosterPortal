@@ -1,6 +1,7 @@
 import Table from 'react-bootstrap/Table';
 import JobsTableHead from '@/Components/jobsComponents/JobsTablehead';
 import JobsTableBody from '@/Components/jobsComponents/JobsTableBody';
+import JobsModal from '@/Components/jobsComponents/JobsTableBody';
 import { useEffect, useState } from 'react';
 // import RequestTableBody from './RequestTableBody';
 // import RequestModal from './RequestModal';
@@ -12,7 +13,7 @@ export default function JobsTable() {
     const [bodyData, setBodyData] = useState(null);
     const [bodyDataLoaded, setBodyDataLoaded] = useState(false);
 
-    const [data, setData] = useState(null);
+    const [modalData, setModalData] = useState(null);
     const [showingModal, setShowingModal] = useState(false);
 
     //Fetch the headings and data.
@@ -60,15 +61,23 @@ export default function JobsTable() {
             console.log(e);
         });
     }, []);
+
+
+    function handleClick(rowData){
+        alert(`clickedRow ${JSON.stringify(rowData)}`);
+        setModalData(rowData);
+        setShowingModal(true);
+        console.log(`showmodal: ${showModal}`);
+    }
     
     return (
         <>
         <Table striped hover={true}>
                 {headingsLoaded == true ? <JobsTableHead headings={headings}></JobsTableHead> : null}  
-                {bodyDataLoaded == true && headingsLoaded == true ? <JobsTableBody data={bodyData} headers={headings} ></JobsTableBody> :null}
+                {bodyDataLoaded == true && headingsLoaded == true ? <JobsTableBody data={bodyData} headers={headings} onRowClick={handleClick}></JobsTableBody> :null}
                 {/* {error == true? <h1>error</h1> : null} */}
         </Table>
-        {/* <RequestModal show={showingModal} requestData={modalData} onHide={handleClose} courseData={courseData}/> */}
+        <JobsModal show={showingModal} jobsData={modalData} onHide={handleClose}/>
         </>
         
     )

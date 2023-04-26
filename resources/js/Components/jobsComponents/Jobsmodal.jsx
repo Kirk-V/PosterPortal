@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
-export default function RequestModal({requestData, onHide, show, courseData}) {
+export default function JobsModal({jobsData, onHide, show}) {
     return (
         <Modal
             show={show}
