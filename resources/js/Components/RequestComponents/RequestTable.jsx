@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import RequestTableBody from '@/Components/RequestComponents//RequestTableBody';
 import RequestModal from '@/Components/RequestComponents/RequestModal';
 
-export default function RequestTable() {
+export default function RequestTable({settings}) {
     const [error, setError] = useState(null);
     const [headingsLoaded, setHeadingsLoaded] = useState(false);
     const [bodyLoaded, setBodyLoaded] = useState(false);

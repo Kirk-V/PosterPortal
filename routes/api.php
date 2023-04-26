@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosterController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,12 @@ use App\Http\Controllers\PosterController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::controller(SettingsController::class)->group(function (){
+    // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
+    Route::get('/settings/all', 'getAllSettings');
+});
+
 
 
 Route::controller(PosterController::class)->group(function (){

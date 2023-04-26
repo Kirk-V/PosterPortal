@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import CourseSelect from "@/Components/RequestComponents/CourseSelect";
 import { useEffect } from "react";
 
-export default function RequestModalForm({formD, settings, courseData, onUpdate }) {
+export default function RequestModalForm({formD, settings, courseData, onUpdate, pricePerFoot }) {
     const [formData, setformData] = useState(formD);
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
@@ -31,9 +31,6 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
     function acceptRequest() {
         //update any changed data and create job
     }
-
-
-
 
     const calculateTotal = () => {
         let costPer = formD.cost;
