@@ -69,6 +69,12 @@ export default function JobsTable() {
         setShowingModal(true);
         console.log(`showmodal: ${showModal}`);
     }
+
+    const handleClose = () => {
+        setShowModal(false);
+        setModalData(null);
+        console.log("closing");
+    }
     
     return (
         <>
