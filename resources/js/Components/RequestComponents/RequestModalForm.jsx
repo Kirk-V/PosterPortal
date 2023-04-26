@@ -38,7 +38,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
         let discount = formD.discount_eligible == "1" ? formD.discount : 0;
         console.log(`cist: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total"+(costPer - discount) * quantity);
-        return (costPer - discount) * quantity;
+        return ((costPer - discount) * quantity).toFixed(2);
     };
 
     const calculateCost = (data) => {
