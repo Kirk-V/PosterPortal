@@ -5,7 +5,7 @@ export default function JobsTableBody({data, onRowClick, headers}) {
     return (
         <tbody>
             {data.map( (row, key) => {
-                // console.log(`row: ${JSON.stringify(row)}`);
+                console.log(`row: ${JSON.stringify(row)}`);
                 return <JobsTableRow key={key} rowData={row} headers={headers} handleClick={onRowClick}/>
             })}
                 
