@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jobs;
 use App\Models\Posters;
+use App\Models\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -39,10 +41,13 @@ class PosterController extends Controller
         //Move Poster To accepted State:
         Posters::acceptPoster($posterID);
         Posters::updatePoster($posterID, $request->all());
-        // Log::info("NAMe: ".$name);
-        Log::info($request->header('content-type'));
-        // Log::info($request->getAll());
-        Log::info($request->getAcceptableContentTypes());
+        $reqId = $request->request_id;
+        Requests::updateRequest($reqId, $request->all());
+
+        $job = new Jobs();
+        $job->poster_id = $posterID;
+        $job->state = 'in_queue';
+        $job->save();
         return response("hi");
     }
 

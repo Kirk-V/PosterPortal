@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         // error_log('Some message here.');
         Posters::factory()
         ->has(Requests::factory())
-        ->has(Jobs::factory())
+        // ->has(Jobs::factory())
         ->count(100)
         ->create();
         // Transactions::factory(10)->create();
