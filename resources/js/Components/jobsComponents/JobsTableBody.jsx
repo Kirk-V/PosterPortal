@@ -2,6 +2,7 @@ import JobsTableRow from "@/Components/jobsComponents/JobsTableRow";
 // Takes an array of json objects as data
 export default function JobsTableBody({data, onRowClick, headers}) {
     console.log("making body");
+    console.log("body data:"+JSON.stringify(data));
     return (
         <tbody>
             {data.map( (row, key) => {
