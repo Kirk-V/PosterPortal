@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
+        //     'name' => 'Test User',zzzzzz
         //     'email' => 'test@example.com',
         // ]);
         // error_log('Some message here.');
@@ -31,8 +31,6 @@ class DatabaseSeeder extends Seeder
         // ->has(Jobs::factory())
         ->count(100)
         ->create();
-        // Transactions::factory(10)->create();
-        // Courses::factory(10)->create();
-        // Requests::factory(100)->create();
+
     }
 }
