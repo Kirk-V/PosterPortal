@@ -60,7 +60,7 @@ export default function RequestTable() {
             console.log("caught");
             console.log(e);
         });
-    }, []);
+    }, [showModal]);
 
     useEffect(() => {
         fetch("/courses/all")

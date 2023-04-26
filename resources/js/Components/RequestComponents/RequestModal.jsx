@@ -101,7 +101,6 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
     function handleFromUpdate(newData){
         console.log("update form in modal");
         console.log(JSON.stringify(newData));
-
         setFormData(newData);
     }
 
