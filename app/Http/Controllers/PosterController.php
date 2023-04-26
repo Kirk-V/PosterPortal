@@ -43,12 +43,8 @@ class PosterController extends Controller
         Posters::updatePoster($posterID, $request->all());
         $reqId = $request->request_id;
         Requests::updateRequest($reqId, $request->all());
-
-        $job = new Jobs();
-        $job->poster_id = $posterID;
-        $job->state = 'in_queue';
-        $job->save();
-        return response("hi");
+        Jobs::newJob($posterID);
+        return response(["success" => True]);
     }
 
 }

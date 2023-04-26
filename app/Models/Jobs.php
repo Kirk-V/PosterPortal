@@ -30,7 +30,7 @@ class Jobs extends Model
      *  The id of the associated poster
      * @return void
      */
-    public function newJob($posterId)
+    static function newJob($posterId)
     {
         $job = new Jobs;
         $job->poster_id = $posterId;
