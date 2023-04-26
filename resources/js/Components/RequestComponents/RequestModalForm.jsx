@@ -32,12 +32,126 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
         //update any changed data and create job
     }
 
+
+
+
+    const calculateTotal = () => {
+        let costPer = formD.cost;
+        let quantity = formD.quantity;
+        let discount = formD.discount_eligible == "1" ? formD.discount : 0;
+        console.log(`cist: ${costPer} quant: ${quantity} disc: ${discount}`);
+        console.log("calculated Total"+(costPer - discount) * quantity);
+        return (costPer - discount) * quantity;
+    };
+
+    const handleControlChange = (event) => 
+    {
+        const value = event.target.value;
+        const name = event.target.name;
+        let data = { ...formD }; //Deep copy so that setformD will trigger rerender
+        data.name = value;
+        // setformD(data);
+        onUpdate(data);
+    }
+
+    const handleCourseChange = (event) => {
+        const value = event.target.value;
+        let data = { ...formD }; //Deep copy so that setformD will trigger rerender
+        data.course_id = value;
+        // setformD(data);
+        onUpdate(data);
+    }
+
+    // const handleQuantityChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformD will trigger rerender
+    //     data.quantity = value;
+    //     // setformD(data);
+    //     onUpdate(data);
+    //     // setTotal(calculateTotal());
+    //     // console.log(JSON.stringify(formD));
+    // };
+
+    // const handleCostChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformData will trigger rerender
+    //     data.cost = value;
+    //     onUpdate(data);
+    //     // setformData(data);
+    //     // let newTotal = calculateTotal();
+    //     // setTotal(newTotal);
+    //     // console.log(JSON.stringify(formData));
+    // };
+
+    // const handleDiscountChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformData will trigger rerender
+    //     data.discount = value;
+    //     // setformData(data);
+    //     onUpdate(data);
+    //     // setTotal(calculateTotal());
+    //     // console.log(JSON.stringify(formData));
+    // };
+
+    // const handlePaymentChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formData }; //Deep copy so that setformData will trigger rerender
+    //     data.payment_method = value;
+    //     // setformData(data);
+    //     onUpdate(data);
+    //     // if (value == "speedcode") {
+    //     //     setIsSpeedCode(true);
+    //     // }
+    //     // console.log(JSON.stringify(formData));
+    // };
+
+    // const handlePositionChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformData will trigger rerender
+    //     data.position = value;
+    //     data.discount_eligible = data.position == "undergraduate" ? "1":0;
+    //     onUpdate(data);
+    //     // setformData(data);
+    //     // console.log(JSON.stringify(formData));
+    // };
+
+    // const handleUnitsChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformData will trigger rerender
+    //     data.units = value;
+    //     onUpdate(data);
+    //     // setformData(data);
+    //     // console.log(JSON.stringify(formData));
+    // };
+
+    // const handleWidthChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformData will trigger rerender
+    //     data.width = value;
+    //     onUpdate(data);
+    // }
+
+    // const handleHeightChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformData will trigger rerender
+    //     data.height = value;
+    //     onUpdate(data);
+    // }
+
+    // const handleFirstNameChange = (event) => {
+    //     const value = event.target.value;
+    //     let data = { ...formD }; //Deep copy so that setformData will trigger rerender
+    //     data.first_name = value;
+    //     onUpdate(data);
+    // }
+
     var GrantHolderInfo = (
         <>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
                     <Form.Label>Grant Holder</Form.Label>
                     <Form.Control
+                        name="grant_holder_name"
                         type="text"
                         defaultValue={formD.first_name}
                     />
@@ -50,6 +164,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                 >
                     <Form.Label>Grant Holder Email</Form.Label>
                     <Form.Control
+                        name="grant_holder_email"
                         type="text"
                         defaultValue={formD.first_name}
                     />
@@ -77,6 +192,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     >
                         <Form.Label>SpeedCode</Form.Label>
                         <Form.Control
+                            name="speed_code"
                             type="text"
                             defaultValue={formD.speed_code}
                         />
@@ -90,6 +206,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
         <>
             <Col xs={6}>
                 <CourseSelect
+                    updateCourse={handleCourseChange}
                     courseData={courseData}
                     value={formD.course_id}
                 />
@@ -111,77 +228,6 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
         </Row>
     );
 
-    const calculateTotal = () => {
-        let costPer = formD.cost;
-        let quantity = formD.quantity;
-        let discount = formD.discount_eligible == "1" ? formD.discount : 0;
-        console.log(`cist: ${costPer} quant: ${quantity} disc: ${discount}`);
-        console.log("calculated Total"+(costPer - discount) * quantity);
-        return (costPer - discount) * quantity;
-    };
-
-    const handleQuantityChange = (event) => {
-        const value = event.target.value;
-        let data = { ...formD }; //Deep copy so that setformD will trigger rerender
-        data.quantity = value;
-        // setformD(data);
-        onUpdate(data);
-        // setTotal(calculateTotal());
-        // console.log(JSON.stringify(formD));
-    };
-
-
-    const handleCostChange = (event) => {
-        const value = event.target.value;
-        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
-        data.cost = value;
-        onUpdate(data);
-        // setformData(data);
-        // let newTotal = calculateTotal();
-        // setTotal(newTotal);
-        // console.log(JSON.stringify(formData));
-    };
-
-    const handleDiscountChange = (event) => {
-        const value = event.target.value;
-        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
-        data.discount = value;
-        // setformData(data);
-        onUpdate(data);
-        // setTotal(calculateTotal());
-        // console.log(JSON.stringify(formData));
-    };
-
-    const handlePaymentChange = (event) => {
-        const value = event.target.value;
-        let data = { ...formData }; //Deep copy so that setformData will trigger rerender
-        data.payment_method = value;
-        // setformData(data);
-        onUpdate(data);
-        // if (value == "speedcode") {
-        //     setIsSpeedCode(true);
-        // }
-        // console.log(JSON.stringify(formData));
-    };
-
-    const handlePositionChange = (event) => {
-        const value = event.target.value;
-        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
-        data.position = value;
-        data.discount_eligible = data.position == "undergraduate" ? "1":0;
-        onUpdate(data);
-        // setformData(data);
-        // console.log(JSON.stringify(formData));
-    };
-
-    const handleUnitsChange = (event) => {
-        const value = event.target.value;
-        let data = { ...formD }; //Deep copy so that setformData will trigger rerender
-        data.units = value;
-        onUpdate(data);
-        // setformData(data);
-        // console.log(JSON.stringify(formData));
-    };
 
     //display request data in a formdata.position
     return (
@@ -199,6 +245,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     >
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
+                            name="first_name"
                             type="text"
                             defaultValue={formD.first_name}
                         />
@@ -211,6 +258,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     >
                         <Form.Label>Last Name</Form.Label>
                         <Form.Control
+                            name="last_name"
                             type="text"
                             defaultValue={formD.last_name}
                         />
@@ -218,8 +266,9 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                 </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormEmail">
-                        <Form.Label>First Name</Form.Label>
+                        <Form.Label>Email</Form.Label>
                         <Form.Control
+                            name="email"
                             type="text"
                             defaultValue={formD.email}
                         />
@@ -232,8 +281,9 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     >
                         <Form.Label>Position</Form.Label>
                         <Form.Select
+                            name="position"
                             defaultValue={formD.position}
-                            onChange={(e) => handlePositionChange(e)}
+                            onChange={(e) => handleControlChange(e)}
                         >
                             <option value="undergraduate">undergraduate</option>
                             <option value="graduate">graduate</option>
@@ -260,8 +310,9 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     >
                         <Form.Label>Payment</Form.Label>
                         <Form.Select
+                            name="payment_method"
                             defaultValue={formD.payment_method}
-                            onChange={(e) => handlePaymentChange(e)}
+                            onChange={(e) => handleControlChange(e)}
                         >
                             <option value="speedcode">Speedcode</option>
                             <option value="cash">Cash</option>
@@ -282,6 +333,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     <Form.Label>File</Form.Label>
                     <InputGroup className="mb-3">
                         <Form.Control
+                            name="file_name"
                             defaultValue={formD.payment_method}
                             aria-describedby="basic-addon2"
                         />
@@ -298,11 +350,13 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     <Form.Label>Dimensions</Form.Label>
                     <InputGroup className="mb-3">
                         <Form.Control
+                            name="width"
                             defaultValue={formD.width}
                             aria-describedby="basic-addon2"
                         />
                         <InputGroup.Text id="basic-addon2">X</InputGroup.Text>
                         <Form.Control
+                            name="height"
                             defaultValue={formD.height}
                             aria-describedby="basic-addon2"
                         />
@@ -315,8 +369,9 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     >
                         <Form.Label>Unit</Form.Label>
                         <Form.Select
+                            name="units"
                             defaultValue={formD.units}
-                            onChange={(e) => handleUnitsChange(e)}
+                            onChange={(e) => handleControlChange(e)}
                         >
                             <option value="cm">cm</option>
                             <option value="inches">inches</option>
@@ -338,9 +393,10 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                                 $
                             </InputGroup.Text>
                             <Form.Control
+                                name="cost"
                                 type="number"
                                 value={formD.cost}
-                                onChange={handleCostChange}
+                                onChange={(e) => handleControlChange(e)}
                             />
                         </InputGroup>
                     </Form.Group>
@@ -353,9 +409,10 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                                 $
                             </InputGroup.Text>
                             <Form.Control
+                                name="quantity"
                                 type="number"
                                 value={formD.quantity}
-                                onChange={handleQuantityChange}
+                                onChange={(e) => handleControlChange(e)}
                             />
                         </InputGroup>
                     </Form.Group>
@@ -368,9 +425,10 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                                 $
                             </InputGroup.Text>
                             <Form.Control
+                                name="discount"
                                 type="number"
                                 value={formD.discount_eligible == "0" ? null : formD.discount}
-                                onChange={handleDiscountChange}
+                                onChange={(e) => handleControlChange(e)}
                                 disabled={formD.discount_eligible == "0" ? true:false}
                             />
                         </InputGroup>
@@ -383,7 +441,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                             <InputGroup.Text id="basic-addon2">
                                 $
                             </InputGroup.Text>
-                            <Form.Control type="number" value={calculateTotal()} readOnly/>
+                            <Form.Control name="total" type="number" value={calculateTotal()} readOnly/>
                         </InputGroup>
                     </Form.Group>
                 </Col>

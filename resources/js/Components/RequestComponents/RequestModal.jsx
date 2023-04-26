@@ -53,6 +53,8 @@ export default function RequestModal({requestData, onHide, show, courseData}) {
 
     //When a poster is accepted, this function will make the call to persist the new data to the DB
     function onAccept(){
+        //Set the poster state to accept
+        formData.state = 'accepted';
         if(requestData != null)
         {
             let options = {
