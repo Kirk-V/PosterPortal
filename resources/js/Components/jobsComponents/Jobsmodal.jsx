@@ -80,7 +80,14 @@ function LoadedModal({ jobsData, onHide, show }) {
                 <Button variant="info">Print Poster</Button>
             </Col>
         </>
+    );
 
+    const PrintedState = (
+        <>
+            <Col xs={2}>
+                <Button variant="info">Send Pick-Up Notice</Button>
+            </Col>
+        </>
     );
 
     //Modal has data
@@ -95,11 +102,10 @@ function LoadedModal({ jobsData, onHide, show }) {
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
                     <h2>Poster {jobsData.poster_id}</h2>
-                    <h4>
-                        {jobsData.first_name} {jobsData.last_name}
-                    </h4>
+                    <h4>{jobsData.first_name} {jobsData.last_name}</h4>
                 </Modal.Title>
             </Modal.Header>
+
             <Modal.Body>
                 <>
                 <Form>
@@ -136,6 +142,7 @@ function LoadedModal({ jobsData, onHide, show }) {
                     </Row>
                 </Form>
                 <hr></hr>
+                {/* Depending on the jobs' state we render various buttons to perform actions */}
                 <p>Actions</p>
                 <Row>
                     {jobsData.state == "in_queue" ? InQueueState: null}
