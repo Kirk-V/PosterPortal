@@ -26,7 +26,7 @@ export default function RequestTable({settings}) {
                 return res.json()
             })
             .then((response) => {
-                
+
                 // console.log(`okay Heading response: ${JSON.stringify(response)}`);
                 // console.log(`passing keys: ${Object.keys(response)}`)
                 setHeadings(response);
@@ -45,7 +45,7 @@ export default function RequestTable({settings}) {
                     return res.json()
                 }
                 console.log("rejecting promise");
-                return Promise.reject(res);            
+                return Promise.reject(res);
             })
             .then((response) => {
                 // console.log(`okay body response: ${JSON.stringify(response)}`);
@@ -69,10 +69,10 @@ export default function RequestTable({settings}) {
                     return res.json()
                 }
                 console.log("rejecting promise");
-                return Promise.reject(res);            
+                return Promise.reject(res);
             })
             .then((response) => {
-                console.log(`okay courses: ${JSON.stringify(response)}`);
+                // console.log(`okay courses: ${JSON.stringify(response)}`);
                 setCourseData(response);
             },
             (error) => {
@@ -84,7 +84,7 @@ export default function RequestTable({settings}) {
             console.log(e);
         });
     }, []);
-    
+
     function handleClick(rowData){
         // alert(`clickedRow ${JSON.stringify(rowData)}`);
         setModalData(rowData);
@@ -101,12 +101,12 @@ export default function RequestTable({settings}) {
     return (
         <>
         <Table striped hover={true}>
-                {headingsLoaded == true ? <RequestTableHead headings={headings}></RequestTableHead> : null}  
+                {headingsLoaded == true ? <RequestTableHead headings={headings}></RequestTableHead> : null}
                 {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
         <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings}/>
         </>
-        
+
     )
 }
