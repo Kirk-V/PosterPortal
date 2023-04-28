@@ -67,7 +67,7 @@ export default function JobsTable() {
         alert(`clickedRow ${JSON.stringify(rowData)}`);
         setModalData(rowData);
         setShowingModal(true);
-        console.log(`showmodal: ${showModal}`);
+        console.log(`showmodal: ${showingModal}`);
     }
 
     const handleClose = () => {

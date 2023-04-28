@@ -12,6 +12,16 @@ import { useState, useEffect } from 'react';
 export default function JobsModal({jobsData, onHide, show}) {
     console.log(`OPened module with data: ${JSON.stringify(jobsData)}`);
     return (
+        <>
+            {jobsData == null ? <UnLoadedModal onHide={onHide} show={show}/> : <LoadedModal jobsData={jobsData} onHide={onHide} show={show}/>}
+        </>
+    );
+}
+
+
+function UnLoadedModal({onHide, show})
+{
+    return (
         <Modal
             show={show}
             onHide={onHide}
@@ -20,8 +30,7 @@ export default function JobsModal({jobsData, onHide, show}) {
             centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    <h2>Poster {jobsData.poster_id}</h2>
-                    <h4>{jobsData.first_name} {jobsData.last_name}</h4>
+
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -29,12 +38,40 @@ export default function JobsModal({jobsData, onHide, show}) {
             </Modal.Body>
             <Modal.Footer>
 
-                <Button variant="primary" >Reject</Button>
-                <Button variant="primary" >Accept</Button>
                 <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>
 
             </Modal.Footer>
         </Modal>
+    )
+}
 
-    );
+
+function LoadedModal({jobsData, onHide, show})
+{
+    return (
+        <Modal
+                show={show}
+                onHide={onHide}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered>
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        <h2>Poster {jobsData.poster_id}</h2>
+                        <h4>{jobsData.first_name} {jobsData.last_name}</h4>
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h1>body</h1>
+                </Modal.Body>
+                <Modal.Footer>
+
+                    <Button variant="primary" >Reject</Button>
+                    <Button variant="primary" >Accept</Button>
+                    <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>
+
+                </Modal.Footer>
+            </Modal>
+    )
+
 }
