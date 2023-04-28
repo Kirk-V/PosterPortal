@@ -60,23 +60,23 @@ return new class extends Migration
             $table->enum('position', ['graduate', 'faculty', 'staff', 'undergraduate']);
             $table->integer('quantity');
             // $table->string('email');
-            
+
         });
 
         Schema::create('Jobs', function (Blueprint $table) {
             $table->id('job_id');
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
-            $table->enum('state', ['in_queue', 'printed', 'on_hold']);
+            $table->enum('state', ['in_queue', 'printed', 'on_hold', 'cancelled']);
             $table->date('print_date')->nullable();
         });
 
 
-      
+
 
         Schema::create('Settings', function (Blueprint $table) {
             $table->string('setting');
             $table->string('value');
-        });   
+        });
     }
 
     /**
@@ -91,6 +91,6 @@ return new class extends Migration
         Schema::dropIfExists('Requests');
         Schema::dropIfExists('Courses');
         Schema::dropIfExists('Posters');
-        
+
     }
 };
