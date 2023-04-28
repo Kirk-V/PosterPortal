@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PosterController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\JobsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,9 @@ Route::controller(SettingsController::class)->group(function (){
     Route::get('/settings/all', 'getAllSettings');
 });
 
+Route::controller(JobsController::class)->group(function (){
+    Route::put('/jobs/updateState', 'updateState');
+});
 
 
 Route::controller(PosterController::class)->group(function (){

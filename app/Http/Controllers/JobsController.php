@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jobs;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Summary of JobsController
@@ -40,5 +43,26 @@ class JobsController extends Controller
         ->select('Posters.*', 'Requests.*', 'jobs.state as job_state', 'jobs.print_date', 'jobs.job_id')->skip(($page-1)*$entriesPerPage)->take($entriesPerPage)->get([]);
 
         return response($jobs);
+    }
+
+
+    //Function to update the job state of a job.
+    public function updateState(Request $request)
+    {
+        $jobID = $request->input('job_id');
+        $state = $request->input('job_state');
+        log::info("$jobID being updated with state $state");
+        DB::enableQueryLog();
+        $job = Jobs::find($request->input('job_id'));
+        log::info(DB::getQueryLog());
+        if($job == null)
+        {
+            log::info("job is null");
+            return response(["success" => False]);
+        }
+        $job->state = $state;
+        $job->save();
+        return response(["success" => True]);
+
     }
 }

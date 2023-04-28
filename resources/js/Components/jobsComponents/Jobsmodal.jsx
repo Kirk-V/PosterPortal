@@ -55,6 +55,42 @@ function LoadedModal({ jobsData, onHide, show }) {
     const [printStatus, setRejecting] = useState(jobsData.state);
 
     let updateState = (newState) => {
+        //api call to update state
+        console.log(`calling update on job: ${jobsData.job_id} with valude:  ${newState}`);
+        let options = {
+            method: 'PUT',
+            body: JSON.stringify({'job_id': jobsData.job_id, 'job_state': newState}),
+            headers: {
+                // the content type header value is usually auto-set
+                // depending on the request body
+                "Content-Type": 'application/json',
+                'Accept': 'application/json'
+              },
+        }
+
+        fetch(`api/jobs/updateState`, options)
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return res.json()
+        })
+        .then((response) => {
+            console.log("req data:");
+            console.log(`okay, Update state reply: ${JSON.stringify(response)}`);
+            // setRequest(response);
+            if(response.success)
+            {
+                console.log("success, updating UI state");
+                jobsData.state = newState;
+            }
+
+        },
+        (error) => {
+            console.log(error)
+        }
+        )
+
         //IF the state is updated it must persist to the DB
         console.log("state being updated to " + newState);
     };
