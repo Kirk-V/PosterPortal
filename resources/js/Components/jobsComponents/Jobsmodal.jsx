@@ -180,20 +180,15 @@ function LoadedModal({ jobsData, onHide, show }) {
                         </Col>
                     </Row>
                 </Form>
-                <hr></hr>
-                {/* Depending on the jobs' state we render various buttons to perform actions */}
-                <p>Actions</p>
-                <Row>
-                    {jobsData.state == "in_queue" ? InQueueState: null}
-                    <Col xs={2}>
-                        <Button variant="info">Receipt</Button>
-                    </Col>
-                </Row>
+
 
                 </>
 
             </Modal.Body>
             <Modal.Footer>
+
+                {jobsData.state == "in_queue" ? InQueueState: null}
+                <Button variant="info">Make Receipt</Button>
                 <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
                 <Button variant="primary">Accept</Button>
                 <Button

@@ -6,11 +6,12 @@ export default function JobsSendPickUpButton({jobID, posterState, updateStateHan
 
     function sendEmail(){
         //make API call to send an email to jobID
+        console.log("sending Email");
     }
 
     function sendPickUpNoticeAndChangeState(jobID){
         //make API call
-
+        sendEmail();
         updateStateHandler("pending_pickup");
     }
 
