@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
 export default function JobsModal({jobsData, onHide, show}) {
+    console.log(`OPened module with data: ${JSON.stringify(jobsData)}`);
     return (
         <Modal
             show={show}
@@ -19,7 +20,8 @@ export default function JobsModal({jobsData, onHide, show}) {
             centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    <h1>head</h1>
+                    <h2>Poster {jobsData.poster_id}</h2>
+                    <h4>{jobsData.first_name} {jobsData.last_name}</h4>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -29,7 +31,7 @@ export default function JobsModal({jobsData, onHide, show}) {
 
                 <Button variant="primary" >Reject</Button>
                 <Button variant="primary" >Accept</Button>
-                <Button variant="primary" className={'ms-auto'}>Close</Button>
+                <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>
 
             </Modal.Footer>
         </Modal>

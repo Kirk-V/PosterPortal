@@ -63,7 +63,7 @@ export default function JobsTable() {
     }, []);
 
 
-    function handleClick(rowData){
+    function handleRowClick(rowData){
         alert(`clickedRow ${JSON.stringify(rowData)}`);
         setModalData(rowData);
         setShowingModal(true);
@@ -71,7 +71,7 @@ export default function JobsTable() {
     }
 
     const handleClose = () => {
-        setShowModal(false);
+        setShowingModal(false);
         setModalData(null);
         console.log("closing");
     }
@@ -80,7 +80,7 @@ export default function JobsTable() {
         <>
         <Table striped hover={true}>
                 {headingsLoaded == true ? <JobsTableHead headings={headings}></JobsTableHead> : null}
-                {bodyDataLoaded == true && headingsLoaded == true ? <JobsTableBody data={bodyData} headers={headings} onRowClick={handleClick}></JobsTableBody> :null}
+                {bodyDataLoaded == true && headingsLoaded == true ? <JobsTableBody data={bodyData} headers={headings} onRowClick={handleRowClick}></JobsTableBody> :null}
                 {/* {error == true? <h1>error</h1> : null} */}
         </Table>
         <JobsModal show={showingModal} jobsData={modalData} onHide={handleClose}/>
