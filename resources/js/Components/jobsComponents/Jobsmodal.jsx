@@ -96,22 +96,6 @@ function LoadedModal({ jobsData, onHide, show }) {
         console.log("state being updated to " + newState);
     };
 
-    let handlePosterPrint = () => {
-        updateState("printed");
-    };
-
-    let handlePosterCancel = () => {
-        updateState("cancelled");
-    };
-
-    let handlePosterOnHold = () => {
-        updateState("on_hold");
-    };
-
-    let handlePosterInQueue = () => {
-        updateState("in_queue");
-    };
-
     const InQueueState = (
         <>
             <Col xs={2}>
