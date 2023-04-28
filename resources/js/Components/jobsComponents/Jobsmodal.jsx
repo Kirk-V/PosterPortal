@@ -115,7 +115,7 @@ function LoadedModal({ jobsData, onHide, show }) {
     const InQueueState = (
         <>
             <Col xs={2}>
-                <Button variant="info">Print Poster</Button>
+                <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
             </Col>
         </>
     );
@@ -186,8 +186,7 @@ function LoadedModal({ jobsData, onHide, show }) {
 
             </Modal.Body>
             <Modal.Footer>
-
-                {jobsData.state == "in_queue" ? InQueueState: null}
+                {jobState == "in_queue" ? InQueueState: null}
                 <Button variant="info">Make Receipt</Button>
                 <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
                 <Button variant="primary">Accept</Button>
