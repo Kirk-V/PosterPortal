@@ -52,7 +52,7 @@ function UnLoadedModal({ onHide, show }) {
 }
 
 function LoadedModal({ jobsData, onHide, show }) {
-    const [printStatus, setRejecting] = useState(jobsData.state);
+    const [jobState, setJobState] = useState(jobsData.state);
 
     let updateState = (newState) => {
         //api call to update state
@@ -82,7 +82,8 @@ function LoadedModal({ jobsData, onHide, show }) {
             if(response.success)
             {
                 console.log("success, updating UI state");
-                jobsData.state = newState;
+                setJobState(newState);
+                // jobsData.state = newState;
             }
 
         },
@@ -193,7 +194,7 @@ function LoadedModal({ jobsData, onHide, show }) {
 
             </Modal.Body>
             <Modal.Footer>
-                <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobsData.job_state} updateStateHandler={updateState}/>
+                <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
                 <Button variant="primary">Accept</Button>
                 <Button
                     variant="primary"
