@@ -6,6 +6,7 @@
 // import RequestModalForm from './RequestModalForm';
 import { useState, useEffect } from "react";
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
+import JobsSendPickUpButton from "./JobsSendPickUpButton";
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
@@ -90,6 +91,7 @@ function LoadedModal({ jobsData, onHide, show }) {
         </>
     );
 
+
     //Modal has data
     return (
         <Modal
@@ -155,7 +157,7 @@ function LoadedModal({ jobsData, onHide, show }) {
 
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary">Reject</Button>
+                <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobsData.job_state} updateStateHandler={updateState}/>
                 <Button variant="primary">Accept</Button>
                 <Button
                     variant="primary"
