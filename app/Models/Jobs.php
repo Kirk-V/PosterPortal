@@ -26,7 +26,7 @@ class Jobs extends Model
      * Summary of newJob
      *  When a poster request is accepted, use this function to create a new job entry for it.
      *  This will allow the poster to appear in the jobs queue. Initially set to 'in_queue'.
-     * @param mixed $posterId 
+     * @param mixed $posterId
      *  The id of the associated poster
      * @return void
      */
@@ -37,4 +37,5 @@ class Jobs extends Model
         $job->state = 'in_queue';
         $job->save();
     }
+
 }

@@ -2,7 +2,7 @@ export default function JobsTableRow({ rowData, headers, handleRowClick }) {
     // console.log(`rowdata: ${JSON.stringify(rowData)}`);
 
     function rowColor(){
-        switch (rowData.state)
+        switch (rowData.job_state)
         {
             case 'printed':
                 return 'table-success';
