@@ -23,6 +23,25 @@ class JobsController extends Controller
         ]);
     }
 
+
+    static function successResponse($data, $message = null, $code = 200)
+	{
+		return response()->json([
+			'status'=> 'Success', 
+			'message' => $message, 
+			'data' => $data
+		], $code);
+	}
+
+    static function errorResponse($message = null, $code)
+	{
+		return response()->json([
+			'status'=>'Error',
+			'message' => $message,
+			'data' => null
+		], $code);
+	}
+
     /**
      * Summary of Returns an associative array of table headers
      * of the form:
@@ -64,5 +83,14 @@ class JobsController extends Controller
         $job->save();
         return response(["success" => True]);
 
+    }
+
+
+    public function emailPDF(Request $request)
+    {
+        log::info("Email request");
+        log::info($request->getContent());
+        file_put_contents('myfile.pdf', $request->getContent());
+        return self::successResponse("none");
     }
 }

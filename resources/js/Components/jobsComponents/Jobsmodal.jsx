@@ -120,18 +120,7 @@ function LoadedModal({ jobsData, onHide, show }) {
     }
 
     let ReceiptRow = (
-        <Row className="justify-content-sm-center">
-            <Col xs={10}>
-                <div className="height-100 shadow rounded bg-secondary bg-gradient">
-                    <div className="d-flex ">
-                        <Button className="ms-auto bg-">x</Button>
-                    </div>
-                    
-                    <PDF show={showingReceipt}/>
-                </div>
-            
-            </Col>
-        </Row>
+        <PDF show={showingReceipt} jobData={jobsData}/>
     )
 
 

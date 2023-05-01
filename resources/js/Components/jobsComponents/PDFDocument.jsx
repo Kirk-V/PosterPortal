@@ -1,7 +1,8 @@
 import React from 'react';
-import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider } from '@react-pdf/renderer';
+import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
 
-export default function PDF({show}){
+export default function PDF({show, jobData}){
     // Create styles
     const styles = StyleSheet.create({
         page: {
@@ -34,15 +35,56 @@ export default function PDF({show}){
         
     );
 
-    const blob = pdf(MyDocument).toBlob();
+
+    async function handleEmailClick(to)
+    {
+        
+        let bodydata = await pdf(MyDocument).toBlob();
+        console.log(bodydata);
+        let options = {
+            method: 'POST',
+            body: bodydata
+        }
+        fetch(`api/jobs/sendEmail`, options)
+            .then( (res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return res.json()
+            })
+            .then((response) => {
+                console.log(`okay, Email response: ${JSON.stringify(response)}`);
+            })
+            .catch((error) => {
+                console.log("Error : "+error);
+            }
+        )
+    }
+    
     
 
     return (
-        <>
-            <PDFViewer width={"100%"} height="400px" showToolbar={false}>
-                {MyDocument}
-            </PDFViewer>
-        </>
+
+        <Row className="justify-content-sm-center">
+            <Col xs={10}>
+                <div className="height-100 shadow rounded bg-secondary bg-gradient ">
+                    <div className="d-flex">
+                        <Button className="ms-auto">x</Button>
+                    </div>
+                    
+                    <PDFViewer width={"100%"} height="400px" showToolbar={false}>
+                        {MyDocument}
+                    </PDFViewer>
+                    <div className="d-flex justify-content-evenly align-items-center p-3">
+                        <Button className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
+                        <Button className="">Email Mary</Button>
+                        <Button className="">Email Grant Holder</Button>
+                    </div>
+                </div>
+            
+            </Col>
+        </Row>
+            
         
         
     )
