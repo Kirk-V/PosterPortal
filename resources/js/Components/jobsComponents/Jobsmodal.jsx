@@ -7,6 +7,7 @@
 import { useState, useEffect } from "react";
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import JobsSendPickUpButton from "./JobsSendPickUpButton";
+import PDF from "./PDFDocument";
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
@@ -53,6 +54,7 @@ function UnLoadedModal({ onHide, show }) {
 
 function LoadedModal({ jobsData, onHide, show }) {
     const [jobState, setJobState] = useState(jobsData.state);
+    const [showingReceipt, setShowingReceipt] = useState(false);
 
     let updateState = (newState) => {
         //api call to update state
@@ -112,76 +114,100 @@ function LoadedModal({ jobsData, onHide, show }) {
         </>
     );
 
+    function handleShowRecieptChange()
+    {
+        setShowingReceipt(!showingReceipt);
+    }
+
+    let ReceiptRow = (
+        <Row className="justify-content-sm-center">
+            <Col xs={10}>
+                <div className="height-100 shadow rounded bg-secondary bg-gradient">
+                    <div className="d-flex ">
+                        <Button className="ms-auto bg-">x</Button>
+                    </div>
+                    
+                    <PDF show={showingReceipt}/>
+                </div>
+            
+            </Col>
+        </Row>
+    )
+
 
     //Modal has data
     return (
-        <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    <h2>Poster {jobsData.poster_id}</h2>
-                    <h4>{jobsData.first_name} {jobsData.last_name}</h4>
-                </Modal.Title>
-            </Modal.Header>
+        <>
+            <Modal
+                show={show}
+                onHide={onHide}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        <h2>Poster {jobsData.poster_id}</h2>
+                        <h4>{jobsData.first_name} {jobsData.last_name}</h4>
+                    </Modal.Title>
+                </Modal.Header>
 
-            <Modal.Body>
-                <>
-                <Form>
-                    <Row>
-                        <Col xs={3}>
-                            <h5>Status</h5>
+                <Modal.Body>
+                    <>
+                    <Form>
+                        <Row>
+                            <Col xs={3}>
+                                <h5>Status</h5>
 
-                        </Col>
-                        <Col xs={6}>
-                            <p>{jobsData.state}</p>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={3}>
+                            </Col>
+                            <Col xs={6}>
+                                <p>{jobsData.state}</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={3}>
 
-                            <h5>Email</h5>
+                                <h5>Email</h5>
 
-                        </Col>
-                        <Col xs={6}>
+                            </Col>
+                            <Col xs={6}>
 
-                            <p>{jobsData.email}</p>
+                                <p>{jobsData.email}</p>
 
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={3}>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={3}>
 
-                            <h5>Payment Type</h5>
-                        </Col>
-                        <Col xs={6}>
+                                <h5>Payment Type</h5>
+                            </Col>
+                            <Col xs={6}>
 
-                            <p>{jobsData.payment_method}</p>
-                        </Col>
-                    </Row>
-                </Form>
+                                <p>{jobsData.payment_method}</p>
+                            </Col>
+                        </Row>
+                    </Form>
+                    {showingReceipt ? ReceiptRow : null}        
 
+                    
+                   </>
 
-                </>
-
-            </Modal.Body>
-            <Modal.Footer>
-                {jobState == "in_queue" ? InQueueState: null}
-                <Button variant="info">Make Receipt</Button>
-                <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
-                <Button variant="primary">Accept</Button>
-                <Button
-                    variant="primary"
-                    className={"ms-auto"}
-                    onClick={onHide}
-                >
-                    Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                </Modal.Body>
+                <Modal.Footer>
+                    {jobState == "in_queue" ? InQueueState: null}
+                    <Button variant="info" onClick={handleShowRecieptChange}>Make Receipt</Button>
+                    <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
+                    <Button variant="primary">Accept</Button>
+                    <Button
+                        variant="primary"
+                        className={"ms-auto"}
+                        onClick={onHide}
+                    >
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            
+        </>
     );
 }
