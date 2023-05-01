@@ -77,8 +77,13 @@ export default function RequestModal({requestData, onHide, show, courseData, set
             .then((response) => {
                 console.log("req data:");
                 console.log(`okay, Req data: ${JSON.stringify(response)}`);
+                if(response.success)
+                {
+                    console.log("approved request");
+                    onHide();
+                }
                 // setRequest(response);
-                setFormData(response);
+                // setFormData(response);
             },
             (error) => {
                 console.log(error)
@@ -110,6 +115,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
 
     function handleReject(){
         console.log("delete it");
+        //Make call here to delete request, per Mary's reqest we need to void it out. 
     }
 
     const rejectingConfirm = (
