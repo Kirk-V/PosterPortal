@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
-export default function RequestModal({requestData, onHide, show, courseData, settings}) {
+export default function RequestModal({requestData, onHide, show, courseData, settings, showErrorHandle}) {
     const [rejecting, setRejecting] = useState(false);
     const [request, setRequest] = useState(null);
     const [formData, setFormData] = useState(null); // originally comes from request.
@@ -110,12 +110,49 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     }
 
     function onReject(){
+        showErrorHandle("test", "test");
         setRejecting(true);
+        
     }
 
     function handleReject(){
         console.log("delete it");
         //Make call here to delete request, per Mary's reqest we need to void it out. 
+        let options = 
+        {
+            method: 'PATCH',
+            headers: {
+                // the content type header value is usually auto-set
+                // depending on the request body
+                "Content-Type": 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        fetch(`api/requests/reject&id=${formData.request_id}`, options)
+            .then( (res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.message}`);
+                }
+                return res.json()
+            })
+            .then((response) => {
+                console.log(`okay, Res data: ${JSON.stringify(response)}`);
+                if(response.status == "Success")
+                {
+                    console.log("changed request to rejected");
+                    // onHide();
+                }
+                else
+                {
+                    console.log("could not change to rejected");
+                }
+                // setRequest(response);
+                // setFormData(response);
+            })
+            .catch( (error) => {
+                console.log(error)
+                showErrorHandle("Could not delete Poster. Please notify Kirk");
+            });
     }
 
     const rejectingConfirm = (

@@ -4,6 +4,8 @@ import RequestTableHead from '@/Components/RequestComponents/RequestTableHead';
 import { useEffect, useState } from 'react';
 import RequestTableBody from '@/Components/RequestComponents//RequestTableBody';
 import RequestModal from '@/Components/RequestComponents/RequestModal';
+import ErrorToast from '@/Components/ErrorToast';
+
 
 export default function RequestTable({settings}) {
     const [error, setError] = useState(null);
@@ -16,6 +18,9 @@ export default function RequestTable({settings}) {
     const [modalData, setModalData] = useState(null);
     const [settingsData, setSettingsData] = useState(null);
     const [courseData, setCourseData] = useState(null);
+    const [errorToast, setErrorToast] = useState({message: "", errorType: "", show: false});
+
+
     //Get the table data here
     useEffect(()=> {
         fetch("/requests/pendingHeaders")
@@ -98,6 +103,16 @@ export default function RequestTable({settings}) {
         console.log("closing");
     }
 
+    const handleToastClose = () => 
+    {
+        setErrorToast({ message: "", errorType: "", show: false });
+    }
+
+    function handleErrorToast(errorMessage, errorType) {
+        console.log(`Setting error to ${errorMessage} , ${errorType}, true`);
+        setErrorToast({ message: errorMessage, errorType: errorType, show: true });
+    }
+
     return (
         <>
         <Table striped hover={true}>
@@ -105,7 +120,8 @@ export default function RequestTable({settings}) {
                 {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
-        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings}/>
+        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings} showErrorHandle={handleErrorToast}/>
+        <ErrorToast errorMessage={errorToast.message} errorType={errorToast.errorType} show={errorToast.show} handleClose={handleToastClose} />
         </>
 
     )

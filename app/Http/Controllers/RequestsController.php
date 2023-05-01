@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
+/**
+ * Summary of RequestsController
+ */
 class RequestsController extends Controller
 {
     //
@@ -21,6 +24,24 @@ class RequestsController extends Controller
             'data' => $this->getAll(),
         ]);
     }
+
+    static function successResponse($data, $message = null, $code = 200)
+	{
+		return response()->json([
+			'status'=> 'Success', 
+			'message' => $message, 
+			'data' => $data
+		], $code);
+	}
+
+    static function errorResponse($message = null, $code)
+	{
+		return response()->json([
+			'status'=>'Error',
+			'message' => $message,
+			'data' => null
+		], $code);
+	}
 
     public function getAll()
     {
@@ -45,8 +66,28 @@ class RequestsController extends Controller
 
     }
 
-    public function deleteRequest(){
-
+    /**
+     * Summary of rejectRequest
+     *      If a request needs to be cancelled it must move the associated poster state to 'rejected'.
+     *      By doing this we can see that a poster job was not done, and no financial reconciliation should
+     *      take place. 
+     * @return void
+     */
+    public function rejectRequest($requestId){
+        $request = Requests::find($requestId);
+        if($request != null)
+        {
+            $request->posters->state = 'rejected';
+            $request->save();
+            if($request->posters->state == 'rejected')
+            {
+                self::successResponse("false");
+            }
+        }
+        else
+        {
+            self::errorResponse("No request found", 404);
+        }
     }
 
     public function getFormData(){

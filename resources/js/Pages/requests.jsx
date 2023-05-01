@@ -2,7 +2,9 @@
 import { router } from '@inertiajs/react'
 import { useState, useEffect } from 'react';
 import RequestTable from '@/Components/RequestComponents/RequestTable';
-function Requests({ auth, data }) {
+
+
+function Requests({ auth, data}) {
     const requests = data;
     const [settings, setSettings] = useState(null);
 
