@@ -29,7 +29,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                return res.json()
+                return res.json();
             })
             .then((response) => {
                 console.log("req data:");
@@ -110,7 +110,6 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     }
 
     function onReject(){
-        showErrorHandle("test", "test");
         setRejecting(true);
         
     }
@@ -140,7 +139,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 if(response.status == "Success")
                 {
                     console.log("changed request to rejected");
-                    // onHide();
+                    onHide();
                 }
                 else
                 {
@@ -150,7 +149,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 // setFormData(response);
             })
             .catch( (error) => {
-                console.log(error)
+                console.log(`Error msg: ${error}`)
                 showErrorHandle("Could not delete Poster. Please notify Kirk");
             });
     }
@@ -167,7 +166,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     const footerButtons = (
         <>
             <Button variant="primary" onClick={onReject}>Reject</Button>
-            <Button variant="primary" onClick={onAccept}>Accept</Button>
+            <Button variant="primary" onClick={onAccept} disabled={formData?.speed_code_approved == "0"}>Accept</Button>
             <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>
         </>
     )

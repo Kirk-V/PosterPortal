@@ -72,6 +72,13 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
         onUpdate(data);
     }
 
+    const handleApproved = () => 
+    {
+        let data = {...formD};
+        data.speed_code_approved = 1;
+        onUpdate(data);
+    }
+
 
     var GrantHolderInfo = (
         <>
@@ -114,17 +121,24 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                     </Alert>
                 </Col>
                 <Col>
-                    <Form.Group
-                        className="mb-3"
-                        controlId="requestFormGrantFirstName"
-                    >
-                        <Form.Label>SpeedCode</Form.Label>
-                        <Form.Control
-                            name="speed_code"
-                            type="text"
-                            defaultValue={formD.speed_code}
-                        />
-                    </Form.Group>
+                <Form.Label>SpeedCode</Form.Label>
+                    <InputGroup>
+                            
+                            <Form.Control
+                                name="speed_code"
+                                type="text"
+                                defaultValue={formD.speed_code}
+                            />
+
+                        <Button
+                            variant="outline-secondary"
+                            id="button-addon2"
+                            onClick={handleApproved}
+                            >
+                            Approve
+                        </Button>
+                    </InputGroup>
+
                 </Col>
             </Row>
         </>
@@ -325,7 +339,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                             <Form.Control
                                 name="cost"
                                 type="number"
-                                value={formD.cost}
+                                defaultValue={formD.cost}
                                 onChange={(e) => handleControlChange(e)}
                             />
                         </InputGroup>
@@ -341,7 +355,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                             <Form.Control
                                 name="quantity"
                                 type="number"
-                                value={formD.quantity}
+                                defaultValue={formD.quantity}
                                 onChange={(e) => handleControlChange(e)}
                             />
                         </InputGroup>
@@ -357,7 +371,7 @@ export default function RequestModalForm({formD, settings, courseData, onUpdate 
                             <Form.Control
                                 name="discount"
                                 type="number"
-                                value={formD.discount_eligible == "0" ? null : formD.discount}
+                                defaultValue={formD.discount_eligible == "0" ? null : formD.discount}
                                 onChange={(e) => handleControlChange(e)}
                                 disabled={formD.discount_eligible == "0" ? true:false}
                             />

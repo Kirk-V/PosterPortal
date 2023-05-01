@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobsController;
 use App\Http\Controllers\PosterController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\JobsController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RequestsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,11 @@ Route::controller(SettingsController::class)->group(function (){
 
 Route::controller(JobsController::class)->group(function (){
     Route::put('/jobs/updateState', 'updateState');
+});
+
+
+Route::controller(RequestsController::class)->group(function (){
+    Route::patch('/requests/reject&id={id}', 'rejectRequest');
 });
 
 

@@ -21,6 +21,7 @@ export default function RequestTable({settings}) {
     const [errorToast, setErrorToast] = useState({message: "", errorType: "", show: false});
 
 
+
     //Get the table data here
     useEffect(()=> {
         fetch("/requests/pendingHeaders")
@@ -120,7 +121,7 @@ export default function RequestTable({settings}) {
                 {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
-        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings} showErrorHandle={handleErrorToast}/>
+        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings} showErrorHandle={handleErrorToast} key={modalData}/>
         <ErrorToast errorMessage={errorToast.message} errorType={errorToast.errorType} show={errorToast.show} handleClose={handleToastClose} />
         </>
 

@@ -71,22 +71,27 @@ class RequestsController extends Controller
      *      If a request needs to be cancelled it must move the associated poster state to 'rejected'.
      *      By doing this we can see that a poster job was not done, and no financial reconciliation should
      *      take place. 
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function rejectRequest($requestId){
         $request = Requests::find($requestId);
         if($request != null)
         {
+            log::info("Rejecting Poster ".$request->posters->poster_id);
             $request->posters->state = 'rejected';
-            $request->save();
+            $request->posters->save();
             if($request->posters->state == 'rejected')
             {
-                self::successResponse("false");
+                return self::successResponse("false");
+            }
+            else
+            {
+                return self::errorResponse("Found request id but couldn't change poster state", 404);
             }
         }
         else
         {
-            self::errorResponse("No request found", 404);
+            return self::errorResponse("No request found", 404);
         }
     }
 
