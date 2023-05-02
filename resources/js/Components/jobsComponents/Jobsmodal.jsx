@@ -119,8 +119,12 @@ function LoadedModal({ jobsData, onHide, show }) {
         setShowingReceipt(!showingReceipt);
     }
 
+    function closeReceipt(){
+        setShowingReceipt(false);
+    }
+
     let ReceiptRow = (
-        <PDF show={showingReceipt} jobData={jobsData}/>
+        <PDF show={showingReceipt} jobData={jobsData} handleCloseReceipt={closeReceipt}/>
     )
 
 
@@ -177,10 +181,7 @@ function LoadedModal({ jobsData, onHide, show }) {
                         </Row>
                     </Form>
                     {showingReceipt ? ReceiptRow : null}        
-
-                    
                    </>
-
                 </Modal.Body>
                 <Modal.Footer>
                     {jobState == "in_queue" ? InQueueState: null}
@@ -195,8 +196,7 @@ function LoadedModal({ jobsData, onHide, show }) {
                         Close
                     </Button>
                 </Modal.Footer>
-            </Modal>
-            
+            </Modal>           
         </>
     );
 }
