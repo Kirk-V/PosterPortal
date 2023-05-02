@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import JobsSendPickUpButton from "./JobsSendPickUpButton";
 import PDF from "./PDFDocument";
+import JobForm from "./EditJobForm";
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
@@ -55,6 +56,7 @@ function UnLoadedModal({ onHide, show }) {
 function LoadedModal({ jobsData, onHide, show }) {
     const [jobState, setJobState] = useState(jobsData.state);
     const [showingReceipt, setShowingReceipt] = useState(false);
+    const [showingPrepareReceipt, setShowingPrepareReceipt] = useState(false);
 
     let updateState = (newState) => {
         //api call to update state
@@ -119,12 +121,21 @@ function LoadedModal({ jobsData, onHide, show }) {
         setShowingReceipt(!showingReceipt);
     }
 
+    function handleShowPrepareReceiptChange() {
+        setShowingPrepareReceipt(!showingPrepareReceipt);
+    }
+
     function closeReceipt(){
         setShowingReceipt(false);
     }
 
     let ReceiptRow = (
         <PDF show={showingReceipt} jobData={jobsData} handleCloseReceipt={closeReceipt}/>
+    )
+
+
+    let PrepareReceipt = (
+        <JobForm jobData={jobsData}/>
     )
 
 
@@ -180,11 +191,12 @@ function LoadedModal({ jobsData, onHide, show }) {
                             </Col>
                         </Row>
                     </Form>
-                    {showingReceipt ? ReceiptRow : null}        
+                    {showingPrepareReceipt? PrepareReceipt: showingReceipt ? ReceiptRow : null}        
                    </>
                 </Modal.Body>
                 <Modal.Footer>
                     {jobState == "in_queue" ? InQueueState: null}
+                    <Button variant="info" onClick={handleShowPrepareReceiptChange}>Prepare Receipt</Button>
                     <Button variant="info" onClick={handleShowRecieptChange}>Make Receipt</Button>
                     <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
                     <Button variant="primary">Accept</Button>
