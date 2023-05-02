@@ -119,6 +119,7 @@ function LoadedModal({ jobsData, onHide, show }) {
     function handleDataUpdate(newData)
     {
         jobsData = newData;
+        console.log("ipdated data");
     }
 
     function handleShowRecieptChange()
@@ -140,7 +141,7 @@ function LoadedModal({ jobsData, onHide, show }) {
 
 
     let PrepareReceipt = (
-        <JobForm jobData={jobsData} dataUpdateHandler={handleDataUpdate}/>
+        <JobForm jobsData={jobsData} dataUpdateHandler={handleDataUpdate}/>
     )
 
 
