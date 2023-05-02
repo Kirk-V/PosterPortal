@@ -266,8 +266,17 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                             onChange={(e) => handleControlChange(e)}/>
                         </Col>
                 </Row>
-                <Row>
-                    
+                <Row className="justify-content-end">
+                    <Col xs={3}>
+                    <Form.Label>
+                        Total
+                    </Form.Label>
+                    <Form.Control
+                        type="number"
+                        name="total"
+                        defaultValue={jobsData.total}
+                        onChange={(e) => handleControlChange(e)}/>
+                    </Col>
                 </Row>
             </Form>
         </>

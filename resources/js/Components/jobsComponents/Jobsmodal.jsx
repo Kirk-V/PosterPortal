@@ -56,7 +56,7 @@ function UnLoadedModal({ onHide, show }) {
 function LoadedModal({ jobsData, onHide, show }) {
     const [jobState, setJobState] = useState(jobsData.state);
     const [showingReceipt, setShowingReceipt] = useState(false);
-    const [showingPrepareReceipt, setShowingPrepareReceipt] = useState(false);
+    const [showingMakeTransaction, setshowingMakeTransaction] = useState(false);
 
     let updateState = (newState) => {
         //api call to update state
@@ -127,8 +127,8 @@ function LoadedModal({ jobsData, onHide, show }) {
         setShowingReceipt(!showingReceipt);
     }
 
-    function handleShowPrepareReceiptChange() {
-        setShowingPrepareReceipt(!showingPrepareReceipt);
+    function handleShowingMakeTransactionChange() {
+        setshowingMakeTransaction(!showingMakeTransaction);
     }
 
     function closeReceipt(){
@@ -197,12 +197,12 @@ function LoadedModal({ jobsData, onHide, show }) {
                             </Col>
                         </Row>
                     </Form>
-                    {showingPrepareReceipt? PrepareReceipt: showingReceipt ? ReceiptRow : null}        
+                    {showingMakeTransaction? PrepareReceipt: showingReceipt ? ReceiptRow : null}        
                    </>
                 </Modal.Body>
                 <Modal.Footer>
                     {jobState == "in_queue" ? InQueueState: null}
-                    <Button variant="info" onClick={handleShowPrepareReceiptChange}>Prepare Receipt</Button>
+                    <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
                     <Button variant="info" onClick={handleShowRecieptChange}>Make Receipt</Button>
                     <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
                     <Button variant="primary">Accept</Button>
