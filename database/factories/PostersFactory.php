@@ -24,6 +24,7 @@ class PostersFactory extends Factory
             'state' => fake()->randomElement(['pending', 'ready', 'rejected', 'accepted', 'printed', 'paid', 'complete']),
             'width' => fake()->randomFloat(2),
             'height' => fake()->randomFloat(2),
+            'units' => fake()->randomElement(['centimeters', 'inches']),
             // 'transaction_id' => fake()->randomNumber(5, false),
             'discount_eligible' => fake()->randomElement([0,1]),
             'speed_code' => fake()->optional($weight = 0.4)->bothify('?????-#####'),

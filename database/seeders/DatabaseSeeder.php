@@ -9,8 +9,10 @@ use App\Models\Jobs;
 use App\Models\Posters;
 use App\Models\Requests;
 use App\Models\Transactions;
+use Database\Factories\SettingsFactory;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,5 +34,9 @@ class DatabaseSeeder extends Seeder
         ->count(100)
         ->create();
 
+        DB::table('settings')->insert([
+            'setting' => 'cost',
+            'value' => 5.5
+        ]);
     }
 }

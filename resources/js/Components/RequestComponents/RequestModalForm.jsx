@@ -36,7 +36,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let costPer = formD.cost;
         let quantity = formD.quantity;
         let discount = formD.discount_eligible == "1" ? formD.discount : 0;
-        console.log(`cist: ${costPer} quant: ${quantity} disc: ${discount}`);
+        console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + (costPer - discount) * quantity);
         return ((costPer - discount) * quantity).toFixed(2);
     };
@@ -45,18 +45,25 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         console.log(JSON.stringify(settings));
         let pricePerFoot = settings.cost;
         //must convert to inches first
-        let inchWidth = data.units == "cms" ? 0.3937007874 * data.width : data.width;
-        let inchHeight = data.units == "cms" ? 0.3937007874 * data.height : data.height;
-        return (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
+        console.log("cost being calculated");
+        let inchWidth = data.units == "centimeters" ? 0.3937007874 * data.width : data.width;
+        let inchHeight = data.units == "centimeters" ? 0.3937007874 * data.height : data.height;
+        console.log(`using width: ${inchWidth}`);
+        console.log(`using height: ${inchHeight}`);
+        var total = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
+        console.log("total:"+ total);
+        return total;
     }
 
     const handleControlChange = (event) => {
         const value = event.target.value;
         const name = event.target.name;
-        let data = { ...formD }; //Deep copy so that setformD will trigger rerender
+        var data = { ...formD }; //Deep copy so that setformD will trigger rerender
+        console.log(`${name} being updated`);
         data[`${name}`] = value;
         if (["width", "height", "units"].includes(name)) {
             data.cost = calculateCost(data);
+            console.log(`cost now: ${data.cost}`);
         }
         // setformD(data);
         onUpdate(data);
@@ -314,7 +321,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             defaultValue={formD.units}
                             onChange={(e) => handleControlChange(e)}
                         >
-                            <option value="cm">cm</option>
+                            <option value="centimeters">cm</option>
                             <option value="inches">inches</option>
                         </Form.Select>
                     </Form.Group>

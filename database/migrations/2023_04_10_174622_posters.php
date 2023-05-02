@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('state', ['pending', 'ready', 'rejected', 'accepted', 'printed', 'paid', 'complete']);
             $table->float('width', 8, 2);
             $table->float('height', 8, 2);
+            $table->enum('units', ['centimeters', 'inches']);
             // $table->foreignId('transaction_id')->nullable()->references('transaction_id')->on('Transactions')->nullOnDelete();
             $table->boolean('discount_eligible');
             $table->string('speed_code')->nullable();
