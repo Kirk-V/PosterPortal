@@ -17,7 +17,7 @@ class PDFMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public String $pdfFile)
+    public function __construct(public String $poster_id, public String $MailType)
     {
         //
     }
@@ -28,7 +28,7 @@ class PDFMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'PDF Mail',
+            subject: "Poster Printing Service Receipt",
         );
     }
 
@@ -50,7 +50,7 @@ class PDFMail extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromPath('myfile.pdf'),
+            Attachment::fromPath("../resources/views/mail/Receipt_$this->poster_id.pdf"),
         ];
     }
 }

@@ -1,1 +1,5 @@
-<h1>Hello here is your receipt</h1>
+<h3>Hello {{$poster_id}}</h3>
+<p>Please find the attached poster printing receipt</p>
+<p>Kind Regards,</p>
+<br>
+<p>Social Science Technology Services</p>

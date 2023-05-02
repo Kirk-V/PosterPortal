@@ -103,27 +103,27 @@ class JobsController extends Controller
     {
         // Extract the required parameters
         $recipientType = $request->query('to');
-        $id = $request->query('id');
-        if(is_null($recipientType) || is_null($id))
+        $poster_id = $request->query('id');
+        if(is_null($recipientType) || is_null($poster_id))
         {
             return self::errorResponse("Cannot create PDF with provided query string", 400);
         }
         switch(strtolower($recipientType))
         {
             case "requisitioner":
-                Jobs::emailReceiptRequisitioner($id);
+                Jobs::emailReceiptRequisitioner($poster_id);
                 break;
             case "grandholder":
-                Jobs::emailReceiptGrantHolder($id);
+                Jobs::emailReceiptGrantHolder($poster_id);
                 break;
             case "adminassistant":
-                Jobs::emailReceiptSSTSAdminAssistant($id);
+                Jobs::emailReceiptSSTSAdminAssistant($poster_id);
                 break;
         }   
-        log::info("Email to $recipientType request for $id");
+        log::info("Email to $recipientType request for $poster_id");
         // log::info($request->getContent());
-        // file_put_contents('myfile.pdf', $request->getContent());
-        Mail::to("kvande85@uwo.ca")->send(new PDFMail("test"));
+        file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent());
+        Mail::to("kvande85@uwo.ca")->send(new PDFMail($poster_id, $recipientType));
         return self::successResponse("none");
     }
 
