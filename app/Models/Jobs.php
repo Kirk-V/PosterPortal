@@ -38,4 +38,19 @@ class Jobs extends Model
         $job->save();
     }
 
+
+    static function emailReceiptRequisitioner($jobId)
+    {
+
+    }
+
+    static function emailReceiptGrantHolder($jobId)
+    {
+
+    }
+
+    static function emailReceiptSSTSAdminAssistant($jobId)
+    {
+
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jobs;
+use Illuminate\Contracts\Queue\Job;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -105,6 +106,18 @@ class JobsController extends Controller
         {
             return self::errorResponse("Cannot create PDF with provided query string", 400);
         }
+        switch(strtolower($recipientType))
+        {
+            case "requisitioner":
+                Jobs::emailReceiptRequisitioner($id);
+                break;
+            case "grandholder":
+                Jobs::emailReceiptGrantHolder($id);
+                break;
+            case "adminassistant":
+                Jobs::emailReceiptSSTSAdminAssistant($id);
+                break;
+        }   
         log::info("Email to $recipientType request for $id");
         // log::info($request->getContent());
         // file_put_contents('myfile.pdf', $request->getContent());
