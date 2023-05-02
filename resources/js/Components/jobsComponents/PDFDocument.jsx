@@ -45,7 +45,7 @@ export default function PDF({show, jobData}){
             method: 'POST',
             body: bodydata
         }
-        fetch(`api/jobs/sendEmail`, options)
+        fetch(`api/jobs/sendPDFEmail?id=${jobData.job_id}&to=${to}`, options)
             .then( (res) => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);

@@ -86,11 +86,38 @@ class JobsController extends Controller
     }
 
 
-    public function emailPDF(Request $request)
+    /**
+     * Summary of emailPDF
+     *      Uses query parameters to find the appropriate job and recipient of
+     *      the receipt Email. Job Id is used to potentially find the recipients email
+     *      depending on what type of request is needed. There is also a PDF blob passed
+     *      which gets conveted to PDF and then temporarily stored. This is then used by
+     *      the email model to send out the receipt. 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function emailPDFReceipt(Request $request)
     {
-        log::info("Email request");
-        log::info($request->getContent());
-        file_put_contents('myfile.pdf', $request->getContent());
+        // Extract the required parameters
+        $recipientType = $request->query('to');
+        $id = $request->query('id');
+        if(is_null($recipientType) || is_null($id))
+        {
+            return self::errorResponse("Cannot create PDF with provided query string", 400);
+        }
+        log::info("Email to $recipientType request for $id");
+        // log::info($request->getContent());
+        // file_put_contents('myfile.pdf', $request->getContent());
         return self::successResponse("none");
     }
+
+    public function emailPickUp(Request $request)
+    {
+        $id= $request->query('id');
+        log::info("Email request for $id");
+        // log::info($request->getContent());
+        // file_put_contents('myfile.pdf', $request->getContent());
+        return self::successResponse("none");
+    }
+
 }
