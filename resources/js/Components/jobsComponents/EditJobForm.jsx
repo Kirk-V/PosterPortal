@@ -20,9 +20,9 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
         const name = event.target.name;
         let data = { ...jobsData }; //Deep copy so that setformD will trigger rerender
         data[`${name}`] = value;
-        if (["width", "height", "units"].includes(name)) {
-            data.cost = calculateCost(data);
-        }
+        // if (["width", "height", "units"].includes(name)) {
+        //     data.cost = calculateCost(data);
+        // }
         // setformD(data);
         dataUpdateHandler(data);
     }
@@ -242,15 +242,17 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                             onChange={(e) => handleControlChange(e)}/>
 
                     </Col>
-                    <Col xs={3}>
+                    <Col xs={2}>
                         <Form.Label>
                             units
                         </Form.Label>
-                        <Form.Control
-                            type="number"
+                        <Form.Select
                             name="units"
                             defaultValue={jobsData.units}
-                            onChange={(e) => handleControlChange(e)}/>
+                            onChange={(e) => handleControlChange(e)}>
+                                <option value="centimeters">cm</option>
+                                <option value="inches">Inches</option>
+                            </Form.Select>
 
                     </Col>
                     <Col xs={2}>
@@ -263,6 +265,9 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                             defaultValue={jobsData.cost}
                             onChange={(e) => handleControlChange(e)}/>
                         </Col>
+                </Row>
+                <Row>
+                    
                 </Row>
             </Form>
         </>
