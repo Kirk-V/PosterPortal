@@ -35,6 +35,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 console.log("req data:");
                 console.log(`okay, Req data: ${JSON.stringify(response)}`);
                 // setRequest(response);
+                response.technician = 'Rick';
                 setFormData(response);
             },
             (error) => {
@@ -166,7 +167,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     const footerButtons = (
         <>
             <Button variant="primary" onClick={onReject}>Reject</Button>
-            <Button variant="primary" onClick={onAccept} disabled={formData?.speed_code_approved == "0"}>Accept</Button>
+            <Button variant="primary" onClick={onAccept} disabled={formData?.payment_type == 'speedcode'? formData?.speed_code_approved == "0": false}>Accept</Button>
             <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>
         </>
     )

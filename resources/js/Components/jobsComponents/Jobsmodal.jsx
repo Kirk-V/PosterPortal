@@ -116,6 +116,11 @@ function LoadedModal({ jobsData, onHide, show }) {
         </>
     );
 
+    function handleDataUpdate(newData)
+    {
+        jobsData = newData;
+    }
+
     function handleShowRecieptChange()
     {
         setShowingReceipt(!showingReceipt);
@@ -135,7 +140,7 @@ function LoadedModal({ jobsData, onHide, show }) {
 
 
     let PrepareReceipt = (
-        <JobForm jobData={jobsData}/>
+        <JobForm jobData={jobsData} dataUpdateHandler={handleDataUpdate}/>
     )
 
 

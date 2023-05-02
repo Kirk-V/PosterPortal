@@ -56,6 +56,7 @@ return new class extends Migration
             $table->string('department');
             $table->enum('payment_method', ['cash','speedcode']);
             $table->string('grant_holder_name')->nullable();
+            $table->string('designate_name')->nullable();
             $table->string('grant_holder_email')->nullable();
             $table->enum('position', ['graduate', 'faculty', 'staff', 'undergraduate']);
             $table->integer('quantity');
@@ -66,6 +67,7 @@ return new class extends Migration
         Schema::create('Jobs', function (Blueprint $table) {
             $table->id('job_id');
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
+            $table->string('technician');
             $table->enum('state', ['in_queue', 'printed', 'pending_pickup', 'on_hold', 'cancelled']);
             $table->date('print_date')->nullable();
         });

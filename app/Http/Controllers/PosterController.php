@@ -43,7 +43,7 @@ class PosterController extends Controller
         Posters::updatePoster($posterID, $request->all());
         $reqId = $request->request_id;
         Requests::updateRequest($reqId, $request->all());
-        Jobs::newJob($posterID);
+        Jobs::newJob($posterID, $request->technician);
         return response(["success" => True]);
     }
 

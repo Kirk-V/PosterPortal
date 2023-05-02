@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -54,10 +55,20 @@ class Posters extends Model
 
     public static function acceptPoster($id)
     {
-        $poster = Posters::find($id);
-        $poster->state = 'accepted';
-        $poster->save();
+        try{
+            $poster = Posters::find($id);
+            $poster->state = 'accepted';
+            $poster->save();
+            return True;
+        }
+        catch(Exception $e)
+        {
+            log::error("Failed to find poster $id to accept");
+            return false;
+        }
     }
+        
+        
 
 
     public static function updatePoster($id, $updateArray)

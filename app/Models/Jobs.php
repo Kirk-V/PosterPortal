@@ -30,11 +30,12 @@ class Jobs extends Model
      *  The id of the associated poster
      * @return void
      */
-    static function newJob($posterId)
+    static function newJob($posterId, $technician)
     {
         $job = new Jobs;
         $job->poster_id = $posterId;
         $job->state = 'in_queue';
+        $job->technician = $technician;
         $job->save();
     }
 

@@ -62,7 +62,7 @@ class JobsController extends Controller
         $jobs = DB::table('Posters')
         ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
         ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
-        ->select('Posters.*', 'Requests.*', 'jobs.state as job_state', 'jobs.print_date', 'jobs.job_id')->skip(($page-1)*$entriesPerPage)->take($entriesPerPage)->get([]);
+        ->select('Posters.*', 'Requests.*', 'jobs.state as job_state', 'jobs.technician','jobs.print_date', 'jobs.job_id')->skip(($page-1)*$entriesPerPage)->take($entriesPerPage)->get([]);
 
         return response($jobs);
     }
