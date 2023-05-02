@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PDFMail;
 use App\Models\Jobs;
 use Illuminate\Contracts\Queue\Job;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -121,6 +123,7 @@ class JobsController extends Controller
         log::info("Email to $recipientType request for $id");
         // log::info($request->getContent());
         // file_put_contents('myfile.pdf', $request->getContent());
+        Mail::to("kvande85@uwo.ca")->send(new PDFMail("test"));
         return self::successResponse("none");
     }
 
