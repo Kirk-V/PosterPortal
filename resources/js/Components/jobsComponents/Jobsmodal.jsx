@@ -54,7 +54,7 @@ function UnLoadedModal({ onHide, show }) {
 }
 
 function LoadedModal({ jobsData, onHide, show }) {
-    const [jobState, setJobState] = useState(jobsData.state);
+    const [jobState, setJobState] = useState(jobsData.job_state);
     const [showingReceipt, setShowingReceipt] = useState(false);
     const [showingMakeTransaction, setshowingMakeTransaction] = useState(false);
 
@@ -107,6 +107,8 @@ function LoadedModal({ jobsData, onHide, show }) {
             </Col>
         </>
     );
+
+    const 
 
     const PrintedState = (
         <>
@@ -168,7 +170,6 @@ function LoadedModal({ jobsData, onHide, show }) {
                         <Row>
                             <Col xs={3}>
                                 <h5>Status</h5>
-
                             </Col>
                             <Col xs={6}>
                                 <p>{jobsData.state}</p>
