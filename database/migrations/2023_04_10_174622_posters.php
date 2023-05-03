@@ -43,7 +43,7 @@ return new class extends Migration
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->date('transaction_date');
             $table->float('total_received', 8, 2);
-            $table->boolean('reconciled');
+            $table->boolean('reconciled')->default(false);
         });
 
         Schema::create('Requests', function (Blueprint $table) {
@@ -68,7 +68,7 @@ return new class extends Migration
             $table->id('job_id');
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->string('technician');
-            $table->enum('state', ['in_queue', 'printed', 'pending_pickup', 'on_hold', 'cancelled']);
+            $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'on_hold', 'cancelled']);
             $table->date('print_date')->nullable();
         });
 

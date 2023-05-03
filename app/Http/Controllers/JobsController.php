@@ -154,11 +154,10 @@ class JobsController extends Controller
         }
         $transaction = new Transactions;
         $transaction->transaction_date = $request->transaction_date;
-        $transaction->total_recieved = $request->total_recieved;
-        $transaction->reconciled = $request->reconcild;
+        $transaction->total_received = $request->total_received;
         $poster->transactions()->save($transaction);
 
-        Posters::updateAllPosterData($request->poster_id, $request->getall());
+        Posters::updateAllPosterData($request->poster_id, $request->all());
     }
 
 

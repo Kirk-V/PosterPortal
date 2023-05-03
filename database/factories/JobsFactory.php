@@ -22,7 +22,7 @@ class JobsFactory extends Factory
         return [
             //id auto gen'd
             'poster_id' => Posters::factory(),
-            'state' => $state,
+            'job_state' => $state,
             'print_date' => $print_date,
         ];
     }
