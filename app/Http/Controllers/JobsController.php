@@ -67,6 +67,7 @@ class JobsController extends Controller
         $jobs = DB::table('Posters')
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
+            ->leftJoin('Transactions', 'Posters.poster_id', 'Transactions.poster_id')
             ->select('Posters.*', 'Requests.*', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
         // return Posters::has('jobs')->with(['Jobs', 'Requests', 'transactions'])->get();
         return response($jobs);
@@ -152,10 +153,13 @@ class JobsController extends Controller
         {
             return self::errorResponse("Could not find posterID in json", 400);
         }
-        $transaction = new Transactions;
-        $transaction->transaction_date = $request->transaction_date;
-        $transaction->total_received = $request->total_received;
-        $poster->transactions()->save($transaction);
+        // $transaction = new Transactions;
+        // $transaction->transaction_date = $request->transaction_date;
+        // $transaction->total_received = $request->total_received;
+        // $poster->transactions()->save($transaction);
+
+        $poster->transactions()->updateOrCreate(['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
+
 
         Posters::updateAllPosterData($request->poster_id, $request->all());
         return self::successResponse("Success", "Success");
