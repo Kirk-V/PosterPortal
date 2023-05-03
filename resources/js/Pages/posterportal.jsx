@@ -1,6 +1,7 @@
 import PrimaryLayout from '@/Layouts/PrimaryLayout';
 import Requests from './requests';
 import Jobs from './jobs';
+import Settings from './Settings';
 
 import { useState, useEffect } from 'react';
 
@@ -13,7 +14,7 @@ function PosterPortal({ auth, currentView, data }) {
         pageView = <Requests data={data}/>;
     }
     else if (currentView === 'settings') {
-        pageView = <h1>settings</h1>;
+        pageView =<Settings/>;
     }
     else if (currentView === 'jobs') {
         pageView = <Jobs />;
