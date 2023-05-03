@@ -5,12 +5,13 @@
 // import Container from "react-bootstrap/Container";
 // import RequestModalForm from './RequestModalForm';
 import { useState, useEffect } from "react";
-import { Form, Button, Modal, Row, Col, Container, FormLabel } from "react-bootstrap";
+import { Form, Button, Modal, Row, Col, Container, FormLabel, InputGroup } from "react-bootstrap";
 import JobsSendPickUpButton from "./JobsSendPickUpButton";
 import PDF from "./PDFDocument";
 
 //Form to change the job data around.
-export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
+export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, handleShowReceipt }) {
+    const [validated, setValidated] = useState(false);
     console.log(`OPened module with data: ${JSON.stringify(jobsData)}`);
     console.log(`techasdfasdfasdfasd`);
     console.log(`tech: ${jobsData.technician}`);
@@ -27,6 +28,36 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
         dataUpdateHandler(data);
     }
 
+    const handleSaveAndMakeReceipt = (event) => {
+        // Send Data to backEnd
+    }
+
+    const handleFormSubmit =  (event) =>
+    {
+        console.log("receiptform submitted");
+        const form = event.currentTarget;
+        event.preventDefault();
+        event.stopPropagation();
+        if (form.checkValidity() === false) {
+            console.log("not valid");
+            setValidated(true);
+        }
+        else
+        {
+            //We have a valid form. We can now send data show the receipt. 
+
+            //Send data to API
+            
+
+            //Show Reciept by calling handleShowReceipt
+        }
+        
+        
+
+
+
+    }
+
 
     let GrantHolderInfo = (
         <>
@@ -37,7 +68,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
             </Row>
             <Row>
                 <Col xs={6}>
-                    <Form.Label>
+                    <Form.Label className="mb-0">
                         Name
                     </Form.Label>
                     <Form.Control
@@ -48,7 +79,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                     />
                 </Col>
                 <Col xs={6}>
-                    <Form.Label>
+                    <Form.Label className="mb-0">
                         Email
                     </Form.Label>
                     <Form.Control
@@ -61,7 +92,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
             </Row>
             <Row className="mt-2">
                 <Col xs={6}>
-                    <Form.Label>
+                    <Form.Label className="mb-0">
                         Speed Code and Account
                     </Form.Label>
                     <Form.Control
@@ -72,7 +103,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                     />
                 </Col>
                 <Col xs={6}>
-                    <Form.Label>
+                    <Form.Label className="mb-0">
                         Designate's Name
                     </Form.Label>
                     <Form.Control
@@ -83,27 +114,44 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                     />
                 </Col>
             </Row>
+
         </>
     )
 
+    let DiscountSection = (
+        <Row className="justify-content-end">
+            <Col xs={3}>
+                <Form.Label className="mb-0">
+                    Discount
+                </Form.Label>
+                <InputGroup>
+                    <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
+                    <Form.Control
+                        type="number"
+                        name="total"
+                        defaultValue={jobsData.discount}
+                        onChange={(e) => handleControlChange(e)} />
+                </InputGroup>
+            </Col>
+        </Row>
+    )
 
     return (
         <>
-            <Form className="border rounded p-3">
+            <Form className="border rounded p-3" noValidate validated={validated} onSubmit={handleFormSubmit}>
                 <Row>
                     <Col xs={3}>
-                        <FormLabel>Transaction Date</FormLabel>
+                        <FormLabel className="mb-0">Transaction Date</FormLabel>
                         <Form.Control
                             type="date"
                             name=""
                             placeholder="DateRange"
                             aria-label="Disabled input example"
+                            required
                         />
                     </Col>
                     <Col xs={3}>
-                        <Form.Label>
-                            Technician
-                        </Form.Label>
+                        <Form.Label className="mb-0">Technician</Form.Label>
                         <Form.Select
                             name="technician"
                             defaultValue={jobsData.technician}
@@ -113,9 +161,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                         </Form.Select>
                     </Col>
                     <Col xs={3}>
-                        <Form.Label>
-                            Department
-                        </Form.Label>
+                        <Form.Label className="mb-0">Department</Form.Label>
                         <Form.Select
                             name="department"
                             defaultValue={jobsData.department}
@@ -137,7 +183,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                         </Form.Select>
                     </Col>
                     <Col xs={3}>
-                        <Form.Label>
+                        <Form.Label className="mb-0">
                             Poster No
                         </Form.Label>
                         <p>{jobsData.poster_id} </p>
@@ -150,7 +196,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                 </Row>
                 <Row>
                     <Col xs={3}>
-                        <Form.Label>
+                        <Form.Label className="mb-0">
                             First Name
                         </Form.Label>
                         <Form.Control
@@ -161,7 +207,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                         />
                     </Col>
                     <Col xs={3}>
-                        <Form.Label>
+                        <Form.Label className="mb-0">
                             Last Name
                         </Form.Label>
                         <Form.Control
@@ -172,7 +218,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                         />
                     </Col>
                     <Col xs={6}>
-                        <Form.Label>
+                        <Form.Label className="mb-0">
                             Email
                         </Form.Label>
                         <Form.Control
@@ -190,7 +236,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                 </Row>
                 <Row>
                     <Col xs={6}>
-                        <Form.Label>
+                        <Form.Label className="mb-0">
                             Payment Type
                         </Form.Label>
                         <Form.Select
@@ -208,74 +254,89 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler }) {
                         <h4>Details</h4>
                     </Col>
                 </Row>
-                <Row>
+                <Row className="d-flex justify-content-between">
                     <Col xs={2}>
-                        <Form.Label>
+                        <Form.Label className="mb-0">
                             Quantity
                         </Form.Label>
                         <Form.Control
                             type="number"
                             name="quantity"
                             defaultValue={jobsData.quantity}
-                            onChange={(e) => handleControlChange(e)}/>
+                            onChange={(e) => handleControlChange(e)} />
 
                     </Col>
-                    <Col xs={3}>
-                        <Form.Label>
+                    <Col xs={2}>
+                        <Form.Label className="mb-0">
                             Width
                         </Form.Label>
                         <Form.Control
                             type="number"
                             name="width"
                             defaultValue={jobsData.width}
-                            onChange={(e) => handleControlChange(e)}/>
+                            onChange={(e) => handleControlChange(e)} />
 
                     </Col>
-                    <Col xs={3}>
-                        <Form.Label>
+                    <Col xs={2}>
+                        <Form.Label className="mb-0">
                             Height
                         </Form.Label>
                         <Form.Control
                             type="number"
                             name="height"
                             defaultValue={jobsData.height}
-                            onChange={(e) => handleControlChange(e)}/>
+                            onChange={(e) => handleControlChange(e)} />
 
                     </Col>
                     <Col xs={2}>
-                        <Form.Label>
+                        <Form.Label className="mb-0">
                             units
                         </Form.Label>
                         <Form.Select
                             name="units"
                             defaultValue={jobsData.units}
                             onChange={(e) => handleControlChange(e)}>
-                                <option value="centimeters">cm</option>
-                                <option value="inches">Inches</option>
-                            </Form.Select>
+                            <option value="centimeters">cm</option>
+                            <option value="inches">Inches</option>
+                        </Form.Select>
 
                     </Col>
-                    <Col xs={2}>
-                        <Form.Label>
+                    <Col xs={3}>
+                        <Form.Label className="mb-0">
                             cost
                         </Form.Label>
+                        <InputGroup>
+                        <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
                         <Form.Control
                             type="number"
                             name="cost"
                             defaultValue={jobsData.cost}
-                            onChange={(e) => handleControlChange(e)}/>
-                        </Col>
+                            onChange={(e) => handleControlChange(e)} />
+                        </InputGroup>
+                        
+                    </Col>
                 </Row>
+                {jobsData.discount_eligible == "1" ? DiscountSection : null}
+
                 <Row className="justify-content-end">
                     <Col xs={3}>
-                    <Form.Label>
-                        Total
-                    </Form.Label>
-                    <Form.Control
-                        type="number"
-                        name="total"
-                        defaultValue={jobsData.total}
-                        onChange={(e) => handleControlChange(e)}/>
+                        <Form.Label className="mb-0">
+                            Total Recieved
+                        </Form.Label>
+                        <InputGroup>
+                            <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
+                            <Form.Control
+                                type="number"
+                                name="total"
+                                defaultValue={jobsData.total}
+                                onChange={(e) => handleControlChange(e)} 
+                                required/>
+                        </InputGroup>
+                    </Col>
+                </Row>
+                <Row className="justify-content-end mt-3">
+                    <Col xs={3} className="d-flex justify-content-end">
+                        <Button type="submit">Save and Make Reciept</Button>
                     </Col>
                 </Row>
             </Form>

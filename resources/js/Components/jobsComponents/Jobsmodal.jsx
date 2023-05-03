@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import JobsSendPickUpButton from "./JobsSendPickUpButton";
 import PDF from "./PDFDocument";
-import JobForm from "./EditJobForm";
+import JobForm from "./ReceiptForm";
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
@@ -101,14 +101,30 @@ function LoadedModal({ jobsData, onHide, show }) {
     };
 
     const InQueueState = (
-        <>
-            <Col xs={2}>
-                <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
-            </Col>
-        </>
+        <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
+
     );
 
-    const 
+    const InPrintedState = (
+        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+    )
+
+    const InPendingPickUpState = (
+        <>
+        <Button variant="info" >Picked Up</Button>
+        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+        </>
+    )
+
+    const InOnHoldState = (
+        <Button variant="info" >Ready</Button>
+    )
+
+    const InCancelledState = (
+        <Button variant="info" >Revive</Button>
+    )
+
+
 
     const PrintedState = (
         <>
@@ -172,14 +188,12 @@ function LoadedModal({ jobsData, onHide, show }) {
                                 <h5>Status</h5>
                             </Col>
                             <Col xs={6}>
-                                <p>{jobsData.state}</p>
+                                <p>{jobsData.job_state}</p>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={3}>
-
                                 <h5>Email</h5>
-
                             </Col>
                             <Col xs={6}>
 
@@ -203,10 +217,12 @@ function LoadedModal({ jobsData, onHide, show }) {
                 </Modal.Body>
                 <Modal.Footer>
                     {jobState == "in_queue" ? InQueueState: null}
-                    <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
-                    <Button variant="info" onClick={handleShowRecieptChange}>Make Receipt</Button>
-                    <JobsSendPickUpButton jobID={jobsData.job_id} posterState={jobState} updateStateHandler={updateState}/>
-                    <Button variant="primary">Accept</Button>
+                    {jobState == "printed" ? InPrintedState: null}
+                    {jobState == "pending_pickup"? InPendingPickUpState: null}
+                    {jobState == "cancelled"? InCancelledState: null}
+                    {jobState == "on_hold"? InOnHoldState: null}
+                    {/* <Button variant="info" onClick={handleShowRecieptChange}>Make Receipt</Button> */}
+                    
                     <Button
                         variant="primary"
                         className={"ms-auto"}
