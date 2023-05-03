@@ -12,14 +12,14 @@ import JobForm from "./ReceiptForm";
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
-export default function JobsModal({ jobsData, onHide, show }) {
-    console.log(`OPened module with data: ${JSON.stringify(jobsData)}`);
+export default function JobsModal({ modalData, onHide, show }) {
+    console.log(`OPened module with data: ${JSON.stringify(modalData)}`);
     return (
         <>
-            {jobsData == null ? (
+            {modalData == null ? (
                 <UnLoadedModal onHide={onHide} show={show} />
             ) : (
-                <LoadedModal jobsData={jobsData} onHide={onHide} show={show} />
+                <LoadedModal modalData={modalData} onHide={onHide} show={show} />
             )}
         </>
     );
@@ -53,10 +53,11 @@ function UnLoadedModal({ onHide, show }) {
     );
 }
 
-function LoadedModal({ jobsData, onHide, show }) {
-    const [jobState, setJobState] = useState(jobsData.job_state);
+function LoadedModal({ modalData, onHide, show }) {
+    const [jobState, setJobState] = useState(modalData.job_state);
     const [showingReceipt, setShowingReceipt] = useState(false);
     const [showingMakeTransaction, setshowingMakeTransaction] = useState(false);
+    const [jobsData, setJobsData] = useState(modalData)
 
     let updateState = (newState) => {
         //api call to update state
@@ -135,8 +136,8 @@ function LoadedModal({ jobsData, onHide, show }) {
 
     function handleDataUpdate(newData)
     {
-        jobsData = newData;
-        console.log("ipdated data");
+        setJobsData(newData);
+        console.log("updated data");
     }
 
     function handleShowRecieptChange()

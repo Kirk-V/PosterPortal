@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transactions;
 use Exception;
 use App\Models\Jobs;
 use Inertia\Inertia;
@@ -67,7 +68,7 @@ class JobsController extends Controller
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
             ->select('Posters.*', 'Requests.*', 'jobs.state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
-
+        // return Posters::has('jobs')->with(['Jobs', 'Requests', 'transactions'])->get();
         return response($jobs);
     }
 
@@ -142,39 +143,49 @@ class JobsController extends Controller
      * @param Request $request
      *  Function to create the transaction associated with a job.
      *  First makes transaction, then calls update all data on poster.
-     * @return void
      */
     public function makeTransactionAndUpdate(Request $request)
     {
         //Pull the ID of the poster.
-
-    }
-
-
-    /**
-     * Summary of updateJobsData
-     *  this function will update all available information in the requests json object. 
-     *  It checks the column names in the posters, requests, and jobs tables. Careful as
-     *  two column names could be the same in two different tables. Both tables will be updated
-     *  with the value. 
-     * @param Request $request
-     */
-    public function updateJobsData(Request $request)
-    {
-        //Update Poster Data
-        $posterID = $request->poster_id;
-        if (!is_Null($posterID)) {
-            try {
-                Posters::updateAllPosterData($posterID, $request->all());
-                return true;
-            } catch (Exception $e) {
-                log::error($e);
-                return false;
-            }
-        }
-        else
+        $poster = Posters::find($request->poster_id);
+        if(is_null($poster))
         {
-            throw new Exception("Poster ID Not Found in Json");
+            return self::errorResponse("Could not find posterID in json", 400);
         }
+        $transaction = new Transactions;
+        $transaction->transaction_date = $request->transaction_date;
+        $transaction->total_recieved = $request->total_recieved;
+        $transaction->reconciled = $request->reconcild;
+        $poster->transactions()->save($transaction);
+
+        Posters::updateAllPosterData($request->poster_id, $request->getall());
     }
+
+
+    // /**
+    //  * Summary of updateJobsData
+    //  *  this function will update all available information in the requests json object. 
+    //  *  It checks the column names in the posters, requests, and jobs tables. Careful as
+    //  *  two column names could be the same in two different tables. Both tables will be updated
+    //  *  with the value. 
+    //  * @param Request $request
+    //  */
+    // public function updateJobsData(Request $request)
+    // {
+    //     //Update Poster Data
+    //     $posterID = $request->poster_id;
+    //     if (!is_Null($posterID)) {
+    //         try {
+    //             Posters::updateAllPosterData($posterID, $request->all());
+    //             return true;
+    //         } catch (Exception $e) {
+    //             log::error($e);
+    //             return false;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         throw new Exception("Poster ID Not Found in Json");
+    //     }
+    // }
 }

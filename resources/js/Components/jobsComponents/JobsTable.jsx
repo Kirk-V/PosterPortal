@@ -82,7 +82,7 @@ export default function JobsTable() {
                 {bodyDataLoaded == true && headingsLoaded == true ? <JobsTableBody data={bodyData} headers={headings} onRowClick={handleRowClick}></JobsTableBody> :null}
                 {/* {error == true? <h1>error</h1> : null} */}
         </Table>
-        <JobsModal show={showingModal} jobsData={modalData} onHide={handleClose} key={modalData}/>
+        <JobsModal show={showingModal} modalData={modalData} onHide={handleClose} key={modalData}/>
         </>
 
     )

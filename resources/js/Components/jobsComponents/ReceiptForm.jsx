@@ -47,7 +47,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
             //We have a valid form. We can now send data show the receipt. 
             let options = {
                 method: 'POST',
-                body: jobsData,
+                body: JSON.stringify(jobsData),
                 headers: {
                     // the content type header value is usually auto-set
                     // depending on the request body
@@ -55,7 +55,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     'Accept': 'application/json'
                   },
             }
-            fetch(`api/jobs/makeTransaction`, options)
+            fetch(`api/jobs/makeTransactionAndUpdate`, options)
             .then( (res) => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -171,8 +171,10 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Col xs={3}>
                         <FormLabel className="mb-0">Transaction Date</FormLabel>
                         <Form.Control
+                            onChange={(e) => handleControlChange(e)}
                             type="date"
-                            name=""
+                            name="transaction_date"
+                            defaultValue={jobsData.transaction_date ?? ""}
                             placeholder="DateRange"
                             aria-label="Disabled input example"
                             required
@@ -355,9 +357,9 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
                             <Form.Control
                                 type="number"
-                                name="total"
+                                name="total_received"
                                 defaultValue={jobsData.total}
-                                onChange={(e) => handleControlChange(e)} 
+                                onChange={(e) => handleControlChange(e)}
                                 required/>
                         </InputGroup>
                     </Col>
