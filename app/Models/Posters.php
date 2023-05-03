@@ -110,7 +110,8 @@ class Posters extends Model
         try{
             self::updatePoster($id, $updateArray);
             self::updateJobsRelationshipData($id, $updateArray);
-            self::updateRequestsRelationshipData($id, $updateArray);            
+            self::updateRequestsRelationshipData($id, $updateArray);
+            self::updateTransactionRelationshipData($id, $updateArray);        
         }
         catch(ModelNotFoundException $e)
         {
@@ -143,7 +144,6 @@ class Posters extends Model
 
     public static function updateRequestsRelationshipData($poster_id, $updateArray)
     {
-        
         $poster = Posters::findOrFail($poster_id);
         $request = $poster->requests;
         //Should only be one job.
@@ -176,14 +176,10 @@ class Posters extends Model
             {
                 //Should check that key is valid
                 Log::info("Updating Poster transaction $transaction->id  -- $key => $value");
-                $job->$key = $value;
+                $transaction->$key = $value;
             }
         }
-        $job->save();
-    }
-
-    {
-
+        $transaction->save();
     }
     #endregion
 }
