@@ -86,6 +86,7 @@ function LoadedModal({ modalData, onHide, show }) {
             if(response.success)
             {
                 console.log("success, updating UI state");
+                jobsData.job_state = newState;
                 setJobState(newState);
                 // jobsData.state = newState;
             }
@@ -99,6 +100,26 @@ function LoadedModal({ modalData, onHide, show }) {
         //IF the state is updated it must persist to the DB
         console.log("state being updated to " + newState);
     };
+
+    function handleDataUpdate(newData)
+    {
+        setJobsData(newData);
+        console.log("updated data");
+    }
+
+    function handleShowRecieptChange()
+    {
+        setshowingMakeTransaction(false);
+        setShowingReceipt(!showingReceipt);
+    }
+
+    function handleShowingMakeTransactionChange() {
+        setshowingMakeTransaction(!showingMakeTransaction);
+    }
+
+    function closeReceipt(){
+        setShowingReceipt(false);
+    }
 
     const InQueueState = (
         <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
@@ -134,25 +155,7 @@ function LoadedModal({ modalData, onHide, show }) {
         </>
     );
 
-    function handleDataUpdate(newData)
-    {
-        setJobsData(newData);
-        console.log("updated data");
-    }
 
-    function handleShowRecieptChange()
-    {
-        setshowingMakeTransaction(false);
-        setShowingReceipt(!showingReceipt);
-    }
-
-    function handleShowingMakeTransactionChange() {
-        setshowingMakeTransaction(!showingMakeTransaction);
-    }
-
-    function closeReceipt(){
-        setShowingReceipt(false);
-    }
 
     let ReceiptRow = (
         <PDF show={showingReceipt} jobData={jobsData} handleCloseReceipt={closeReceipt}/>

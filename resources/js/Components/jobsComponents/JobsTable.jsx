@@ -60,7 +60,7 @@ export default function JobsTable() {
             console.log("caught");
             console.log(e);
         });
-    }, []);
+    }, [showingModal]);
 
 
     function handleRowClick(rowData){
