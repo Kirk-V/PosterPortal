@@ -42,7 +42,7 @@ return new class extends Migration
             $table->id('transaction_id')->first();
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->date('transaction_date');
-            $table->float('total_recieved', 8, 2);
+            $table->float('total_received', 8, 2);
             $table->boolean('reconciled');
         });
 

@@ -23,7 +23,7 @@ class TransactionsFactory extends Factory
                 //id auto gen'd
                 'poster_id' => Posters::factory(),
                 'transaction_date' => fake()->date(),
-                'total_recieved' => fake()->randomFloat(),
+                'total_received' => fake()->randomFloat(),
                 'reconciled' => fake()->boolean(),
         ];
     }
