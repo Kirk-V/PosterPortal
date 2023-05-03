@@ -141,15 +141,13 @@ class JobsController extends Controller
      * Summary of makeTransaction
      * @param Request $request
      *  Function to create the transaction associated with a job.
-     *  First calls update job Data so that all changed information
-     *  is persisted in the request and poster tables. 
-     *  The transaction is then created and persisted to the transactions table. If the Transaction
-     *  already exists, it's data will be updated according to the json object passed. 
+     *  First makes transaction, then calls update all data on poster.
      * @return void
      */
-    public function makeTransaction(Request $request)
+    public function makeTransactionAndUpdate(Request $request)
     {
         //Pull the ID of the poster.
+
     }
 
 
