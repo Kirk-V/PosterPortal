@@ -12,16 +12,12 @@ class Transactions extends Model
     protected $table = 'Transactions';
     protected $primaryKey = 'transaction_id';
 
+    protected $fillable = ['transaction_date' , 'total_received'];
     public $timestamps = false;
     
 
     public function posters(): BelongsTo
     {
         return $this->belongsTo(Posters::class,'poster_id');
-    }
-
-    public function courses(): BelongsTo
-    {
-        return $this->belongsTo(Courses::class, 'course_id');
     }
 }
