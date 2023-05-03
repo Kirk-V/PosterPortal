@@ -45,9 +45,37 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         else
         {
             //We have a valid form. We can now send data show the receipt. 
-
-            //Send data to API
-            
+            let options = {
+                method: 'POST',
+                body: jobsData,
+                headers: {
+                    // the content type header value is usually auto-set
+                    // depending on the request body
+                    "Content-Type": 'application/json',
+                    'Accept': 'application/json'
+                  },
+            }
+            fetch(`api/jobs/makeTransaction`, options)
+            .then( (res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return res.json()
+            })
+            .then((response) => {
+                console.log("req data:");
+                console.log(`okay, Added Transaction Reply: ${JSON.stringify(response)}`);
+                // setRequest(response);
+                if(response.success)
+                {
+                    console.log("success, updating UI state");
+                    //Call Show Receipt here
+                }
+    
+            })
+            .catch((error) => {
+                console.log(error)
+            })
 
             //Show Reciept by calling handleShowReceipt
         }

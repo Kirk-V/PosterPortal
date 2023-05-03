@@ -30,6 +30,7 @@ Route::controller(SettingsController::class)->group(function (){
 Route::controller(JobsController::class)->group(function (){
     Route::put('/jobs/updateState', 'updateState');
     Route::post('/jobs/sendPDFEmail', 'emailPDFReceipt');
+    Route::post('/jobs/makeTransaction', 'makeTransaction');
 });
 
 

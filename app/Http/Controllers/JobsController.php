@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\PDFMail;
+use Exception;
 use App\Models\Jobs;
-use Illuminate\Contracts\Queue\Job;
-use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use App\Mail\PDFMail;
+use App\Models\Posters;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Contracts\Queue\Job;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -28,22 +30,22 @@ class JobsController extends Controller
 
 
     static function successResponse($data, $message = null, $code = 200)
-	{
-		return response()->json([
-			'status'=> 'Success', 
-			'message' => $message, 
-			'data' => $data
-		], $code);
-	}
+    {
+        return response()->json([
+            'status' => 'Success',
+            'message' => $message,
+            'data' => $data
+        ], $code);
+    }
 
     static function errorResponse($message = null, $code)
-	{
-		return response()->json([
-			'status'=>'Error',
-			'message' => $message,
-			'data' => null
-		], $code);
-	}
+    {
+        return response()->json([
+            'status' => 'Error',
+            'message' => $message,
+            'data' => null
+        ], $code);
+    }
 
     /**
      * Summary of Returns an associative array of table headers
@@ -54,15 +56,17 @@ class JobsController extends Controller
      * and easy way to parse the passed data if needed.
      * @return array
      */
-    public function getJobsHeadings(){
-        return  ['Poster No.'=> 'poster_id','State'=>'job_state', 'Payment Type' => 'payment_method', 'Requisitioner' => 'First_name', 'Requisition type' => 'position', 'Requisitioner Eamil' => 'email', 'Department' => 'department', 'Print Date' => 'print_date'];
+    public function getJobsHeadings()
+    {
+        return  ['Poster No.' => 'poster_id', 'State' => 'job_state', 'Payment Type' => 'payment_method', 'Requisitioner' => 'First_name', 'Requisition type' => 'position', 'Requisitioner Eamil' => 'email', 'Department' => 'department', 'Print Date' => 'print_date'];
     }
 
-    public function getJobsData($page, $entriesPerPage = 50){
+    public function getJobsData($page, $entriesPerPage = 50)
+    {
         $jobs = DB::table('Posters')
-        ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
-        ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
-        ->select('Posters.*', 'Requests.*', 'jobs.state as job_state', 'jobs.technician','jobs.print_date', 'jobs.job_id')->skip(($page-1)*$entriesPerPage)->take($entriesPerPage)->get([]);
+            ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
+            ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
+            ->select('Posters.*', 'Requests.*', 'jobs.state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
 
         return response($jobs);
     }
@@ -77,15 +81,13 @@ class JobsController extends Controller
         DB::enableQueryLog();
         $job = Jobs::find($request->input('job_id'));
         log::info(DB::getQueryLog());
-        if($job == null)
-        {
+        if ($job == null) {
             log::info("job is null");
             return response(["success" => False]);
         }
         $job->state = $state;
         $job->save();
         return response(["success" => True]);
-
     }
 
 
@@ -104,12 +106,10 @@ class JobsController extends Controller
         // Extract the required parameters
         $recipientType = $request->query('to');
         $poster_id = $request->query('id');
-        if(is_null($recipientType) || is_null($poster_id))
-        {
+        if (is_null($recipientType) || is_null($poster_id)) {
             return self::errorResponse("Cannot create PDF with provided query string", 400);
         }
-        switch(strtolower($recipientType))
-        {
+        switch (strtolower($recipientType)) {
             case "requisitioner":
                 Jobs::emailReceiptRequisitioner($poster_id);
                 break;
@@ -119,7 +119,7 @@ class JobsController extends Controller
             case "adminassistant":
                 Jobs::emailReceiptSSTSAdminAssistant($poster_id);
                 break;
-        }   
+        }
         log::info("Email to $recipientType request for $poster_id");
         // log::info($request->getContent());
         file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent());
@@ -129,11 +129,54 @@ class JobsController extends Controller
 
     public function emailPickUp(Request $request)
     {
-        $id= $request->query('id');
+        $id = $request->query('id');
         log::info("Email request for $id");
         // log::info($request->getContent());
         // file_put_contents('myfile.pdf', $request->getContent());
         return self::successResponse("none");
     }
 
+
+    /**
+     * Summary of makeTransaction
+     * @param Request $request
+     *  Function to create the transaction associated with a job.
+     *  First calls update job Data so that all changed information
+     *  is persisted in the request and poster tables. 
+     *  The transaction is then created and persisted to the transactions table. If the Transaction
+     *  already exists, it's data will be updated according to the json object passed. 
+     * @return void
+     */
+    public function makeTransaction(Request $request)
+    {
+        //Pull the ID of the poster.
+    }
+
+
+    /**
+     * Summary of updateJobsData
+     *  this function will update all available information in the requests json object. 
+     *  It checks the column names in the posters, requests, and jobs tables. Careful as
+     *  two column names could be the same in two different tables. Both tables will be updated
+     *  with the value. 
+     * @param Request $request
+     */
+    public function updateJobsData(Request $request)
+    {
+        //Update Poster Data
+        $posterID = $request->poster_id;
+        if (!is_Null($posterID)) {
+            try {
+                Posters::updateAllPosterData($posterID, $request->all());
+                return true;
+            } catch (Exception $e) {
+                log::error($e);
+                return false;
+            }
+        }
+        else
+        {
+            throw new Exception("Poster ID Not Found in Json");
+        }
+    }
 }

@@ -71,7 +71,6 @@ function LoadedModal({ jobsData, onHide, show }) {
                 'Accept': 'application/json'
               },
         }
-
         fetch(`api/jobs/updateState`, options)
         .then( (res) => {
             if (!res.ok) {

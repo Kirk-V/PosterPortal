@@ -5,12 +5,16 @@ namespace App\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 
 // Poster class is parent to request, jobs, and transactions
+/**
+ * Summary of Posters
+ */
 class Posters extends Model
 {
     use HasFactory;
@@ -88,5 +92,98 @@ class Posters extends Model
         $poster->save();
     }
 
+
+    /**
+     * Summary of updateAllPosterData
+     *  this functon will update all passed data associated with a poster. This
+     *  updates the posters, requests, jobs, transactions tables where applicable. 
+     *  If two tables have a column name which passed to the second parameter, both 
+     *  tables will be updated with that value. The database should be normalized
+     *  to prevent this. 
+     * @param mixed $id
+     * @param mixed $updateArray
+     * @return void
+     */
+    public static function updateAllPosterData($id, $updateArray)
+    {
+        //get poster object.
+        try{
+            self::updatePoster($id, $updateArray);
+            self::updateJobsRelationshipData($id, $updateArray);
+            self::updateRequestsRelationshipData($id, $updateArray);            
+        }
+        catch(ModelNotFoundException $e)
+        {
+            throw new Exception("Could not find model: $e");
+        }
+    }
+
+
+    public static function updateJobsRelationshipData($poster_id, $updateArray)
+    {
+        
+        $poster = Posters::findOrFail($poster_id);
+        $job = $poster->jobs;
+        //Should only be one job.
+        
+        $columnNames = Schema::getColumnListing('Jobs');
+        foreach ($updateArray as $key => $value)
+        {
+            Log::info("Attempting to Update job $job->id -- $key => $value");
+            if(in_array($key , $columnNames))
+            {
+                //Should check that key is valid
+                Log::info("Updating Poster job $job->id  -- $key => $value");
+                $job->$key = $value;
+            }
+        }
+        $job->save();
+    }
+
+
+    public static function updateRequestsRelationshipData($poster_id, $updateArray)
+    {
+        
+        $poster = Posters::findOrFail($poster_id);
+        $request = $poster->requests;
+        //Should only be one job.
+        $columnNames = Schema::getColumnListing('Requests');
+        foreach ($updateArray as $key => $value)
+        {
+            Log::info("Attempting to Update request $request->id -- $key => $value");
+            if(in_array($key , $columnNames))
+            {
+                //Should check that key is valid
+                Log::info("Updating request $request->id -- $key => $value");
+                $request->$key = $value;
+            }
+        }
+        $request->save();
+    }
+
+    public static function updateTransactionRelationshipData($poster_id, $updateArray)
+    {
+        
+        $poster = Posters::findOrFail($poster_id);
+        $transaction = $poster->transactions;
+        //Should only be one job.
+        
+        $columnNames = Schema::getColumnListing('Transactions');
+        foreach ($updateArray as $key => $value)
+        {
+            Log::info("Attempting to Update transaction $transaction->id -- $key => $value");
+            if(in_array($key , $columnNames))
+            {
+                //Should check that key is valid
+                Log::info("Updating Poster transaction $transaction->id  -- $key => $value");
+                $job->$key = $value;
+            }
+        }
+        $job->save();
+    }
+
+    {
+
+    }
     #endregion
 }
