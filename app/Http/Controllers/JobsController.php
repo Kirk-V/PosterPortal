@@ -67,7 +67,7 @@ class JobsController extends Controller
         $jobs = DB::table('Posters')
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
-            ->select('Posters.*', 'Requests.*', 'jobs.state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
+            ->select('Posters.*', 'Requests.*', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
         // return Posters::has('jobs')->with(['Jobs', 'Requests', 'transactions'])->get();
         return response($jobs);
     }
@@ -86,7 +86,7 @@ class JobsController extends Controller
             log::info("job is null");
             return response(["success" => False]);
         }
-        $job->state = $state;
+        $job->job_state = $state;
         $job->save();
         return response(["success" => True]);
     }
@@ -158,6 +158,7 @@ class JobsController extends Controller
         $poster->transactions()->save($transaction);
 
         Posters::updateAllPosterData($request->poster_id, $request->all());
+        return self::successResponse("Success", "Success");
     }
 
 

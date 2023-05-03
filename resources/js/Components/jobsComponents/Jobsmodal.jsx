@@ -61,7 +61,7 @@ function LoadedModal({ modalData, onHide, show }) {
 
     let updateState = (newState) => {
         //api call to update state
-        console.log(`calling update on job: ${jobsData.job_id} with valude:  ${newState}`);
+        console.log(`calling update on job: ${jobsData.job_id} with value:  ${newState}`);
         let options = {
             method: 'PUT',
             body: JSON.stringify({'job_id': jobsData.job_id, 'job_state': newState}),
@@ -142,6 +142,7 @@ function LoadedModal({ modalData, onHide, show }) {
 
     function handleShowRecieptChange()
     {
+        setshowingMakeTransaction(false);
         setShowingReceipt(!showingReceipt);
     }
 
@@ -159,7 +160,7 @@ function LoadedModal({ modalData, onHide, show }) {
 
 
     let PrepareReceipt = (
-        <JobForm jobsData={jobsData} dataUpdateHandler={handleDataUpdate}/>
+        <JobForm jobsData={jobsData} dataUpdateHandler={handleDataUpdate} handleShowReceipt={handleShowRecieptChange}/>
     )
 
 

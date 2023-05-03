@@ -66,10 +66,11 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 console.log("req data:");
                 console.log(`okay, Added Transaction Reply: ${JSON.stringify(response)}`);
                 // setRequest(response);
-                if(response.success)
+                if(response.status == "Success")
                 {
                     console.log("success, updating UI state");
                     //Call Show Receipt here
+                    handleShowReceipt();
                 }
     
             })
@@ -358,7 +359,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             <Form.Control
                                 type="number"
                                 name="total_received"
-                                defaultValue={jobsData.total}
+                                defaultValue={jobsData.total_received}
                                 onChange={(e) => handleControlChange(e)}
                                 required/>
                         </InputGroup>

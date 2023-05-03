@@ -176,11 +176,11 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 <View style={styles.rowView}>
                     <View style={styles.infoColumn}>
                         <Text style={styles.label}>Date</Text>
-                        <Text style={styles.value}>{jobData.print_date}</Text>
+                        <Text style={styles.value}>{jobData.transaction_date}</Text>
                     </View>
                     <View style={styles.infoColumn}>
                         <Text style={styles.label}>Technician</Text>
-                        <Text style={styles.value}>{jobData.print_date}</Text>
+                        <Text style={styles.value}>{jobData.technician}</Text>
                     </View>
                     <View style={styles.infoColumn}>
                         <Text style={styles.label}>Department</Text>

@@ -34,7 +34,7 @@ class Jobs extends Model
     {
         $job = new Jobs;
         $job->poster_id = $posterId;
-        $job->state = 'in_queue';
+        $job->job_state = 'in_queue';
         $job->technician = $technician;
         $job->save();
     }

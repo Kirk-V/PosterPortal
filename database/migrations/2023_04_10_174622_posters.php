@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('speed_code')->nullable();
             $table->boolean('speed_code_approved');
             $table->float('discount', 8, 2);
-            $table->float('cost', 8,2);
+            $table->float('cost', 8, 2);
             $table->string('file_location')->nullable();
         });
 
