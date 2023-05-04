@@ -40,7 +40,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         event.stopPropagation();
         if (form.checkValidity() === false) {
             console.log("not valid");
-            setValidated(true);
+            
         }
         else
         {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Card, Button, Form, Row, Col, Collapse, InputGroup, Accordion } from 'react-bootstrap';
-import { useState, useRef, useEffect } from 'react';
+import { Form, Button, Modal, Row, Col, Container, FormLabel, InputGroup, Accordion, Collapse, Card } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 
 
 function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
@@ -41,7 +41,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
         setAddCourseFormData({
             ...addCourseFormData,
             [e.target.name]: e.target.value
-        })
+        });
 
     }
 
@@ -66,21 +66,22 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     }
 
     const handleAddCourse = (event) => {
+        setValidated(true);
+        console.log("receiptform submitted");
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if(form.checkValidity() === false) {
+        if (form.checkValidity() === false) {
             console.log("not valid");
-            setValidated(true);
-            setAddCourseValidated(true);
+        }
+        else
+        {
+            //valid form send course infor to back end:
+            
         }
         
+        // 
         console.log(`form Data is: ${JSON.stringify(addCourseFormData)}`);
-        
-        // if (form.checkValidity() === false) {
-        //     console.log("not valid");
-        //     setValidated(true);
-        // }
     }
 
     let WithdrawalSection = (
@@ -113,28 +114,43 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     const Depts = ["SSTS", "Ths"];
 
     let addCourseForm = (
-        <Form noValidate validated={validated} onSubmit={(e) => updateAddCourseData(e)} >
-            <Form.Label>
-                Add Course
-            </Form.Label>
-            <InputGroup>
-                <Form.Select name="year" defaultValue={addCourseFormData?.year ?? ""}
-                            aria-label="Disabled input example"
-                            required>
-                    onChange={(e) => updateAddCourseData(e)} 
-                    {getDates(5).map((years) => (
-                        <option>{years}</option>)
-                    )}
-                </Form.Select>
-                <Form.Control onChange={(e) => updateAddCourseData(e)} placeholder='Number' type="text" name="number" required/>
-                <Form.Select onChange={(e) => updateAddCourseData(e)}  name="department" required> 
-                    {Depts.map((dept) => (
-                        <option>{dept}</option>)
-                    )}
-                </Form.Select>
-                <Form.Control onChange={(e) => updateAddCourseData(e)}  placeholder='Instructor' type="text" name="instructor" required/>
-                <Button type="submit" onClick={(e) => handleAddCourse(e)}> +</Button>
-            </InputGroup>
+        <Form noValidate validated={validated} onSubmit={handleAddCourse}>
+            <Row>
+                <Col>
+                    <Form.Label>Add Course</Form.Label>
+                    <InputGroup>
+                        <Form.Select 
+                            required
+                            name="year" 
+                            defaultValue={addCourseFormData?.year ?? ""}
+                            onChange={(e) => updateAddCourseData(e)}>
+                            {getDates(5).map((years) => (
+                                <option>{years}</option>)
+                            )}
+                        </Form.Select>
+                        <Form.Control
+                            onChange={(e) => updateAddCourseData(e)}
+                            placeholder='Number'
+                            type="text"
+                            name="number"
+                            required />
+                        <Form.Select
+                            onChange={(e) => updateAddCourseData(e)}
+                            name="department"
+                            required={true}>
+                            {Depts.map((dept) => (
+                                <option>{dept}</option>)
+                            )}
+                        </Form.Select>
+                        <Form.Control
+                            onChange={(e) => updateAddCourseData(e)}
+                            type="text"
+                            name="instructor"
+                            required />
+                        <Button type="submit"> +</Button>
+                    </InputGroup>
+                </Col>
+            </Row>
         </Form>
 
     )
@@ -150,7 +166,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                 </Row>
                 <Row>
                     <Col>
-                    {addCourseForm}
+                        {addCourseForm}
                     </Col>
                 </Row>
             </Accordion.Body>
@@ -178,10 +194,10 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                         </Col>
                     </Row>
                     <Row>
-                        {WithdrawalSection}
+                        {/* {WithdrawalSection} */}
                     </Row>
                     <Row>
-                        {DepositSection}
+                        {/* {DepositSection} */}
                     </Row>
                     <Row>
                         {CourseAccordion}
