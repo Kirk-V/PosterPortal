@@ -43,3 +43,8 @@ Route::controller(PosterController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::post('/posters/acceptPending', 'acceptPendingPoster');
 });
+
+Route::controller(CoursesController::class)->group(function (){
+    // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
+    Route::get('/courses/all', 'getAllCourses');
+});
