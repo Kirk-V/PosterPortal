@@ -1,7 +1,7 @@
 import React from 'react'
-import { Form, Button, Modal, Row, Col, Container, ListGroup, FormLabel, InputGroup, Accordion, Collapse, Card } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-
+import { Form, Button, Row, Col, InputGroup, Accordion, Collapse, Card } from 'react-bootstrap';
+import { useState} from 'react';
+import CourseList from './CourseList';
 
 function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     const [showDeposit, setShowDeposit] = useState(false);
@@ -11,31 +11,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     const [addCourseValidated, setAddCourseValidated] = useState(false);
     const [validated, setValidated] = useState(false);
     //Get Course Data On Load;
-    useEffect(() => {
-        let options = {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            },
-        }
-        fetch(`api/courses/all`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return res.json();
-            })
-            .then((response) => {
-                console.log("req data:");
-                console.log(`okay, Scourse Data is: ${JSON.stringify(response)}`);
-                if (response.status == "success") {
-                    setCourseData(response.data);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+
 
     const updateAddCourseData = (e) => {
         setAddCourseFormData({
@@ -125,7 +101,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                             defaultValue={addCourseFormData?.year ?? ""}
                             onChange={(e) => updateAddCourseData(e)}>
                             {getDates(5).map((years) => (
-                                <option>{years}</option>)
+                                <option key={years} value={years}>{years}</option>)
                             )}
                         </Form.Select>
                         <Form.Control
@@ -139,7 +115,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                             name="department"
                             required={true}><option disabled="disabled" value="" selected="selected">Select One</option>
                             {Depts.map((dept) => (
-                                <option value={dept}>{dept}</option>)
+                                <option value={dept} key={dept}>{dept}</option>)
                             )}
                         </Form.Select>
                         <Form.Control
@@ -155,22 +131,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
 
     )
 
-    let CourseList = (
-        <ListGroup>
-            <ListGroup.Item>
-                <Row>
-                    <Col>
-                        1923.2323
-                    </Col>
-                    <Col>Dept
-                    </Col>
-                    <Col className="d-flex justify-content-end">
-                        <Button variant="danger">del</Button>
-                    </Col>
-                </Row>
-            </ListGroup.Item>
-        </ListGroup>
-    )
+
 
     let CourseAccordion = (
         <Accordion className="mt-2 p-0" >
@@ -191,10 +152,10 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                     </Col>
                 </Row>
                 <Row className="mt-1">
-                        <Col>
-                            {CourseList}
-                        </Col>
-                    </Row>
+                    <Col>
+                        {CourseList}
+                    </Col>
+                </Row>
             </Accordion.Body>
         </Accordion>
     )
