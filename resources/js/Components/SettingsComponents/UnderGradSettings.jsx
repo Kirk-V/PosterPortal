@@ -77,11 +77,11 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
         else
         {
             //valid form send course infor to back end:
-            
+            console.log(`form Data is: ${JSON.stringify(addCourseFormData)}`);
         }
         
         // 
-        console.log(`form Data is: ${JSON.stringify(addCourseFormData)}`);
+        
     }
 
     let WithdrawalSection = (
@@ -137,9 +137,9 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                         <Form.Select
                             onChange={(e) => updateAddCourseData(e)}
                             name="department"
-                            required={true}>
+                            required={true}><option disabled="disabled" value="" selected="selected">Select One</option>
                             {Depts.map((dept) => (
-                                <option>{dept}</option>)
+                                <option value={dept}>{dept}</option>)
                             )}
                         </Form.Select>
                         <Form.Control
