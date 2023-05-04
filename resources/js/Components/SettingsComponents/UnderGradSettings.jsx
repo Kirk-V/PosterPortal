@@ -113,7 +113,8 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                         <Form.Select
                             onChange={(e) => updateAddCourseData(e)}
                             name="department"
-                            required={true}><option disabled="disabled" value="" selected="selected">Select One</option>
+                            defaultValue={""}
+                            required={true}><option disabled="disabled" value="">Select One</option>
                             {Depts.map((dept) => (
                                 <option value={dept} key={dept}>{dept}</option>)
                             )}
@@ -153,7 +154,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                 </Row>
                 <Row className="mt-1">
                     <Col>
-                        {CourseList}
+                        <CourseList/>
                     </Col>
                 </Row>
             </Accordion.Body>

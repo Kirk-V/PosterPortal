@@ -1,8 +1,8 @@
 import React from 'react'
-import { useEffect } from 'react';
-import { Button, Row, Col, ListGroup } from 'react-bootstrap';
-export default function CourseList({ courseName, courseNumber, courseYear, courseInstructor }) {
-    const [allCourses, setAllCourses] = setState(null);
+import { useEffect, useState } from 'react';
+import { Button, Row, Col, ListGroup, Placeholder } from 'react-bootstrap';
+export default function CourseList({ }) {
+    const [allCourses, setAllCourses] = useState(null);
 
     // Fetch all course
     useEffect(() => {
@@ -36,20 +36,22 @@ export default function CourseList({ courseName, courseNumber, courseYear, cours
                 <Row>
                     <Col>
                         <Placeholder as="p" animation="glow">
-                            <Placeholder xs={2} />
+                            <Placeholder as="p" animation="glow" xs={12} />
                         </Placeholder>
                     </Col>
                     <Col>
-                        <Placeholder as="p" animation="glow">
-                            <Placeholder xs={3} />
+                    <Placeholder as="p" animation="glow">
+                            <Placeholder xs={12} />
                         </Placeholder>
                     </Col>
                     <Col className="d-flex justify-content-end">
-                        <Button variant="danger">del</Button>
+                        <Placeholder as="p" animation="glow">
+                            <Placeholder xs={12}/>
+                        </Placeholder>
+                        {/* <Button variant="danger">del</Button> */}
                     </Col>
                 </Row>
             </ListGroup.Item>
         </ListGroup>
-
     )
 }
