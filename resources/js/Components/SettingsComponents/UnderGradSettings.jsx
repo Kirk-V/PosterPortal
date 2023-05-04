@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button, Modal, Row, Col, Container, FormLabel, InputGroup, Accordion, Collapse, Card } from 'react-bootstrap';
+import { Form, Button, Modal, Row, Col, Container, ListGroup, FormLabel, InputGroup, Accordion, Collapse, Card } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 
 
@@ -155,6 +155,23 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
 
     )
 
+    let CourseList = (
+        <ListGroup>
+            <ListGroup.Item>
+                <Row>
+                    <Col>
+                        1923.2323
+                    </Col>
+                    <Col>Dept
+                    </Col>
+                    <Col className="d-flex justify-content-end">
+                        <Button variant="danger">del</Button>
+                    </Col>
+                </Row>
+            </ListGroup.Item>
+        </ListGroup>
+    )
+
     let CourseAccordion = (
         <Accordion className="mt-2 p-0" >
             <Accordion.Header className="bg-secondary bg-opacity-25">Undergrad Courses</Accordion.Header>
@@ -169,9 +186,19 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                         {addCourseForm}
                     </Col>
                 </Row>
+                <Row className="mt-2">
+                    <Col>All Classes
+                    </Col>
+                </Row>
+                <Row className="mt-1">
+                        <Col>
+                            {CourseList}
+                        </Col>
+                    </Row>
             </Accordion.Body>
         </Accordion>
     )
+
 
 
 
@@ -202,6 +229,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                     <Row>
                         {CourseAccordion}
                     </Row>
+                    
 
                 </Card.Body>
             </Card>
