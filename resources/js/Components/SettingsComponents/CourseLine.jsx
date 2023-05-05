@@ -6,11 +6,6 @@ import { Button, Row, Col } from 'react-bootstrap';
 export default function CourseLine({data, handleDelete}) {
     const [courseData, setCourseData] = useState(data);
 
-    const handleRemove = (e) =>
-    {
-
-    }
-
     return (
         <Row className="justify-content-between p-1 border-bottom">
             <Col xs={3}>
@@ -21,7 +16,7 @@ export default function CourseLine({data, handleDelete}) {
                 {courseData.department}
             </Col>
             <Col xs={3} className="d-flex justify-content-end">
-                <Button>Delete</Button>
+                <Button onClick={(e) => handleDelete(courseData)}>Delete</Button>
             </Col>
         </Row>
     )

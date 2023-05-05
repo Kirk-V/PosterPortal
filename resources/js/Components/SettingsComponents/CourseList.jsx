@@ -82,17 +82,25 @@ export default function CourseList({}) {
 
 export function CourseLines({ courseData }) {
     const [allCourses, setAllCourses] = useState(courseData);
+    console.log(JSON.stringify(allCourses));
+
 
     const deleteCourse = (courseData) => {
-        if(!(courseData in allCourses))
+        //Get object index if it exists
+        let index = allCourses.findIndex(function(course, i){
+            return courseData === course
+        });
+        console.log(index);
+
+        if(!allCourses.some(course => course === courseData))
         {
-            console.log("Course not found for deletion");
+            console.log("Course not found for deletion "+JSON.stringify(courseData));
             return;
         }
         let options = {
             method: "DELETE",
         }
-        fetch(`/api/courses/Delete&id=${courseData.course_id}`)
+        fetch(`api/courses/delete?id=${courseData.course_id}`, options)
         .then((res) => {
             if (!res.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -103,9 +111,10 @@ export function CourseLines({ courseData }) {
             console.log("req data:");
             // console.log(`okay, Scourse Data is: ${JSON.stringify(response)}`);
             if (response.status == "Success") {
-                console.log("setting course data");
-                setAllCourses(response.data);
-                setLoadedCourses(true);
+                console.log("Deleted Course");
+                delete allCourses[index];
+                let newCourse = [...allCourses];
+                setAllCourses(newCourse);
             }
         })
         .catch((error) => {
@@ -116,8 +125,8 @@ export function CourseLines({ courseData }) {
     console.log("showing course lines");
     return (
         <>
-            {courseData.map((c) => (
-                <CourseLine data={c} />
+            {allCourses.map((c) => (
+                <CourseLine key={c.course_id} data={c} handleDelete={deleteCourse}/>
             ))}
         </>
     );

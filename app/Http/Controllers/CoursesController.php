@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Courses;
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class CoursesController extends Controller
 {
@@ -26,6 +28,7 @@ class CoursesController extends Controller
 
     static function errorResponse($message = null, $code)
     {
+        log::notice("Error in Courses Controller: $message");
         return response()->json([
             'status' => 'Error',
             'message' => $message,
@@ -59,6 +62,26 @@ class CoursesController extends Controller
             return self::errorResponse("Could not get courses", 400);
         }
         return self::successResponse($course, "success", 200);
+
+    }
+
+    public function deleteCourse(Request $request)
+    {
+        log::info("request here");
+        try{
+            $id = $request->query('id');
+            if(is_null($id))
+            {
+                self::errorResponse("No course with provided id", 400);
+            }
+            $course = Courses::find($id);
+            $course->delete();
+            return self::successResponse($id,"Successfully deleted", 200);
+        }
+        catch(Exception $e)
+        {
+            return self::errorResponse($e, 400);
+        }
 
     }
 

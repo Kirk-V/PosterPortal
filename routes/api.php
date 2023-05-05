@@ -48,4 +48,5 @@ Route::controller(PosterController::class)->group(function (){
 Route::controller(CoursesController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/courses/all', 'getAllCoursesJson');
+    Route::delete('/courses/delete', 'deleteCourse');
 });
