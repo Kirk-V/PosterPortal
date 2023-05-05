@@ -9,9 +9,28 @@ class CoursesController extends Controller
 {
     //
 
+
     public function getAllCourses()
     {
         return Courses::all();
+    }
+
+    static function successResponse($data, $message = null, $code = 200)
+    {
+        return response()->json([
+            'status' => 'Success',
+            'message' => $message,
+            'data' => $data
+        ], $code);
+    }
+
+    static function errorResponse($message = null, $code)
+    {
+        return response()->json([
+            'status' => 'Error',
+            'message' => $message,
+            'data' => null
+        ], $code);
     }
 
     public function getAllCoursesInYear($year)
@@ -30,6 +49,17 @@ class CoursesController extends Controller
         {
             return response()->json(['success'=>true]);
         }
+    }
+
+    public function getAllCoursesJson()
+    {
+        $course = Courses::all();
+        if(is_null($course))
+        {
+            return self::errorResponse("Could not get courses", 400);
+        }
+        return self::successResponse($course, "success", 200);
+
     }
 
 }

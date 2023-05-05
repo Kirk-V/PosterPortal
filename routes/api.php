@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\JobsController;
-use App\Http\Controllers\PosterController;
-use App\Http\Controllers\SettingsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobsController;
+use App\Http\Controllers\PosterController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,5 +47,5 @@ Route::controller(PosterController::class)->group(function (){
 
 Route::controller(CoursesController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
-    Route::get('/courses/all', 'getAllCourses');
+    Route::get('/courses/all', 'getAllCoursesJson');
 });

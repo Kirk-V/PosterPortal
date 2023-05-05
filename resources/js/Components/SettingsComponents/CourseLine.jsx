@@ -1,17 +1,18 @@
 import React from 'react'
 import { useState } from 'react'
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 
-export default function CourseLine({data}) {
+
+export default function CourseLine({data, handleDelete}) {
     const [courseData, setCourseData] = useState(data);
 
-    const handleDataUpdate = (e) =>
+    const handleRemove = (e) =>
     {
 
     }
 
     return (
-        <Row className="justify-content-between">
+        <Row className="justify-content-between p-1 border-bottom">
             <Col xs={3}>
                 {courseData.year}
                 {courseData.number}

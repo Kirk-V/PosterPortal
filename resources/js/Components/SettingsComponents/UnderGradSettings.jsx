@@ -55,9 +55,9 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
             //valid form send course infor to back end:
             console.log(`form Data is: ${JSON.stringify(addCourseFormData)}`);
         }
-        
-        // 
-        
+
+        //
+
     }
 
     let WithdrawalSection = (
@@ -95,9 +95,9 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                 <Col>
                     <Form.Label>Add Course</Form.Label>
                     <InputGroup>
-                        <Form.Select 
+                        <Form.Select
                             required
-                            name="year" 
+                            name="year"
                             defaultValue={addCourseFormData?.year ?? ""}
                             onChange={(e) => updateAddCourseData(e)}>
                             {getDates(5).map((years) => (
@@ -191,7 +191,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                     <Row>
                         {CourseAccordion}
                     </Row>
-                    
+
 
                 </Card.Body>
             </Card>
