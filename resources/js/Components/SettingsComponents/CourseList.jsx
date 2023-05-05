@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, Row, Col, ListGroup, Placeholder } from 'react-bootstrap';
 export default function CourseList({ }) {
     const [allCourses, setAllCourses] = useState(null);
+    const [loadedCourses, setLoadedCourses] = useState(false);
 
     // Fetch all course
     useEffect(() => {
@@ -30,27 +31,55 @@ export default function CourseList({ }) {
                 console.log(error);
             });
     }, []);
+
+    let unLoadedLine = (
+        <Row className="justify-content-between">
+            <Col xs={3}>
+                <Placeholder xs={9}/>
+                <Placeholder xs={12}/>
+            </Col>
+            <Col xs={5}>
+                <Placeholder xs={12}><br></br></Placeholder>
+            </Col>
+            <Col xs={3} className="d-flex justify-content-end">
+                <Placeholder.Button xs={12} aria-hidden="true" />
+            </Col>
+        </Row>
+    )
+
+    const handleCourseDelete = (courseData) =>
+    {
+        console.log("delete this course")
+    }
+
+    let line = (
+        <Row className="justify-content-between">
+        <Col xs={3}>
+            <Placeholder xs={9}/>
+            <Placeholder xs={12}/>
+        </Col>
+        <Col xs={5}>
+            <Placeholder xs={12}><br></br></Placeholder>
+        </Col>
+            <Col xs={3} className="d-flex justify-content-end">
+                <Placeholder.Button xs={12} aria-hidden="true" />
+            </Col>
+        </Row>
+    )
+
+    let loadedLines =
+    (
+        <>
+            {allCourses.map()}
+        </>
+
+    )
+
     return (
         <ListGroup>
             <ListGroup.Item>
-                <Row>
-                    <Col>
-                        <Placeholder as="p" animation="glow">
-                            <Placeholder as="p" animation="glow" xs={12} />
-                        </Placeholder>
-                    </Col>
-                    <Col>
-                    <Placeholder as="p" animation="glow">
-                            <Placeholder xs={12} />
-                        </Placeholder>
-                    </Col>
-                    <Col className="d-flex justify-content-end">
-                        <Placeholder as="p" animation="glow">
-                            <Placeholder xs={12}/>
-                        </Placeholder>
-                        {/* <Button variant="danger">del</Button> */}
-                    </Col>
-                </Row>
+                {loadedCourses ? null : unLoadedLine}
+
             </ListGroup.Item>
         </ListGroup>
     )
