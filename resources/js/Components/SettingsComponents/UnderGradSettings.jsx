@@ -77,6 +77,7 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
         allSettings.undergrad = !allSettings.undergrad;
         let newSettings = {...allSettings};
         setAllSettings(newSettings);
+        updateSetting('undergrad', allSettings.undergrad == true? 1:0);
         console.log(`accept ugrad set to : ${allSettings.undergrad}`)
     }
 
