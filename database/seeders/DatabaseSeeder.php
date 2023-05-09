@@ -38,5 +38,9 @@ class DatabaseSeeder extends Seeder
             'setting' => 'cost',
             'value' => 5.5
         ]);
+        DB::table('settings')->insert([
+            'setting' => 'undergrad',
+            'value' => True
+        ]);
     }
 }

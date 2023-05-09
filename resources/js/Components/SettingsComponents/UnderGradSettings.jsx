@@ -13,7 +13,8 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     const [allSettings, setAllSettings] = useState(settingsData);
     //Get Course Data On Load;
 
-    console.log(`all settings data: ${JSON.stringify(allSettings)}`);
+
+
     const updateAddCourseData = (e) => {
         setAddCourseFormData({
             ...addCourseFormData,
@@ -62,14 +63,14 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     }
 
     const handleUpdateCost = (event) => {
-
+        handleSettingUpdate('cost', allSettings.cost);
     }
 
     const handleCostChange = (event) => {
         let newCost = event.target.value;
         console.log(newCost);
-        allSettings.cost = newCost;
-        console.log(`all settings cst set to : ${allSettings.cost}`)
+        allSettings["cost"] = newCost;
+        console.log(`all settings cst set to : ${allSettings["cost"]}`)
     }
 
     let WithdrawalSection = (
