@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, InputGroup, Accordion, Collapse, Card } from 'r
 import { useState} from 'react';
 import CourseList from './CourseList';
 
-function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
+function UnderGradSettingsCard({ settingsData, updateSetting }) {
     const [showDeposit, setShowDeposit] = useState(false);
     const [showWithdrawal, setShowWithdrawal] = useState(false);
     const [courseData, setCourseData] = useState(null);
@@ -63,7 +63,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     }
 
     const handleUpdateCost = (event) => {
-        handleSettingUpdate('cost', allSettings.cost);
+        updateSetting('cost', allSettings.cost);
     }
 
     const handleCostChange = (event) => {

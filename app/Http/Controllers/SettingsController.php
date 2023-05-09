@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class SettingsController extends Controller
@@ -34,8 +35,22 @@ class SettingsController extends Controller
 
     static function upateSetting(Request $request)
     {
-        $setting = $request->setting;
+        Log::info("update setting");
+        $settingToUpdate = $request->setting;
         $newValue = $request->value;
+        $setting = Settings::where("setting", $settingToUpdate)->update(['value' => floatval($newValue)]);
+        if(!is_null($setting))
+        {
+
+            // $setting->update(['value' => $newValue]);
+            // $setting->save();
+            // Log::info("Updating setting $setting with value ".$setting->value);
+            return self::successResponse("", "Updated Setting $settingToUpdate to $newValue");
+        }
+        else{
+            return self::errorResponse("Could not find the setting: $settingToUpdate to update", 400);
+        }
+        
         
 
     }

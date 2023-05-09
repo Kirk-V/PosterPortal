@@ -75,7 +75,7 @@ function AllSettings() {
         <Row className="mt-3">
             <Col xs={6}>
 
-                {settingsDataIsLoaded ?  <UnderGradSettingsCard settingsData={settingsData} handleSettingUpdate={handleSettingUpdate}/> : <h1>not loaded</h1>}
+                {settingsDataIsLoaded ?  <UnderGradSettingsCard settingsData={settingsData} updateSetting={updateASetting}/> : <h1>not loaded</h1>}
             </Col>
         </Row>
             

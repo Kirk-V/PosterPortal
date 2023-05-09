@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(SettingsController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/settings/all', 'getAllSettings');
+    Route::put('settings/update', 'upateSetting');
 });
 
 Route::controller(JobsController::class)->group(function (){
@@ -49,4 +50,5 @@ Route::controller(CoursesController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/courses/all', 'getAllCoursesJson');
     Route::delete('/courses/delete', 'deleteCourse');
+    
 });
