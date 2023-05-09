@@ -73,6 +73,13 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
         console.log(`all settings cst set to : ${allSettings["cost"]}`)
     }
 
+    const toggleUndergradRequests = (event) => {
+        allSettings.undergrad = !allSettings.undergrad;
+        let newSettings = {...allSettings};
+        setAllSettings(newSettings);
+        console.log(`accept ugrad set to : ${allSettings.undergrad}`)
+    }
+
     let WithdrawalSection = (
         <><Collapse in={showWithdrawal} className="mt-3">
             <InputGroup className="mt-3">
@@ -191,6 +198,20 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
         </Form>
     )
 
+    let UndergradToggleSection = (
+        <Row className="mt-3">
+            <Col>
+            <Form.Check 
+                type="switch"
+                id="custom-switch"
+                label="Accept Undergrad Requestss"
+                checked={allSettings.undergrad}
+                onChange={toggleUndergradRequests}
+            />
+            </Col>
+        </Row>
+    )
+
 
     return (
         <>
@@ -221,6 +242,9 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
                     </Row>
                     <Row>
                         {UndergradDiscountSection}
+                    </Row>
+                    <Row>
+                        {UndergradToggleSection}
                     </Row>
 
 
