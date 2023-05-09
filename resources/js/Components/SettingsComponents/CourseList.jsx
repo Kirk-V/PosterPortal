@@ -112,9 +112,10 @@ export function CourseLines({ courseData }) {
             // console.log(`okay, Scourse Data is: ${JSON.stringify(response)}`);
             if (response.status == "Success") {
                 console.log("Deleted Course");
-                delete allCourses[index];
-                let newCourse = [...allCourses];
-                setAllCourses(newCourse);
+                
+                let newCourses = [...allCourses];
+                newCourses.splice(index, 1);
+                setAllCourses(newCourses);
             }
         })
         .catch((error) => {
