@@ -42,5 +42,9 @@ class DatabaseSeeder extends Seeder
             'setting' => 'undergrad',
             'value' => True
         ]);
+        DB::table('settings')->insert([
+            'setting' => 'external',
+            'value' => True
+        ]);
     }
 }
