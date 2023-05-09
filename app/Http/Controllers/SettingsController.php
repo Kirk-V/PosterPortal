@@ -34,6 +34,9 @@ class SettingsController extends Controller
 
     static function upateSetting(Request $request)
     {
-        $request->
+        $setting = $request->setting;
+        $newValue = $request->value;
+        
+
     }
 }

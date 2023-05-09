@@ -61,10 +61,6 @@ class RequestsController extends Controller
     }
 
 
-    public function updateRequest()
-    {
-
-    }
 
     /**
      * Summary of rejectRequest
@@ -95,17 +91,6 @@ class RequestsController extends Controller
         }
     }
 
-    public function getFormData(){
-        //for front end form
-    }
-
-    public function acceptRequest(){
-
-    }
-
-    public function requestIsReady(){
-
-    }
 
     // This function should retrieve all posters that have a pending state. These posters are joined with Requests
     // such that they can be sent to the front-end for changes
