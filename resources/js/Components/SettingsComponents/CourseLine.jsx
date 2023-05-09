@@ -16,7 +16,7 @@ export default function CourseLine({data, handleDelete}) {
                 {courseData.department}
             </Col>
             <Col xs={3} className="d-flex justify-content-end">
-                <Button onClick={(e) => handleDelete(courseData)}>Delete</Button>
+                <Button variant={"danger"} onClick={(e) => handleDelete(courseData)}>Delete</Button>
             </Col>
         </Row>
     )

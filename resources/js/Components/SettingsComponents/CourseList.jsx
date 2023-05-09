@@ -82,7 +82,6 @@ export default function CourseList({}) {
 
 export function CourseLines({ courseData }) {
     const [allCourses, setAllCourses] = useState(courseData);
-    console.log(JSON.stringify(allCourses));
 
 
     const deleteCourse = (courseData) => {

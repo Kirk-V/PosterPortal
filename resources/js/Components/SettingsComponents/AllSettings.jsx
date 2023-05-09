@@ -7,7 +7,6 @@ import UnderGradSettingsCard from './UnderGradSettings';
 function AllSettings() {
     const [settingsData, setSettingsData] = useState(null);
 
-
     useEffect(() => {
         let options = {
             method: 'GET',

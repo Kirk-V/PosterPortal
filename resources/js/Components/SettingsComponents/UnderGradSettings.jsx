@@ -10,9 +10,10 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     const [addCourseFormData, setAddCourseFormData] = useState(null);
     const [addCourseValidated, setAddCourseValidated] = useState(false);
     const [validated, setValidated] = useState(false);
+    const [allSettings, setAllSettings] = useState(settingsData);
     //Get Course Data On Load;
 
-
+    console.log(`all settings data: ${JSON.stringify(allSettings)}`);
     const updateAddCourseData = (e) => {
         setAddCourseFormData({
             ...addCourseFormData,
@@ -60,6 +61,17 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
 
     }
 
+    const handleUpdateCost = (event) => {
+
+    }
+
+    const handleCostChange = (event) => {
+        let newCost = event.target.value;
+        console.log(newCost);
+        allSettings.cost = newCost;
+        console.log(`all settings cst set to : ${allSettings.cost}`)
+    }
+
     let WithdrawalSection = (
         <><Collapse in={showWithdrawal} className="mt-3">
             <InputGroup className="mt-3">
@@ -93,7 +105,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
         <Form noValidate validated={validated} onSubmit={handleAddCourse}>
             <Row>
                 <Col>
-                    <Form.Label>Add Course</Form.Label>
+                    <Form.Label className="fw-bold">Add Course</Form.Label>
                     <InputGroup>
                         <Form.Select
                             required
@@ -161,7 +173,22 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
         </Accordion>
     )
 
-
+    let UndergradDiscountSection = (
+        <Form noValidate validated={validated}>
+            <Row>
+                <Col>
+                    <Form.Label className="fw-bold">Undergrad Discount (Per Poster Amount)</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>$</InputGroup.Text>
+                        <Form.Control
+                            type="number"
+                            onChange={handleCostChange} />
+                        <Button onClick={handleUpdateCost}>Update</Button>
+                    </InputGroup>
+                </Col>
+            </Row>
+        </Form>
+    )
 
 
     return (
@@ -172,7 +199,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                 </Card.Header>
                 <Card.Body>
                     <Row>
-                        <Col xs={6}>
+                        <Col xs={6} className="fw-bold">
                             Remaining SDF: { }
                         </Col>
                         <Col xs={3}>
@@ -183,13 +210,16 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                         </Col>
                     </Row>
                     <Row>
-                        {/* {WithdrawalSection} */}
+                        {WithdrawalSection}
                     </Row>
                     <Row>
-                        {/* {DepositSection} */}
+                        {DepositSection}
                     </Row>
                     <Row>
                         {CourseAccordion}
+                    </Row>
+                    <Row>
+                        {UndergradDiscountSection}
                     </Row>
 
 
