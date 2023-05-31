@@ -68,7 +68,7 @@ return new class extends Migration
             $table->id('job_id');
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->string('technician');
-            $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'on_hold', 'cancelled']);
+            $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'picked_up', 'on_hold', 'cancelled']);
             $table->date('print_date')->nullable();
             $table->boolean('emailed_receipt_req')->default(false);
             $table->boolean('emailed_receipt_grant_holder')->default(false);

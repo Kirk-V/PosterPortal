@@ -101,6 +101,42 @@ function LoadedModal({ modalData, onHide, show }) {
         console.log("state being updated to " + newState);
     };
 
+
+    let sendPickUpNotice = () => {
+        let options = {
+            method: 'PUT',
+            headers: {
+                // the content type header value is usually auto-set
+                // depending on the request body
+                "Content-Type": 'application/json',
+                'Accept': 'application/json'
+              },
+        }
+        fetch(`api/jobs/sendPickUpEmail?id=${jobsData.poster_id}`, options)
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return res.json()
+        })
+        .then((response) => {
+            console.log("req data:");
+            console.log(`okay, Send Email reply: ${JSON.stringify(response)}`);
+            // setRequest(response);
+            if(response.success)
+            {
+                console.log("successfully sent pick up notice");
+                updateState('pending_pickup');
+                // jobsData.state = newState;
+            }
+
+        },
+        (error) => {
+            console.log(error);
+        }
+        )
+    }
+
     function handleDataUpdate(newData)
     {
         setJobsData(newData);
@@ -121,19 +157,14 @@ function LoadedModal({ modalData, onHide, show }) {
         setShowingReceipt(false);
     }
 
-    function handleSendPickupNotice(){
-
-    }
-
     const InQueueState = (
         <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
-
     );
 
     const InPrintedState = (
         <>
             <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
-            <Button variant="info" onClick={() =>updateState('pending_pickup')}>Send Pick-up Notice</Button>
+            <Button variant="info" onClick={() => sendPickUpNotice()}>Send Pick-up Notice</Button>
         </>
     )
 
@@ -141,7 +172,7 @@ function LoadedModal({ modalData, onHide, show }) {
         <>
         <Button variant="info" >Picked Up</Button>
         <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
-        <Button variant="info" onClick={handleSendPickupNotice}>Resend Pick-up Notice</Button>
+        <Button variant="info" onClick={() => sendPickUpNotice()}>Resend Pick-up Notice</Button>
         </>
     )
 
