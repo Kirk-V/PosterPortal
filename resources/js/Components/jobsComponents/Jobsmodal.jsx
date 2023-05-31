@@ -121,19 +121,27 @@ function LoadedModal({ modalData, onHide, show }) {
         setShowingReceipt(false);
     }
 
+    function handleSendPickupNotice(){
+
+    }
+
     const InQueueState = (
         <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
 
     );
 
     const InPrintedState = (
-        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+        <>
+            <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+            <Button variant="info" onClick={() =>updateState('pending_pickup')}>Send Pick-up Notice</Button>
+        </>
     )
 
     const InPendingPickUpState = (
         <>
         <Button variant="info" >Picked Up</Button>
         <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+        <Button variant="info" onClick={handleSendPickupNotice}>Resend Pick-up Notice</Button>
         </>
     )
 
