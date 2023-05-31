@@ -123,7 +123,7 @@ function LoadedModal({ modalData, onHide, show }) {
             console.log("req data:");
             console.log(`okay, Send Email reply: ${JSON.stringify(response)}`);
             // setRequest(response);
-            if(response.success)
+            if(response.status == "Success")
             {
                 console.log("successfully sent pick up notice");
                 updateState('pending_pickup');

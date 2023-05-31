@@ -93,6 +93,16 @@ class JobsController extends Controller
     }
 
 
+    public function sendPickUpEmail(Request $request)
+    {
+        $poster_id = $request->query('id');
+        ///get the requisitioner email to send the notification
+        $req_email = Posters::find($poster_id)->requests->email;
+        log::info("Pick up Email being sent to $req_email for poster: $poster_id");
+        return self::successResponse("none");
+    }
+
+
     /**
      * Summary of emailPDF
      *      Uses query parameters to find the appropriate job and recipient of
