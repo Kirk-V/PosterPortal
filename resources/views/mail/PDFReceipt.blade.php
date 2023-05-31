@@ -1,4 +1,4 @@
-<h3>Hello {{$poster_id}}</h3>
+<h3>Hello</h3>
 <p>Please find the attached poster printing receipt</p>
 <p>Kind Regards,</p>
 <br>

@@ -241,7 +241,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             method: 'POST',
             body: bodydata
         }
-        fetch(`api/jobs/sendPDFEmail?id=${jobData.job_id}&to=${to}`, options)
+        fetch(`api/jobs/sendPDFEmail?id=${jobData.poster_id}&to=${to}`, options)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -255,6 +255,18 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 console.log("Error : " + error);
             })
     }
+
+    const handleRedactClick = () => {
+        setRedactSpeedCode(true);
+    }
+
+    const emailReqBtn = (
+        <Button variant={jobData.emailed_receipt_req ? "primary": "danger"} className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
+    )
+
+    const redactSpeedCodeBtn = (
+        <Button className="" onClick={() => handleRedactClick()}>Redact SpeedCode</Button>
+    )
 
 
 
@@ -270,7 +282,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         {MyDocument}
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
-                        <Button variant={jobData.emailed_receipt_req ? "primary": "danger"} className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
+                        {jobData.payment_method == 'speedcode' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
                         <Button variant={jobData.emailed_receipt_grant_holder ? "primary": "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
                         <Button variant={jobData.emailed_receipt_ssts ? "primary": "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
                     </div>

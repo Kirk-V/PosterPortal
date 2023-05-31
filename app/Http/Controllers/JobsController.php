@@ -111,18 +111,25 @@ class JobsController extends Controller
         if (is_null($recipientType) || is_null($poster_id)) {
             return self::errorResponse("Cannot create PDF with provided query string", 400);
         }
+
+        //Get poster
+        $poster = Posters::find($poster_id);
+        
         switch (strtolower($recipientType)) {
             case "requisitioner":
-                Jobs::emailReceiptRequisitioner($poster_id);
+                $toAddress = $poster->requests->email;
+                // Jobs::emailReceiptRequisitioner($poster_id);
                 break;
-            case "grandholder":
-                Jobs::emailReceiptGrantHolder($poster_id);
+            case "grantholder":
+                $toAddress = $poster->requests->grant_holder_email;
+                // Jobs::emailReceiptGrantHolder($poster_id);
                 break;
             case "adminassistant":
-                Jobs::emailReceiptSSTSAdminAssistant($poster_id);
+                $toAddress = "ssts-posterreceipts@groups.uwo.ca";
+                // Jobs::emailReceiptSSTSAdminAssistant($poster_id);
                 break;
         }
-        log::info("Email to $recipientType request for $poster_id");
+        log::info("Email to $toAddress request for $poster_id");
         // log::info($request->getContent());
         file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent());
         Mail::to("kvande85@uwo.ca")->send(new PDFMail($poster_id, $recipientType));
