@@ -261,7 +261,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
     }
 
     const emailReqBtn = (
-        <Button variant={jobData.emailed_receipt_req ? "primary": "danger"} className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
+        <Button variant={jobData.emailed_receipt_req == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
     )
 
     const redactSpeedCodeBtn = (
@@ -283,8 +283,8 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
                         {jobData.payment_method == 'speedcode' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
-                        <Button variant={jobData.emailed_receipt_grant_holder ? "primary": "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
-                        <Button variant={jobData.emailed_receipt_ssts ? "primary": "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
+                        <Button variant={jobData.emailed_receipt_grant_holder == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        <Button variant={jobData.emailed_receipt_ssts == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
                     </div>
                 </div>
 
