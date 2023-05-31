@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PickUpNotice;
 use App\Models\Transactions;
 use Exception;
 use App\Models\Jobs;
@@ -93,12 +94,19 @@ class JobsController extends Controller
     }
 
 
+    /**
+     * Summary of sendPickUpEmail
+     *  Function to send a pick up notice to the user associated with the poster ID in the Request query param
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function sendPickUpEmail(Request $request)
     {
         $poster_id = $request->query('id');
         ///get the requisitioner email to send the notification
         $req_email = Posters::find($poster_id)->requests->email;
         log::info("Pick up Email being sent to $req_email for poster: $poster_id");
+        Mail::to("kvande85@uwo.ca")->send(new PickUpNotice());
         return self::successResponse("none");
     }
 
