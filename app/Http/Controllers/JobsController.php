@@ -68,7 +68,7 @@ class JobsController extends Controller
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
             ->leftJoin('Transactions', 'Posters.poster_id', 'Transactions.poster_id')
-            ->select('Posters.*', 'Requests.*', 'Transactions.*', 'jobs.poster_id', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
+            ->select('Posters.*', 'Requests.*', 'Transactions.*', 'jobs.poster_id', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id', 'jobs.emailed_receipt_req','jobs.emailed_receipt_grant_holder','jobs.emailed_receipt_ssts')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
         // return Posters::has('jobs')->with(['Jobs', 'Requests', 'transactions'])->get();
         return response($jobs);
     }
@@ -159,8 +159,6 @@ class JobsController extends Controller
         // $poster->transactions()->save($transaction);
 
         $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
-
-
         Posters::updateAllPosterData($request->poster_id, $request->all());
         return self::successResponse("Success", "Success");
     }

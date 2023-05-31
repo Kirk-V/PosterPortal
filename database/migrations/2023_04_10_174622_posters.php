@@ -70,6 +70,9 @@ return new class extends Migration
             $table->string('technician');
             $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'on_hold', 'cancelled']);
             $table->date('print_date')->nullable();
+            $table->boolean('emailed_receipt_req')->default(false);
+            $table->boolean('emailed_receipt_grant_holder')->default(false);
+            $table->boolean('emailed_receipt_ssts')->default(false);
         });
 
 

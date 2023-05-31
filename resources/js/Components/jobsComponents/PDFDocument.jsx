@@ -1,8 +1,10 @@
 import React from 'react';
 import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image,  } from '@react-pdf/renderer';
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
+import { useEffect, useState } from 'react';
 
 export default function PDF({ show, jobData, handleCloseReceipt }) {
+    const [redactSpeedCode, setRedactSpeedCode] = useState(false);
     // Create styles
     const styles = StyleSheet.create({
         page: {
@@ -112,7 +114,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             <View style={styles.rowView}>
                 <View style={styles.infoColumn}>
                     <Text style={styles.label}>Speed Code and Account</Text>
-                    <Text style={styles.value}>{jobData.speed_code}</Text>
+                    <Text style={styles.value}>{redactSpeedCode ? "" : jobData.speed_code}</Text>
                 </View>
                 <View style={styles.infoColumn}>
                     <Text style={styles.label}>Designate Name</Text>
@@ -251,8 +253,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             })
             .catch((error) => {
                 console.log("Error : " + error);
-            }
-            )
+            })
     }
 
 
@@ -269,9 +270,9 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         {MyDocument}
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
-                        <Button className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
-                        <Button className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
-                        <Button className=""onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        <Button variant={jobData.emailed_receipt_req ? "primary": "danger"} className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
+                        <Button variant={jobData.emailed_receipt_grant_holder ? "primary": "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        <Button variant={jobData.emailed_receipt_ssts ? "primary": "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
                     </div>
                 </div>
 

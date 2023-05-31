@@ -163,20 +163,23 @@ class Posters extends Model
 
     public static function updateTransactionRelationshipData($poster_id, $updateArray)
     {
-        
         $poster = Posters::findOrFail($poster_id);
         $transaction = $poster->transactions;
         //Should only be one job.
-        
         $columnNames = Schema::getColumnListing('Transactions');
         foreach ($updateArray as $key => $value)
         {
             Log::info("Attempting to Update transaction $transaction->id -- $key => $value");
-            if(in_array($key , $columnNames))
+            if(in_array($key, $columnNames))
             {
                 //Should check that key is valid
-                Log::info("Updating Poster transaction $transaction->id  -- $key => $value");
-                $transaction->$key = $value;
+                //Check here that vlues not null. Sometimes if transaction has yet to be created this could occur.
+                if(!($value == Null))
+                {
+                    Log::info("Updating Poster transaction $transaction->id  -- $key => $value");
+                    $transaction->$key = $value;
+                }
+
             }
         }
         $transaction->save();

@@ -39,8 +39,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         event.preventDefault();
         event.stopPropagation();
         if (form.checkValidity() === false) {
-            console.log("not valid");
-            
+            console.log("not valid"); 
         }
         else
         {
@@ -58,7 +57,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
             fetch(`api/jobs/makeTransactionAndUpdate`, options)
             .then( (res) => {
                 if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${res.status}`);
                 }
                 return res.json()
             })
