@@ -104,9 +104,15 @@ class JobsController extends Controller
     {
         $poster_id = $request->query('id');
         ///get the requisitioner email to send the notification
+        $poster = Posters::find($poster_id);
         $req_email = Posters::find($poster_id)->requests->email;
-        log::info("Pick up Email being sent to $req_email for poster: $poster_id");
-        Mail::to("kvande85@uwo.ca")->send(new PickUpNotice());
+        $request = Posters::find($poster_id)->requests;
+        $req_name = $request->first_name." ".$request->last_name;
+        $req_cost = $poster->cost;
+        log::info("Pick up Email being sent to $req_email for poster: $poster_id with cost: $req_cost");
+        
+        
+        Mail::to("kvande85@uwo.ca")->send(new PickUpNotice($req_name, $req_cost));
         return self::successResponse("none");
     }
 

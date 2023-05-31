@@ -17,7 +17,7 @@ class PickUpNotice extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($reqFirstName, $cost, )
+    public function __construct(public string $reqName, public $Cost)
     {
         //
     }

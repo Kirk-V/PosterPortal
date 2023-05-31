@@ -32,6 +32,7 @@ class PosterController extends Controller
      *  Poster moves to accepted state
      *  Any changes to the poster or Request data must be updated.
      *  A New Job is created with the Poster ID equivalent to the newly accepted poster
+     *  When a new job is created an associated transaction is also made for later processing
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
@@ -44,6 +45,10 @@ class PosterController extends Controller
         $reqId = $request->request_id;
         Requests::updateRequest($reqId, $request->all());
         Jobs::newJob($posterID, $request->technician);
+        $total = $request->total;
+        log::info("Total = ".$request->total);
+        $poster = Posters::find($posterID)->transactions()->updateOrCreate(['poster_id' => $posterID, 'total' => floatval($total)]);
+        // $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
         return response(["success" => True]);
     }
 

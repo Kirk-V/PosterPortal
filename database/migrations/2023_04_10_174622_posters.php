@@ -41,8 +41,9 @@ return new class extends Migration
         Schema::create('Transactions', function (Blueprint $table) {
             $table->id('transaction_id')->first();
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
-            $table->date('transaction_date');
-            $table->float('total_received', 8, 2);
+            $table->date('transaction_date')->nullable();
+            $table->float('total', 8, 2);
+            $table->float('total_received', 8, 2)->default(0);
             $table->boolean('reconciled')->default(false);
         });
 

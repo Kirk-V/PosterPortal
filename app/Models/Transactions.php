@@ -12,7 +12,7 @@ class Transactions extends Model
     protected $table = 'Transactions';
     protected $primaryKey = 'transaction_id';
 
-    protected $fillable = ['transaction_date' , 'total_received'];
+    protected $fillable = ['transaction_date' , 'total_received', 'total'];
     public $timestamps = false;
     
 
