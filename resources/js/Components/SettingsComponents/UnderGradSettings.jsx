@@ -66,11 +66,25 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
         updateSetting('cost', allSettings.cost);
     }
 
+
+
     const handleCostChange = (event) => {
         let newCost = event.target.value;
         console.log(newCost);
         allSettings["cost"] = newCost;
         console.log(`all settings cst set to : ${allSettings["cost"]}`)
+    }
+
+    const handleUpdateDiscount = (event) => {
+        updateSetting('discount', allSettings.discount);
+    }
+
+    const handleDiscountChange = (event) => {        
+        let newDiscount = event.target.value;
+        console.log(newDiscount);
+        allSettings["discount"] = newDiscount;
+        console.log(`all settings discount set to : ${allSettings["discount"]}`)
+       
     }
 
     const toggleUndergradRequests = (event) => {
@@ -191,8 +205,9 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
                         <InputGroup.Text>$</InputGroup.Text>
                         <Form.Control
                             type="number"
-                            onChange={handleCostChange} />
-                        <Button onClick={handleUpdateCost}>Update</Button>
+                            defaultValue={parseFloat(settingsData.discount).toFixed(2)}
+                            onChange={handleDiscountChange} />
+                        <Button onClick={handleUpdateDiscount}>Update</Button>
                     </InputGroup>
                 </Col>
             </Row>
@@ -206,7 +221,7 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
                 type="switch"
                 id="custom-switch"
                 label="Accept Undergrad Requestss"
-                checked={allSettings.undergrad}
+                checked={allSettings.undergrad == 0 ? false: true}
                 onChange={toggleUndergradRequests}
             />
             </Col>

@@ -46,5 +46,9 @@ class DatabaseSeeder extends Seeder
             'setting' => 'external',
             'value' => True
         ]);
+        DB::table('settings')->insert([
+            'setting' => 'discount',
+            'value' => 12
+        ]);
     }
 }

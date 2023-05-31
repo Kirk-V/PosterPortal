@@ -80,11 +80,6 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
 
             //Show Reciept by calling handleShowReceipt
         }
-        
-        
-
-
-
     }
 
 

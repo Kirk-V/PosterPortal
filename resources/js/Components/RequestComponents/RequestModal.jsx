@@ -71,7 +71,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
             fetch(`api/posters/acceptPending`, options)
             .then( (res) => {
                 if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${res.status}`);
                 }
                 return res.json()
             })

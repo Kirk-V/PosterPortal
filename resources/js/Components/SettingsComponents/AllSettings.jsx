@@ -79,7 +79,7 @@ function AllSettings() {
                 
             </Col>
             <Col>
-                {settingsDataIsLoaded ?  <PosterSettings allSettinsData={settingsData} updateASetting={updateASetting}/> : <h1>not loaded</h1>}
+                {settingsDataIsLoaded ?  <PosterSettings allSettinsData={settingsData} updateSetting={updateASetting}/> : <h1>not loaded</h1>}
             </Col>
         </Row>
             
