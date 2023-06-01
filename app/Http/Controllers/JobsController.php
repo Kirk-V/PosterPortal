@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PickUpNotice;
 use App\Models\Transactions;
 use Exception;
 use App\Models\Jobs;
@@ -68,7 +69,7 @@ class JobsController extends Controller
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
             ->leftJoin('Transactions', 'Posters.poster_id', 'Transactions.poster_id')
-            ->select('Posters.*', 'Requests.*', 'Transactions.*', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
+            ->select('Posters.*', 'Requests.*', 'Transactions.*', 'jobs.poster_id', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id', 'jobs.emailed_receipt_req','jobs.emailed_receipt_grant_holder','jobs.emailed_receipt_ssts')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
         // return Posters::has('jobs')->with(['Jobs', 'Requests', 'transactions'])->get();
         return response($jobs);
     }
@@ -94,6 +95,29 @@ class JobsController extends Controller
 
 
     /**
+     * Summary of sendPickUpEmail
+     *  Function to send a pick up notice to the user associated with the poster ID in the Request query param
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendPickUpEmail(Request $request)
+    {
+        $poster_id = $request->query('id');
+        ///get the requisitioner email to send the notification
+        $poster = Posters::find($poster_id);
+        $req_email = Posters::find($poster_id)->requests->email;
+        $request = Posters::find($poster_id)->requests;
+        $req_name = $request->first_name." ".$request->last_name;
+        $req_cost = $poster->cost;
+        log::info("Pick up Email being sent to $req_email for poster: $poster_id with cost: $req_cost");
+        
+        
+        Mail::to("kvande85@uwo.ca")->send(new PickUpNotice($req_name, $req_cost));
+        return self::successResponse("none");
+    }
+
+
+    /**
      * Summary of emailPDF
      *      Uses query parameters to find the appropriate job and recipient of
      *      the receipt Email. Job Id is used to potentially find the recipients email
@@ -111,21 +135,29 @@ class JobsController extends Controller
         if (is_null($recipientType) || is_null($poster_id)) {
             return self::errorResponse("Cannot create PDF with provided query string", 400);
         }
+        //Get poster
+        $poster = Posters::find($poster_id);
+        
         switch (strtolower($recipientType)) {
             case "requisitioner":
-                Jobs::emailReceiptRequisitioner($poster_id);
+                $toAddress = $poster->requests->email;
+                $poster->jobs->emailed_receipt_req = true;
+                // Jobs::emailReceiptRequisitioner($poster_id);
                 break;
-            case "grandholder":
-                Jobs::emailReceiptGrantHolder($poster_id);
+            case "grantholder":
+                $toAddress = $poster->requests->grant_holder_email;
+                $poster->jobs->emailed_receipt_grant_holder= true;
                 break;
             case "adminassistant":
-                Jobs::emailReceiptSSTSAdminAssistant($poster_id);
+                $toAddress = "ssts-posterreceipts@groups.uwo.ca";
+                $poster->jobs->emailed_receipt_ssts= true;
                 break;
         }
-        log::info("Email to $recipientType request for $poster_id");
+        log::info("Email to $toAddress request for $poster_id");
         // log::info($request->getContent());
         file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent());
         Mail::to("kvande85@uwo.ca")->send(new PDFMail($poster_id, $recipientType));
+        $poster->jobs->save();
         return self::successResponse("none");
     }
 
@@ -137,7 +169,6 @@ class JobsController extends Controller
         // file_put_contents('myfile.pdf', $request->getContent());
         return self::successResponse("none");
     }
-
 
     /**
      * Summary of makeTransaction
@@ -159,8 +190,6 @@ class JobsController extends Controller
         // $poster->transactions()->save($transaction);
 
         $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
-
-
         Posters::updateAllPosterData($request->poster_id, $request->all());
         return self::successResponse("Success", "Success");
     }

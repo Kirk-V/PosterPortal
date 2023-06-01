@@ -1,47 +1,25 @@
 import React from 'react'
-import { Card, Button, Form, Row, Col, Collapse, InputGroup, Accordion } from 'react-bootstrap';
-import { useState, useRef, useEffect } from 'react';
+import { Form, Button, Row, Col, InputGroup, Accordion, Collapse, Card } from 'react-bootstrap';
+import { useState} from 'react';
+import CourseList from './CourseList';
 
-
-function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
+function UnderGradSettingsCard({ settingsData, updateSetting }) {
     const [showDeposit, setShowDeposit] = useState(false);
     const [showWithdrawal, setShowWithdrawal] = useState(false);
     const [courseData, setCourseData] = useState(null);
     const [addCourseFormData, setAddCourseFormData] = useState(null);
     const [addCourseValidated, setAddCourseValidated] = useState(false);
     const [validated, setValidated] = useState(false);
+    const [allSettings, setAllSettings] = useState(settingsData);
     //Get Course Data On Load;
-    useEffect(() => {
-        let options = {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            },
-        }
-        fetch(`api/courses/all`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return res.json();
-            })
-            .then((response) => {
-                console.log("req data:");
-                console.log(`okay, Scourse Data is: ${JSON.stringify(response)}`);
-                if (response.status == "success") {
-                    setCourseData(response.data);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+
+
 
     const updateAddCourseData = (e) => {
         setAddCourseFormData({
             ...addCourseFormData,
             [e.target.name]: e.target.value
-        })
+        });
 
     }
 
@@ -66,21 +44,55 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     }
 
     const handleAddCourse = (event) => {
+        setValidated(true);
+        console.log("receiptform submitted");
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if(form.checkValidity() === false) {
+        if (form.checkValidity() === false) {
             console.log("not valid");
-            setValidated(true);
-            setAddCourseValidated(true);
         }
-        
-        console.log(`form Data is: ${JSON.stringify(addCourseFormData)}`);
-        
-        // if (form.checkValidity() === false) {
-        //     console.log("not valid");
-        //     setValidated(true);
-        // }
+        else
+        {
+            //valid form send course infor to back end:
+            console.log(`form Data is: ${JSON.stringify(addCourseFormData)}`);
+        }
+
+        //
+
+    }
+
+    const handleUpdateCost = (event) => {
+        updateSetting('cost', allSettings.cost);
+    }
+
+
+
+    const handleCostChange = (event) => {
+        let newCost = event.target.value;
+        console.log(newCost);
+        allSettings["cost"] = newCost;
+        console.log(`all settings cst set to : ${allSettings["cost"]}`)
+    }
+
+    const handleUpdateDiscount = (event) => {
+        updateSetting('discount', allSettings.discount);
+    }
+
+    const handleDiscountChange = (event) => {        
+        let newDiscount = event.target.value;
+        console.log(newDiscount);
+        allSettings["discount"] = newDiscount;
+        console.log(`all settings discount set to : ${allSettings["discount"]}`)
+       
+    }
+
+    const toggleUndergradRequests = (event) => {
+        allSettings.undergrad = !allSettings.undergrad;
+        let newSettings = {...allSettings};
+        setAllSettings(newSettings);
+        updateSetting('undergrad', allSettings.undergrad == true? 1:0);
+        console.log(`accept ugrad set to : ${allSettings.undergrad}`)
     }
 
     let WithdrawalSection = (
@@ -113,31 +125,49 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
     const Depts = ["SSTS", "Ths"];
 
     let addCourseForm = (
-        <Form noValidate validated={validated} onSubmit={(e) => updateAddCourseData(e)} >
-            <Form.Label>
-                Add Course
-            </Form.Label>
-            <InputGroup>
-                <Form.Select name="year" defaultValue={addCourseFormData?.year ?? ""}
-                            aria-label="Disabled input example"
-                            required>
-                    onChange={(e) => updateAddCourseData(e)} 
-                    {getDates(5).map((years) => (
-                        <option>{years}</option>)
-                    )}
-                </Form.Select>
-                <Form.Control onChange={(e) => updateAddCourseData(e)} placeholder='Number' type="text" name="number" required/>
-                <Form.Select onChange={(e) => updateAddCourseData(e)}  name="department" required> 
-                    {Depts.map((dept) => (
-                        <option>{dept}</option>)
-                    )}
-                </Form.Select>
-                <Form.Control onChange={(e) => updateAddCourseData(e)}  placeholder='Instructor' type="text" name="instructor" required/>
-                <Button type="submit" onClick={(e) => handleAddCourse(e)}> +</Button>
-            </InputGroup>
+        <Form noValidate validated={validated} onSubmit={handleAddCourse}>
+            <Row>
+                <Col>
+                    <Form.Label className="fw-bold">Add Course</Form.Label>
+                    <InputGroup>
+                        <Form.Select
+                            required
+                            name="year"
+                            defaultValue={addCourseFormData?.year ?? ""}
+                            onChange={(e) => updateAddCourseData(e)}>
+                            {getDates(5).map((years) => (
+                                <option key={years} value={years}>{years}</option>)
+                            )}
+                        </Form.Select>
+                        <Form.Control
+                            onChange={(e) => updateAddCourseData(e)}
+                            placeholder='Number'
+                            type="text"
+                            name="number"
+                            required />
+                        <Form.Select
+                            onChange={(e) => updateAddCourseData(e)}
+                            name="department"
+                            defaultValue={""}
+                            required={true}><option disabled="disabled" value="">Select One</option>
+                            {Depts.map((dept) => (
+                                <option value={dept} key={dept}>{dept}</option>)
+                            )}
+                        </Form.Select>
+                        <Form.Control
+                            onChange={(e) => updateAddCourseData(e)}
+                            type="text"
+                            name="instructor"
+                            required />
+                        <Button type="submit"> +</Button>
+                    </InputGroup>
+                </Col>
+            </Row>
         </Form>
 
     )
+
+
 
     let CourseAccordion = (
         <Accordion className="mt-2 p-0" >
@@ -150,13 +180,53 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                 </Row>
                 <Row>
                     <Col>
-                    {addCourseForm}
+                        {addCourseForm}
+                    </Col>
+                </Row>
+                <Row className="mt-2">
+                    <Col>All Classes
+                    </Col>
+                </Row>
+                <Row className="mt-1">
+                    <Col>
+                        <CourseList/>
                     </Col>
                 </Row>
             </Accordion.Body>
         </Accordion>
     )
 
+    let UndergradDiscountSection = (
+        <Form noValidate validated={validated}>
+            <Row>
+                <Col>
+                    <Form.Label className="fw-bold">Undergrad Discount (Per Poster Amount)</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>$</InputGroup.Text>
+                        <Form.Control
+                            type="number"
+                            defaultValue={parseFloat(settingsData.discount).toFixed(2)}
+                            onChange={handleDiscountChange} />
+                        <Button onClick={handleUpdateDiscount}>Update</Button>
+                    </InputGroup>
+                </Col>
+            </Row>
+        </Form>
+    )
+
+    let UndergradToggleSection = (
+        <Row className="mt-3">
+            <Col>
+            <Form.Check 
+                type="switch"
+                id="custom-switch"
+                label="Accept Undergrad Requestss"
+                checked={allSettings.undergrad == 0 ? false: true}
+                onChange={toggleUndergradRequests}
+            />
+            </Col>
+        </Row>
+    )
 
 
     return (
@@ -167,7 +237,7 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                 </Card.Header>
                 <Card.Body>
                     <Row>
-                        <Col xs={6}>
+                        <Col xs={6} className="fw-bold">
                             Remaining SDF: { }
                         </Col>
                         <Col xs={3}>
@@ -186,6 +256,13 @@ function UnderGradSettingsCard({ settingsData, handleSettingUpdate }) {
                     <Row>
                         {CourseAccordion}
                     </Row>
+                    <Row>
+                        {UndergradDiscountSection}
+                    </Row>
+                    <Row>
+                        {UndergradToggleSection}
+                    </Row>
+
 
                 </Card.Body>
             </Card>

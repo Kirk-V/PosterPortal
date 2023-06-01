@@ -92,7 +92,8 @@ Route::controller(PostersController::class)->group(function (){
 
 Route::get('/settings', function () {
     return Inertia::render('posterportal', [
-        'currentView' => 'settings'
+        'currentView' => 'settings',
+        'user' => auth()->user()
     ]);
 });
 

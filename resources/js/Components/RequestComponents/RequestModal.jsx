@@ -36,6 +36,11 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 console.log(`okay, Req data: ${JSON.stringify(response)}`);
                 // setRequest(response);
                 response.technician = 'Rick';
+                //calculate the total
+                let costPer = response.cost;
+                let quantity = response.quantity;
+                let discount = response.discount_eligible == "1" ? response.discount : 0;
+                response.total = ((costPer - discount) * quantity).toFixed(2);
                 setFormData(response);
             },
             (error) => {
@@ -51,6 +56,18 @@ export default function RequestModal({requestData, onHide, show, courseData, set
         }
     }, [requestData]);
 
+
+    //Function to add in the total (cost * quantity - discount)
+    // function updateTotal(){
+    //     let costPer = formData.cost;
+    //     let quantity = formData.quantity;
+    //     let discount = formData.discount_eligible == "1" ? formData.discount : 0;
+    //     console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
+    //     console.log("calculated Total" + (costPer - discount) * quantity);
+    //     formData.total = ((costPer - discount) * quantity).toFixed(2);
+    //     refreshData = {...formData}
+    //     setFormData(refreshData);
+    // }
 
     //When a poster is accepted, this function will make the call to persist the new data to the DB
     function onAccept(){
@@ -71,7 +88,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
             fetch(`api/posters/acceptPending`, options)
             .then( (res) => {
                 if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${res.status}`);
                 }
                 return res.json()
             })
@@ -108,6 +125,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
         console.log("update form in modal");
         console.log(JSON.stringify(newData));
         setFormData(newData);
+        // updateTotal();
     }
 
     function onReject(){

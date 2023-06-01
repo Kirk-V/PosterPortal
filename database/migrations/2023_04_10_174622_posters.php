@@ -41,8 +41,9 @@ return new class extends Migration
         Schema::create('Transactions', function (Blueprint $table) {
             $table->id('transaction_id')->first();
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
-            $table->date('transaction_date');
-            $table->float('total_received', 8, 2);
+            $table->date('transaction_date')->nullable();
+            $table->float('total', 8, 2);
+            $table->float('total_received', 8, 2)->default(0);
             $table->boolean('reconciled')->default(false);
         });
 
@@ -68,8 +69,11 @@ return new class extends Migration
             $table->id('job_id');
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->string('technician');
-            $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'on_hold', 'cancelled']);
+            $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'picked_up', 'on_hold', 'cancelled']);
             $table->date('print_date')->nullable();
+            $table->boolean('emailed_receipt_req')->default(false);
+            $table->boolean('emailed_receipt_grant_holder')->default(false);
+            $table->boolean('emailed_receipt_ssts')->default(false);
         });
 
 

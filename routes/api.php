@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\JobsController;
-use App\Http\Controllers\PosterController;
-use App\Http\Controllers\SettingsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobsController;
+use App\Http\Controllers\PosterController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +26,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(SettingsController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/settings/all', 'getAllSettings');
+    Route::put('settings/update', 'upateSetting');
 });
 
 Route::controller(JobsController::class)->group(function (){
     Route::put('/jobs/updateState', 'updateState');
+    Route::put('jobs/sendPickUpEmail', 'sendPickUpEmail');
     Route::post('/jobs/sendPDFEmail', 'emailPDFReceipt');
     Route::post('/jobs/makeTransactionAndUpdate', 'makeTransactionAndUpdate');
 });
@@ -42,4 +45,11 @@ Route::controller(RequestsController::class)->group(function (){
 Route::controller(PosterController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::post('/posters/acceptPending', 'acceptPendingPoster');
+});
+
+Route::controller(CoursesController::class)->group(function (){
+    // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
+    Route::get('/courses/all', 'getAllCoursesJson');
+    Route::delete('/courses/delete', 'deleteCourse');
+    
 });

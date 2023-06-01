@@ -1,8 +1,10 @@
 import React from 'react';
 import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image,  } from '@react-pdf/renderer';
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
+import { useEffect, useState } from 'react';
 
 export default function PDF({ show, jobData, handleCloseReceipt }) {
+    const [redactSpeedCode, setRedactSpeedCode] = useState(false);
     // Create styles
     const styles = StyleSheet.create({
         page: {
@@ -112,7 +114,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             <View style={styles.rowView}>
                 <View style={styles.infoColumn}>
                     <Text style={styles.label}>Speed Code and Account</Text>
-                    <Text style={styles.value}>{jobData.speed_code}</Text>
+                    <Text style={styles.value}>{redactSpeedCode ? "" : jobData.speed_code}</Text>
                 </View>
                 <View style={styles.infoColumn}>
                     <Text style={styles.label}>Designate Name</Text>
@@ -239,7 +241,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             method: 'POST',
             body: bodydata
         }
-        fetch(`api/jobs/sendPDFEmail?id=${jobData.job_id}&to=${to}`, options)
+        fetch(`api/jobs/sendPDFEmail?id=${jobData.poster_id}&to=${to}`, options)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -251,9 +253,20 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             })
             .catch((error) => {
                 console.log("Error : " + error);
-            }
-            )
+            })
     }
+
+    const handleRedactClick = () => {
+        setRedactSpeedCode(true);
+    }
+
+    const emailReqBtn = (
+        <Button variant={jobData.emailed_receipt_req == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
+    )
+
+    const redactSpeedCodeBtn = (
+        <Button className="" onClick={() => handleRedactClick()}>Redact SpeedCode</Button>
+    )
 
 
 
@@ -269,9 +282,9 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         {MyDocument}
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
-                        <Button className="" onClick={() => handleEmailClick("Requisitioner")}>Email Requisitioner</Button>
-                        <Button className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
-                        <Button className=""onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        {jobData.payment_method == 'speedcode' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
+                        <Button variant={jobData.emailed_receipt_grant_holder == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        <Button variant={jobData.emailed_receipt_ssts == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
                     </div>
                 </div>
 

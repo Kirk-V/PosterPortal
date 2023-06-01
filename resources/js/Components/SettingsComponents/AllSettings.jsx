@@ -1,13 +1,14 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Placeholder } from 'react-bootstrap';
 import UnderGradSettingsCard from './UnderGradSettings';
+import PosterSettings from './PosterSettings';
 
 function AllSettings() {
     const [settingsData, setSettingsData] = useState(null);
-
-
+    const [settingsDataIsLoaded, setsettingsDataIsLoaded] = useState(false);
+    
     useEffect(() => {
         let options = {
             method: 'GET',
@@ -25,9 +26,11 @@ function AllSettings() {
         .then((response) => {
             console.log("req data:");
             console.log(`okay, Setting Data is: ${JSON.stringify(response)}`);
-            if(response.status == "success")
+            if(response.status == "Success")
             {
-                setSettitngsData(response.data);
+                console.log("ssetting settings");
+                setSettingsData(response.data);
+                setsettingsDataIsLoaded(true);
             }
         })
         .catch((error) => {
@@ -39,11 +42,44 @@ function AllSettings() {
         setSettingsData(newSettingData);
     }
 
+    const updateASetting = (setting, value) => {
+        let options = {
+            method: "PUT"
+        }
+        fetch(`api/settings/update?setting=${setting}&value=${value}`, options)
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return res.json();
+        })
+        .then((response) => {
+            console.log("req data:");
+            console.log(`okay, Setting Data is: ${JSON.stringify(response)}`);
+            if(response.status == "Success")
+            {
+                console.log("sUpdated Setting");
+                settingsData[setting] = value;
+                console.log(`settings now set to ${JSON.stringify(settingsData)}`);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });  
+    }
+
+    const UndergradCard = (
+        <UnderGradSettingsCard settingsData={settingsData} handleSettingUpdate={handleSettingUpdate}/>
+    )
     return (
         <>
         <Row className="mt-3">
             <Col xs={6}>
-                <UnderGradSettingsCard settingsData={settingsData} handleSettingUpdate={handleSettingUpdate}/>
+                {settingsDataIsLoaded ?  <UnderGradSettingsCard settingsData={settingsData} updateSetting={updateASetting}/> : <h1>not loaded</h1>}
+                
+            </Col>
+            <Col>
+                {settingsDataIsLoaded ?  <PosterSettings allSettinsData={settingsData} updateSetting={updateASetting}/> : <h1>not loaded</h1>}
             </Col>
         </Row>
             

@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import { Link } from '@inertiajs/react'
-export default function NavBar({currentView}) {
+export default function NavBar({currentView, user}) {
     console.log("currentview: "+currentView);
     return (
         <Navbar bg="light" variant="light" expand="md">
@@ -66,6 +66,7 @@ export default function NavBar({currentView}) {
                                     </Nav.Item>
                                 </Nav>
                             </Offcanvas.Body>
+                            <h1>{user}</h1>
                         </Navbar.Offcanvas>
             </Container>
         </Navbar>

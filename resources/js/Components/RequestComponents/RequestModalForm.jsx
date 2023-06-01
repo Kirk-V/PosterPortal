@@ -32,10 +32,11 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         //update any changed data and create job
     }
 
-    const calculateTotal = () => {
-        let costPer = formD.cost;
-        let quantity = formD.quantity;
-        let discount = formD.discount_eligible == "1" ? formD.discount : 0;
+
+    const calculateTotal = (data) => {
+        let costPer = data.cost;
+        let quantity = data.quantity;
+        let discount = data.discount_eligible == "1" ? data.discount : 0;
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + (costPer - discount) * quantity);
         return ((costPer - discount) * quantity).toFixed(2);
@@ -63,7 +64,12 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         data[`${name}`] = value;
         if (["width", "height", "units"].includes(name)) {
             data.cost = calculateCost(data);
+            data.total = calculateTotal(data);
             console.log(`cost now: ${data.cost}`);
+        }
+        else if (["quantity", "discount", "cost"].includes(name)) {
+            data.total = calculateTotal(data);
+            console.log(`total now: ${data.total}`);
         }
         // setformD(data);
         onUpdate(data);
@@ -389,7 +395,13 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <InputGroup.Text id="basic-addon2">
                                 $
                             </InputGroup.Text>
-                            <Form.Control name="total" type="number" value={calculateTotal()} readOnly />
+                            <Form.Control 
+                                name="total" 
+                                type="number"
+                                value= {formD.total}
+                                // value={calculateTotal()} 
+                                onChange={(e) => handleControlChange(e)}
+                                readOnly />
                         </InputGroup>
                     </Form.Group>
                 </Col>

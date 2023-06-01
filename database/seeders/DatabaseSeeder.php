@@ -38,5 +38,17 @@ class DatabaseSeeder extends Seeder
             'setting' => 'cost',
             'value' => 5.5
         ]);
+        DB::table('settings')->insert([
+            'setting' => 'undergrad',
+            'value' => True
+        ]);
+        DB::table('settings')->insert([
+            'setting' => 'external',
+            'value' => True
+        ]);
+        DB::table('settings')->insert([
+            'setting' => 'discount',
+            'value' => 12
+        ]);
     }
 }

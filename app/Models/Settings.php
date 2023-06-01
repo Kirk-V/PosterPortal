@@ -12,6 +12,6 @@ class Settings extends Model
 
     protected $table = 'Settings';
     // protected $primaryKey = 'poster_id';
-
+    protected $fillable =['value'];
     public $timestamps = false;
 }
