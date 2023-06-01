@@ -5,7 +5,7 @@ import Settings from './Settings';
 
 import { useState, useEffect } from 'react';
 
-function PosterPortal({ auth, currentView, data }) {
+function PosterPortal({ auth, currentView, data, user }) {
 
 
 
@@ -26,7 +26,7 @@ function PosterPortal({ auth, currentView, data }) {
 
 
     return (
-        <PrimaryLayout onPage={currentView} >
+        <PrimaryLayout onPage={currentView} signedInUser={user}>
             {pageView}
         </PrimaryLayout>
 
