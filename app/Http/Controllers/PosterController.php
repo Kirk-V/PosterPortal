@@ -68,11 +68,18 @@ class PosterController extends Controller
     {
         // try
         // {
-            $user = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
-            ->limit(1)
-            ->get()->first();
-            // return $user;
-            return "name: ".$user->getAttribute('givenname')[0];
+            // $user = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
+            // ->limit(1)
+            // ->get()->first();
+            // $rString = "";
+            // $rString = $user->getAttribute("cn")[0];
+            // if($user->groups()->exists('uwo-u-staff'))
+            // {
+            //     $rString .= " User is in uwo-u-staff";
+            // }
+
+            // return $rString;
+            // return "name: ".$user->getAttribute('givenname')[0];
         // catch(Exception $e)
         // {
         //     return "no user found";

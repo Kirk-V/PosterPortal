@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\CoursesController;
+use Inertia\Inertia;
+use App\Http\Controllers\Approvals;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\PosterController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestsController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,11 @@ Route::controller(JobsController::class)->group(function () {
     Route::get('/jobs', 'index');
     Route::get('/jobs/jobsHeaders', 'getJobsHeadings');
     Route::get('/jobs&page={page}', 'getJobsData');
+});
+
+
+Route::controller(Approvals::class)->group(function () {
+    Route::get('/approve', 'approvalView');
 });
 
 Route::controller(RequestsController::class)->group(function () {
