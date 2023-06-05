@@ -9,6 +9,16 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use LdapRecord\Models\ActiveDirectory\User;
+// use LdapRecord\Models\ActiveDirectory\Entry;
+// use LdapRecord\Models\ActiveDirectory\Group;
+// use LdapRecord\Models\ActiveDirectory\Computer;
+// use LdapRecord\Models\ActiveDirectory\Contact;
+// use LdapRecord\Models\ActiveDirectory\Container;
+// use LdapRecord\Models\ActiveDirectory\OrganizationalUnit;
+// use LdapRecord\Models\ActiveDirectory\Printer;
+// use LdapRecord\Models\ActiveDirectory\ForeignSecurityPrincipal;
+// use LdapRecord\Models\Entry;
+
 
 /**
  * Summary of PosterController
@@ -56,17 +66,17 @@ class PosterController extends Controller
 
     public function userInfo(Request $request)
     {
-        try
-        {
-            $users = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
+        // try
+        // {
+            $user = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
             ->limit(1)
-            ->get();
-            return $users;
-        }
-        catch(Exception $e)
-        {
-            return "no user found";
-        }
+            ->get()->first();
+            // return $user;
+            return "name: ".$user->getAttribute('givenname')[0];
+        // catch(Exception $e)
+        // {
+        //     return "no user found";
+        // }
     }
 
 }
