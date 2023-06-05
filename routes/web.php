@@ -66,9 +66,9 @@ Route::controller(CoursesController::class)->group(function () {
     Route::get('/courses/year={year}',  'getAllCoursesInYear');
 });
 
-Route::controller(PostersController::class)->group(function (){
+Route::controller(PosterController::class)->group(function (){
     Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
-    // Route::post('/posters/acceptPending', 'acceptPendingPoster');
+    Route::get('/ldap', 'userInfo');
 });
 
 
@@ -98,7 +98,12 @@ Route::get('/settings', function () {
 });
 
 
-
+// Route::get('/ldap', function () {
+//     return Inertia::render('posterportal', [
+//         'currentView' => 'settings',
+//         'user' => auth()->user()
+//     ]);
+// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

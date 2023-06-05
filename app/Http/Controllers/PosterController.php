@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Jobs;
 use App\Models\Posters;
 use App\Models\Requests;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use LdapRecord\Models\ActiveDirectory\User;
 
 /**
  * Summary of PosterController
@@ -50,6 +52,21 @@ class PosterController extends Controller
         $poster = Posters::find($posterID)->transactions()->updateOrCreate(['poster_id' => $posterID, 'total' => floatval($total)]);
         // $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
         return response(["success" => True]);
+    }
+
+    public function userInfo(Request $request)
+    {
+        try
+        {
+            $users = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
+            ->limit(1)
+            ->get();
+            return $users;
+        }
+        catch(Exception $e)
+        {
+            return "no user found";
+        }
     }
 
 }
