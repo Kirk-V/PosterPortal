@@ -33,7 +33,7 @@ class Approvals extends Controller
             if(in_array($request->grant_holder_email, array($email, $userName)))
             {
                 //User can access
-                return view('SpeedCodeApproval', ['cost'=>2]);
+                return view('SpeedCodeApproval', ['cost'=>2, 'poster_id'=>$poster_id]);
             }
             else
             {
@@ -45,5 +45,36 @@ class Approvals extends Controller
             return "no user found";
         }
         return $rstring;
+    }
+
+    public function approveSpeedCode(Request $request, $id)
+    {
+        //Check that user is authenticated for poster
+        $rString = $id;
+        //Get poster
+        $rString .= $request->input('speedcode');
+        if(Posters::updateApprovalStatus($id, "accept", $request->input('speedcode')))
+        {
+            return "Speed code accepted";
+        }
+        else
+        {
+            return 'speedcode not accepted';
+        }
+    }
+
+    public function rejectSpeedCode(Request $request, $id)
+    {
+        $rString = $id;
+        //Get poster
+        $rString .= $request->input('speedcode');
+        if(Posters::updateApprovalStatus($id, "reject"))
+        {
+            return "Speed code rejected";
+        }
+        else
+        {
+            return 'speedcode not rejected';
+        }
     }
 }

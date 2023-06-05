@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
-
+use LdapRecord\Models\ActiveDirectory\User;
+use App\Models\Requests;
 
 // Poster class is parent to request, jobs, and transactions
 /**
@@ -42,6 +43,7 @@ class Posters extends Model
     {
         return $this->hasOne(Jobs::class, 'poster_id');
     }
+    #endregion
 
     // Function to calculate the total cost estimate for a poster given the provided width,
     // height. Applies discount if the poster has a valid discount setting.
@@ -184,5 +186,47 @@ class Posters extends Model
         }
         $transaction->save();
     }
-    #endregion
+    
+
+    public static function updateApprovalStatus($poster_id, $approval_status, $speed_code=null)
+    {
+        //First get the poster and compare to user
+        $poster = Posters::findOrFail($poster_id);
+        $request = $poster->requests;
+        try
+        {
+            $user = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
+                ->limit(1)
+                ->get()
+                ->first();
+
+            $email = $user->getAttribute("mail")[0];
+            $userName = $user->getAttribute("cn")[0];
+            if(in_array($request->grant_holder_email, array($email, $userName)))
+            {
+                //User can update
+                if($approval_status == 'accept')
+                {
+                    $poster->speed_code = $speed_code;
+                    $poster->speed_code_approved = 1;
+                }
+                else
+                {
+                    $poster->speed_code_approved = 0;
+                }
+                $poster->save();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch(Exception $e)
+        {
+            log::info("exception thrown when trying to accept/reject a speedcode: error $e");
+            return false;
+        }
+
+    }
 }
