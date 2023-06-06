@@ -9,10 +9,11 @@ import Button from "react-bootstrap/Button";
 import CourseSelect from "@/Components/RequestComponents/CourseSelect";
 import { useEffect } from "react";
 
-export default function RequestModalForm({ formD, settings, courseData, onUpdate }) {
+export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept}) {
     const [formData, setformData] = useState(formD);
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
+    const [validated, setValidated] = useState(false);
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
     // This will allow for users to change the course info attached to the request..
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
@@ -89,6 +90,21 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         onUpdate(data);
     }
 
+    const handleRequestSubmit = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            console.log("form not valid!");
+        }
+        else
+        {
+            console.log("form valid!");
+            onHandleAccept();
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+    };
+
 
     var GrantHolderInfo = (
         <>
@@ -99,6 +115,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         name="grant_holder_name"
                         type="text"
                         defaultValue={formD.first_name}
+                        required
                     />
                 </Form.Group>
             </Col>
@@ -112,6 +129,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         name="grant_holder_email"
                         type="text"
                         defaultValue={formD.first_name}
+                        required
                     />
                 </Form.Group>
             </Col>
@@ -138,6 +156,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             name="speed_code"
                             type="text"
                             defaultValue={formD.speed_code}
+                            required
+                            isValid={formD.speed_code_approved == 1}
                         />
 
                         <Button
@@ -183,7 +203,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
 
     //display request data in a formdata.position
     return (
-        <Form>
+        <Form noValidate validated={validated} onSubmit={handleRequestSubmit} id="requestForm" >
             <Row>
                 <Col>
                     <h5>Requsitioner Details</h5>
@@ -200,6 +220,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             name="first_name"
                             type="text"
                             defaultValue={formD.first_name}
+                            required
                         />
                     </Form.Group>
                 </Col>
@@ -213,6 +234,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             name="last_name"
                             type="text"
                             defaultValue={formD.last_name}
+                            required
                         />
                     </Form.Group>
                 </Col>
@@ -223,6 +245,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             name="email"
                             type="text"
                             defaultValue={formD.email}
+                            required
                         />
                     </Form.Group>
                 </Col>
@@ -236,6 +259,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             name="position"
                             defaultValue={formD.position}
                             onChange={(e) => handleControlChange(e)}
+                            required
                         >
                             <option value="undergraduate">undergraduate</option>
                             <option value="graduate">graduate</option>

@@ -13,6 +13,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     const [rejecting, setRejecting] = useState(false);
     const [request, setRequest] = useState(null);
     const [formData, setFormData] = useState(null); // originally comes from request.
+    const [formIsValid, setFormIsValid] = useState(false);
     console.log("modal made");
     // We have the passed Data already in the requestData Prop, so lets display it in a form
     // for editing
@@ -69,8 +70,22 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     //     setFormData(refreshData);
     // }
 
+    function checkApproved()
+    {
+        if(formData.payment_method == "speedcode")
+        {
+            return formData.speed_code_approved == 1? true: false;
+        }
+        return true;
+    }
+
     //When a poster is accepted, this function will make the call to persist the new data to the DB
     function onAccept(){
+        if(!checkApproved())
+        {
+            showErrorHandle("Speedcode must be approved before accepting job", "Missing required inforrmation");
+            return;
+        }
         //Set the poster state to accept
         formData.state = 'accepted';
         if(requestData != null)
@@ -133,6 +148,10 @@ export default function RequestModal({requestData, onHide, show, courseData, set
         
     }
 
+    function onValidate(){
+        setFormIsValid(true);
+    }
+
     function handleReject(){
         console.log("delete it");
         //Make call here to delete request, per Mary's reqest we need to void it out. 
@@ -185,7 +204,8 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     const footerButtons = (
         <>
             <Button variant="primary" onClick={onReject}>Reject</Button>
-            <Button variant="primary" onClick={onAccept} disabled={formData?.payment_type == 'speedcode'? formData?.speed_code_approved == "0": false}>Accept</Button>
+            <Button variant="primary" form='requestForm' type="submit"disabled={formData?.payment_type == 'speedcode'? formData?.speed_code_approved == "0": false}>Accept</Button>
+            {/* <Button variant="primary" onClick={onAccept} disabled={formData?.payment_type == 'speedcode'? formData?.speed_code_approved == "0": false}>Accept</Button> */}
             <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>
         </>
     )
@@ -203,7 +223,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {formData != null ? <RequestModalForm formD={formData} courseData={courseData} onUpdate={handleFromUpdate} settings={settings}/> : <h1>noData</h1>}
+                {formData != null ? <RequestModalForm formD={formData} courseData={courseData} onUpdate={handleFromUpdate} settings={settings} onHandleAccept={onAccept}/> : <h1>noData</h1>}
             </Modal.Body>
             <Modal.Footer>
                         {rejecting ? rejectingConfirm : footerButtons}
