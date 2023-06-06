@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Inertia\Inertia;
 use App\Http\Controllers\Approvals;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,12 @@ Route::controller(JobsController::class)->group(function () {
     Route::get('/jobs', 'index');
     Route::get('/jobs/jobsHeaders', 'getJobsHeadings');
     Route::get('/jobs&page={page}', 'getJobsData');
+});
+
+
+Route::controller(ApplicationController::class)->group(function () {
+    Route::get('/application', 'applicationForm');
+    Route::post('/application', 'newApplication');
 });
 
 

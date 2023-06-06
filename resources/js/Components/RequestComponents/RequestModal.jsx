@@ -83,7 +83,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     function onAccept(){
         if(!checkApproved())
         {
-            showErrorHandle("Speedcode must be approved before accepting job", "Missing required inforrmation");
+            showErrorHandle("Speedcode must be approved before accepting job", "Missing required information");
             return;
         }
         //Set the poster state to accept

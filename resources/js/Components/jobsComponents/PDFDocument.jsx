@@ -140,14 +140,20 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     <Text style={styles.value}>{`${jobData.width} X ${jobData.height} Poster`}</Text>
                 </View>
                 <View style={styles.infoColumnSmall}>
-                    <Text style={styles.label}>Cost</Text>
+                    <Text style={styles.label}>Cost Per Poster</Text>
                     <Text style={styles.value}>{jobData.cost}</Text>
                 </View>
             </View>
             <View style={styles.rowView}>
                 <View style={styles.infoColumnSmallRight}>
+                    <Text style={styles.label}>Sub Total</Text>
+                    <Text style={styles.value}>{jobData.total}</Text>
+                </View> 
+            </View>
+            <View style={styles.rowView}>
+                <View style={styles.infoColumnSmallRight}>
                     <Text style={styles.label}>Total</Text>
-                    <Text style={styles.value}>{jobData.cost}</Text>
+                    <Text style={styles.value}>{jobData.total_received}</Text>
                 </View> 
             </View>
         </>

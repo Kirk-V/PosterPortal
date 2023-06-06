@@ -157,6 +157,11 @@ function LoadedModal({ modalData, onHide, show }) {
         setShowingReceipt(false);
     }
 
+    function handlePickedUp(){
+        updateState('picked_up');
+        console.log("picked up");
+    }
+
     const InQueueState = (
         <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
     );
@@ -170,7 +175,7 @@ function LoadedModal({ modalData, onHide, show }) {
 
     const InPendingPickUpState = (
         <>
-        <Button variant="info" >Picked Up</Button>
+        <Button variant="info" onClick={handlePickedUp}>Picked Up</Button>
         <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
         <Button variant="info" onClick={() => sendPickUpNotice()}>Resend Pick-up Notice</Button>
         </>
@@ -184,7 +189,9 @@ function LoadedModal({ modalData, onHide, show }) {
         <Button variant="info" >Revive</Button>
     )
 
-
+    const InPickedUpState = (
+        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+    )
 
     const PrintedState = (
         <>
@@ -264,6 +271,7 @@ function LoadedModal({ modalData, onHide, show }) {
                     {jobState == "pending_pickup"? InPendingPickUpState: null}
                     {jobState == "cancelled"? InCancelledState: null}
                     {jobState == "on_hold"? InOnHoldState: null}
+                    {jobState == "picked_up"? InPickedUpState: null}
                     {/* <Button variant="info" onClick={handleShowRecieptChange}>Make Receipt</Button> */}
                     
                     <Button

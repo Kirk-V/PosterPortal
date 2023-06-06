@@ -11,6 +11,7 @@ import PDF from "./PDFDocument";
 
 //Form to change the job data around.
 export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, handleShowReceipt }) {
+    const [totalCost, setTotalCost] = useState(0)
     const [validated, setValidated] = useState(false);
     console.log(`OPened module with data: ${JSON.stringify(jobsData)}`);
     console.log(`techasdfasdfasdfasd`);
@@ -81,6 +82,27 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         }
     }
 
+    const calculateTotalCost = () => 
+    {
+        return jobsData.quantity * jobsData.cost;
+    }
+
+    const updateTotalReceived = () =>
+    {
+        let discount = jobsData.discount_eligible == 1? jobsData.discount : 0;
+        jobsData.total_received = jobsData.cost * jobsData.quantity - discount;
+        console.log("new total received = " + jobsData.total_received);
+        let data = { ...jobsData };
+        dataUpdateHandler(data);
+    }
+
+    const updateTotalCost = () =>
+    {
+        jobsData.total = jobsData.cost * jobsData.quantity;
+        console.log("new total = " + jobsData.total);
+        let data = { ...jobsData };
+        dataUpdateHandler(data);
+    }
 
     let GrantHolderInfo = (
         <>
@@ -151,8 +173,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
                     <Form.Control
                         type="number"
-                        name="total"
-                        defaultValue={jobsData.discount}
+                        name="discount"
+                        defaultValue={parseFloat(jobsData.discount).toFixed(2)}
                         onChange={(e) => handleControlChange(e)} />
                 </InputGroup>
             </Col>
@@ -298,7 +320,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="number"
                             name="width"
-                            defaultValue={jobsData.width}
+                            defaultValue={parseFloat(jobsData.width).toFixed(2)}
                             onChange={(e) => handleControlChange(e)} />
 
                     </Col>
@@ -328,20 +350,41 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     </Col>
                     <Col xs={3}>
                         <Form.Label className="mb-0">
-                            cost
+                            cost Per Poster
                         </Form.Label>
                         <InputGroup>
                         <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
                         <Form.Control
                             type="number"
                             name="cost"
-                            defaultValue={jobsData.cost}
+                            // value ={calculateTotalCost()}
+                            defaultValue={parseFloat(jobsData.cost).toFixed(2)}
                             onChange={(e) => handleControlChange(e)} />
                         </InputGroup>
                         
                     </Col>
                 </Row>
+
                 {jobsData.discount_eligible == "1" ? DiscountSection : null}
+                <Row className="justify-content-end">
+                    <Col xs={3}>
+                        <Form.Label className="mb-0">
+                            Total
+                        </Form.Label>
+                        <InputGroup>
+                            <Button variant="outline-secondary" id="button-addon1" onClick={updateTotalCost}>
+                                $
+                            </Button>
+                            {/* <InputGroup.Button id="basic-addon1">$</InputGroup.Button> */}
+                            <Form.Control
+                                type="number"
+                                name="total"
+                                value={parseFloat(jobsData.total).toFixed(2)}
+                                onChange={(e) => handleControlChange(e)}
+                                required/>
+                        </InputGroup>
+                    </Col>
+                </Row>
 
                 <Row className="justify-content-end">
                     <Col xs={3}>
@@ -349,11 +392,14 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             Total Recieved
                         </Form.Label>
                         <InputGroup>
-                            <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
+                            <Button variant="outline-secondary" id="button-addon1" onClick={updateTotalReceived}>
+                                $
+                            </Button>
+                            {/* <InputGroup.Button id="basic-addon1">$</InputGroup.Button> */}
                             <Form.Control
                                 type="number"
                                 name="total_received"
-                                defaultValue={jobsData.total_received}
+                                value={parseFloat(jobsData.total_received).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
                                 required/>
                         </InputGroup>

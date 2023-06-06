@@ -325,17 +325,23 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                 <Col xs={5}>
                     <Form.Label>Dimensions</Form.Label>
                     <InputGroup className="mb-3">
-                        <Form.Control
+                        <Form.Control 
+                            as="input"
                             onChange={(e) => handleControlChange(e)}
+                            type="number"
                             name="width"
-                            defaultValue={formD.width}
+                            step=".01"
+                            defaultValue={parseFloat(formD.width).toFixed(2)}
                             aria-describedby="basic-addon2"
                         />
                         <InputGroup.Text id="basic-addon2">X</InputGroup.Text>
                         <Form.Control
+                            as="input"
+                            step=".01"
+                            type="number"
                             onChange={(e) => handleControlChange(e)}
                             name="height"
-                            defaultValue={formD.height}
+                            defaultValue={parseFloat(formD.height).toFixed(2)}
                             aria-describedby="basic-addon2"
                         />
                     </InputGroup>
@@ -371,9 +377,10 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                                 $
                             </InputGroup.Text>
                             <Form.Control
-                                name="cost"
+                                as="input"
                                 type="number"
-                                defaultValue={formD.cost}
+                                name="cost"
+                                defaultValue={parseFloat(formD.cost).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
                             />
                         </InputGroup>
@@ -384,7 +391,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         <Form.Label>Quantity</Form.Label>
                         <InputGroup className="mb-3">
                             <InputGroup.Text id="basic-addon2">
-                                $
+                                #
                             </InputGroup.Text>
                             <Form.Control
                                 name="quantity"
@@ -405,7 +412,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <Form.Control
                                 name="discount"
                                 type="number"
-                                defaultValue={formD.discount_eligible == "0" ? null : formD.discount}
+                                defaultValue={formD.discount_eligible == "0" ? null : parseFloat(formD.discount).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
                                 disabled={formD.discount_eligible == "0" ? true : false}
                             />
@@ -422,7 +429,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <Form.Control 
                                 name="total" 
                                 type="number"
-                                value= {formD.total}
+                                value= {parseFloat(formD.total).toFixed(2)}
                                 // value={calculateTotal()} 
                                 onChange={(e) => handleControlChange(e)}
                                 readOnly />
