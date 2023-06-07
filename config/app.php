@@ -9,30 +9,49 @@ return [
     |--------------------------------------------------------------------------
     |
     | This value determines the What active directory groups are a part of each
-    | access groups. 
+    | access groups. A group must be provided with a CN and OU for lookup in 
+    | the app. DC=uwo, DC=ca, is assumed in every case.
     |
     */
     'access' => [
         'external'=> [
             'required' => [
-                'uwo-u-staff',
-                'uwo-u-graduatestudent',
-                'uwo-u-faculty',
+                'uwo-u-staff' => [
+                    'cn' => 'uwo-u-staff',
+                    'ou' => ['Administration'], 
+                ],
+                
+                'uwo-u-graduatestudent' => [
+                    'cn'=> 'uwo-u-graduatestudent',
+                    'ou' => ['Administration'], 
+                ],
+                'uwo-u-faculty' => [
+                    'cn' => 'uwo-u-faculty',
+                    'ou' => ['Administration'],
+                ],
             ]
             
         ],
         'undergrad' => [
             'required'=>
             [
-                'SSC-U-All',
-                'uwo-u-undergraduatestudent'
+                'SSC-U-All' => [
+                    'cn'=> 'SSC-U-All',
+                    'ou'=> ['Social Science', 'Administration']
+                ],
+                'uwo-u-undergraduatestudent' => [
+                    'cn' => 'uwo-u-undergraduatestudent',
+                    'ou' => ['Administration',]
+                ]
             ],
-            
         ],
         'normal' => [
             'required'=> 
             [
-                'SSC-U-All'
+                'SSC-U-All' => [
+                    'cn'=> 'SSC-U-All',
+                    'ou'=> ['Social Science', 'Administration']
+                ],
             ]
         ]
     ],
