@@ -13,6 +13,7 @@
 <!-- <form class="needs-validation"  method="POST" onsubmit="return validateForm()"> -->
 <!-- <form class="needs-validation" id="formTarget" action="../controller/appController.php" method="POST" onsubmit="return validateForm()" novalidate> -->
 <form class="needs-validation" id="formTarget" novalidate>
+@csrf
 <!-- #region Req Info-->    
     <div class="row">
         <div class="col-sm-12">
