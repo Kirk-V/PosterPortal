@@ -40,6 +40,7 @@ class ApplicationController extends Controller
             if($this->userInAccessGroup($user, 'normal'))
             {
                 $rString .= "User is a valid SSC user<br>";
+                return view('ApplicationForm.PosterApplication');
             }
 
             //Check external
