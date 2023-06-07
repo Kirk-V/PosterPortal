@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(SettingsController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/settings/all', 'getAllSettings');
-    Route::put('/settings/update', 'upateSetting');
+    Route::put('/settings/update', 'updateSetting');
 });
 
 Route::controller(JobsController::class)->group(function (){

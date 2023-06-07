@@ -44,10 +44,11 @@ function AllSettings() {
 
     const updateASetting = (setting, value) => {
         let options = {
-            method: "PUT"
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
         }
-        fetch(`api/settings/update?setting=${setting}&value=${value}`, options)
-        .then( (res) => {
+        fetch(`/api/settings/update?setting=${setting}&value=${value}`, options)
+        .then((res) => {
             if (!res.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }

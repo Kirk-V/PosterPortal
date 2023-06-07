@@ -33,7 +33,7 @@ class SettingsController extends Controller
         return self::successResponse(Settings::all()->pluck('value', 'setting'), "Settings gathered");
     }
 
-    static function upateSetting(Request $request)
+    static function updateSetting(Request $request)
     {
         Log::info("update setting");
         $settingToUpdate = $request->setting;
