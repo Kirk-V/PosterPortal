@@ -35,13 +35,13 @@ class SettingsController extends Controller
 
     static function updateSetting(Request $request)
     {
-        Log::info("update setting");
+        Log::info("updating setting");
         $settingToUpdate = $request->setting;
         $newValue = $request->value;
+        Log::info("Setting $settingToUpdate to $newValue");
         $setting = Settings::where("setting", $settingToUpdate)->update(['value' => floatval($newValue)]);
         if(!is_null($setting))
         {
-
             // $setting->update(['value' => $newValue]);
             // $setting->save();
             // Log::info("Updating setting $setting with value ".$setting->value);
