@@ -41,10 +41,9 @@ class SettingsController extends Controller
         $setting = Settings::where("setting", $settingToUpdate)->update(['value' => floatval($newValue)]);
         if(!is_null($setting))
         {
-
-            // $setting->update(['value' => $newValue]);
-            // $setting->save();
-            // Log::info("Updating setting $setting with value ".$setting->value);
+            $setting->update(['value' => $newValue]);
+            $setting->save();
+            Log::info("Updating setting $setting with value ".$setting->value);
             return self::successResponse("", "Updated Setting $settingToUpdate to $newValue");
         }
         else{

@@ -64,7 +64,7 @@ function AllSettings() {
             }
         })
         .catch((error) => {
-            console.log(error);
+            console.log("Caught error" +error);
         });  
     }
 
