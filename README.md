@@ -18,6 +18,7 @@ Install with npm
 `extension=zip`<br>
 `extension=fileinfo`<br>
 `extension=openssl`<br>
+`extension=ldap`<br>
 
 
 ### Add the necessary PDO extensions required by laravel to use SQL Server 2017+ 
@@ -55,3 +56,6 @@ For development, I use the following settings, please note these must be changed
     'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
 ````
 
+### IIS setup
+Site will have to have all http methods enabled
+go to handler mappings-><yourmapping>->Request Restrictions->verbs->All verbs

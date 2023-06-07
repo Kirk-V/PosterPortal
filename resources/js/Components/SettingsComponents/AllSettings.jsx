@@ -47,7 +47,9 @@ function AllSettings() {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
         }
-        fetch(`/api/settings/update?setting=${setting}&value=${value}`, options)
+        
+        fetch(`api/settings/update`, options)
+        // fetch(`/api/settings/update?setting=${setting}&value=${value}`, options)
         .then((res) => {
             if (!res.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
