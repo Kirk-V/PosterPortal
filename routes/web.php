@@ -23,6 +23,7 @@ use App\Http\Controllers\RequestsController;
 */
 
 Route::get('/', function () {
+    // return "hello";
     return Inertia::render('posterportal');
     // return Inertia::render('Welcome', [
     //     'canLogin' => Route::has('login'),
@@ -46,6 +47,8 @@ Route::get('/posterportal', function () {
 //         'currentView' => 'jobs'
 //     ]);
 // });
+
+
 Route::controller(JobsController::class)->group(function () {
     Route::get('/jobs', 'index');
     Route::get('/jobs/jobsHeaders', 'getJobsHeadings');

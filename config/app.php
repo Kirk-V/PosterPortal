@@ -3,6 +3,40 @@
 use Illuminate\Support\Facades\Facade;
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Application ActiveDirectoryGroups
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the What active directory groups are a part of each
+    | access groups. 
+    |
+    */
+    'access' => [
+        'external'=> [
+            'required' => [
+                'uwo-u-staff',
+                'uwo-u-graduatestudent',
+                'uwo-u-faculty',
+            ]
+            
+        ],
+        'undergrad' => [
+            'required'=>
+            [
+                'SSC-U-All',
+                'uwo-u-undergraduatestudent'
+            ],
+            
+        ],
+        'normal' => [
+            'required'=> 
+            [
+                'SSC-U-All'
+            ]
+        ]
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
