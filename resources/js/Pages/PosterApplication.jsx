@@ -3,6 +3,7 @@ import { router } from '@inertiajs/react'
 import { React, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import RequisitionerDetails from '@/Components/ApplicationComponents/RequisitionerDetails';
+import PaymentMethod from '@/Components/ApplicationComponents/PaymentMethod';
 function PosterApplication({ auth, data }) {
     const [validated, setValidated] = useState(false);
     const requests = data;
@@ -18,7 +19,8 @@ function PosterApplication({ auth, data }) {
     }
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
-            <RequisitionerDetails/>        
+            <RequisitionerDetails/>    
+            <PaymentMethod/>    
         </Form>
     );
 }
