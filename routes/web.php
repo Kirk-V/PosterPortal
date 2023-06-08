@@ -33,10 +33,6 @@ Route::get('/', function () {
     // ]);
 });
 
-Route::get('/h', function () {
-    return "hello";
-});
-
 
 Route::get('/posterportal', function () {
     return Inertia::render('posterportal');

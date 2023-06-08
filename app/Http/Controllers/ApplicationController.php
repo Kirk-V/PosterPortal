@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use LdapRecord\Models\ActiveDirectory\Group;
 use LdapRecord\Models\ActiveDirectory\User;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
+
 
 class ApplicationController extends Controller
 {
@@ -19,7 +21,8 @@ class ApplicationController extends Controller
         // the settings to see what groups should be allowed in. 
         // This can also give us some information on the user
 
-        //
+        //This line is for testing without authorization of user.
+        return Inertia::render('PosterApplication');
         try {
             $user = User::where('cn', $_SERVER['LOGON_USER'])
                 ->limit(1)
@@ -40,7 +43,7 @@ class ApplicationController extends Controller
             if($this->userInAccessGroup($user, 'normal'))
             {
                 $rString .= "User is a valid SSC user<br>";
-                return view('ApplicationForm.PosterApplication');
+                return Inertia::render('PosterApplication');
             }
 
             //Check external
