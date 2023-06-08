@@ -73,6 +73,7 @@ export default function PosterDetails(PosterCost) {
                             controlId="FloatingUnitsSelect"
                             label="Quantity">
                         <Form.Control
+                            required
                             aria-label="Quantity"
                             name="quantity"
                             type="number"

@@ -56,6 +56,10 @@ export default function RequisitionerDetails(allowUndergrad = true, Email, handl
         </Form.Group>
   )
 
+  const handleChange = (event) => {
+    console.log(event.target.value);
+  }
+
   return (
     <>
       <Row>
@@ -73,6 +77,7 @@ export default function RequisitionerDetails(allowUndergrad = true, Email, handl
               type="text"
               name="first_name"
               maxLength="50"
+              onChange={handleChange}
             />
           </FloatingLabel>
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>

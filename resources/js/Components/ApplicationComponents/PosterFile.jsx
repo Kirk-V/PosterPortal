@@ -31,6 +31,22 @@ export default function PosterFile() {
       <p>Please provide a oneDrive link to your Shared Poster File</p>
     </Row>
     <Row>
+    <Form.Group as={Col} sm="6" controlId="validationCustom01">
+          <FloatingLabel
+            controlId="floatingInput"
+            label="oneDrive link"
+            className="mb-3"
+          >
+            <Form.Control
+              required
+              type="text"
+              name="one_drive_link"
+            />
+          </FloatingLabel>
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        </Form.Group>
+    </Row>
+    <Row>
       <small>Please make file viewable via the shared link. The image should have the same aspect ratio as the provided poster dimensions. Instructions for sharing a file from one drive: <a href="https://support.microsoft.com/en-us/office/share-onedrive-files-and-folders-9fcc2f7d-de0c-4cec-93b0-a82024800c07#:~:text=Share%20by%20using%20%22Copy%20link%22">Sharing Link</a></small>
     </Row>
     </>
