@@ -4,6 +4,7 @@ import { React, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import RequisitionerDetails from '@/Components/ApplicationComponents/RequisitionerDetails';
 import PaymentMethod from '@/Components/ApplicationComponents/PaymentMethod';
+import PosterDetails from '@/Components/ApplicationComponents/PosterDetails';
 function PosterApplication({ auth, data }) {
     const [validated, setValidated] = useState(false);
     const requests = data;
@@ -20,7 +21,8 @@ function PosterApplication({ auth, data }) {
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <RequisitionerDetails/>    
-            <PaymentMethod/>    
+            <PaymentMethod/>  
+            <PosterDetails/>  
         </Form>
     );
 }
