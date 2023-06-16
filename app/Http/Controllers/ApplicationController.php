@@ -18,7 +18,7 @@ class ApplicationController extends Controller
     {
         // do a user check, we need to see if external user and should be allowed in
         // We can do this by checking the signed in user in ActiveDirectory (AD) and checking
-        // the settings to see what groups should be allowed in. 
+        // the settings to see what groups should be allowed in.
         // This can also give us some information on the user
 
         //This line is for testing without authorization of user.
@@ -61,7 +61,7 @@ class ApplicationController extends Controller
             }
             //check undergrad
             if ($uGrad == 1) {
-                //Currently Accepting Ugrad Applications. 
+                //Currently Accepting Ugrad Applications.
                 $rString .= "<br>We are currently Accepting new UGrad applications<br>";
                 //check if user is an external user:
                 if($this->userInAccessGroup($user, 'undergrad'))
@@ -122,5 +122,65 @@ class ApplicationController extends Controller
             }
         }
         return false;
+    }
+
+
+    /**
+     * Summary of newApplication:
+     *      Attempts to add a new request/job to the system. First validates that the user is able to submit
+     *      by checking if they are in an appropriate user grou (Faculty, staff, external, or undergrad if available)
+     *      If Valid and new request is added to system, send back success message for front end. Else send back a
+     *      json array of the datafields showing true/false depending on validation result.
+     * @param mixed $group - the access group (set in config/app.access)
+     * @return bool if user is in one of the groups represented in $group
+     */
+    public function newApplication()
+    {
+        try {
+            $validUser = false;
+            $user = User::where('cn', $_SERVER['LOGON_USER'])
+                ->limit(1)
+                ->get()
+                ->first();
+            $email = $user->getAttribute("mail")[0];
+            $userName = $user->getAttribute("cn")[0];
+            //Now check the appropriate groups to see if user is eligible to submit a poster
+            $userGroups = $user->groups()->get();
+            $rString = "";
+
+            //Eligible groups
+            $External = Settings::where('setting', 'external')->get()->first()->value;
+            $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+
+            // Check the necessary groups for user existance
+            // First we check for SSC exitance
+            if($this->userInAccessGroup($user, 'normal'))
+            {
+                $rString .= "User is a valid SSC user<br>";
+                $validUser = true;
+            }
+            //Check external
+            elseif ($External == 1) {
+                $rString .= "We are currently Accepting new External applications<br>";
+                //check if user is an external user:
+                if($this->userInAccessGroup($user, 'external'))
+                {
+                    $validUser = true;
+                }
+            }
+            //check undergrad
+            elseif ($uGrad == 1) {
+                //Currently Accepting Ugrad Applications.
+                $rString .= "<br>We are currently Accepting new UGrad applications<br>";
+                //check if user is an external user:
+                if($this->userInAccessGroup($user, 'undergrad'))
+                {
+                    $validUser = true;
+                }
+            }
+        } catch (Exception $e) {
+            //Should return a page indicating that user does not have access to application process
+            return "no user found";
+        }
     }
 }

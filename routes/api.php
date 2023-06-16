@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobsController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\PosterController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SettingsController;
+use Illuminate\Console\Application;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,5 +53,9 @@ Route::controller(CoursesController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/courses/all', 'getAllCoursesJson');
     Route::delete('/courses/delete', 'deleteCourse');
-    
+
+});
+
+Route::controller(ApplicationController::class)->group(function (){
+    Route::post('/NewApplication', 'newApplication');
 });

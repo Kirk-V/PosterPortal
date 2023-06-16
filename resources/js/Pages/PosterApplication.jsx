@@ -8,27 +8,66 @@ import PaymentMethod from '@/Components/ApplicationComponents/PaymentMethod';
 import PosterDetails from '@/Components/ApplicationComponents/PosterDetails';
 import PosterFile from '@/Components/ApplicationComponents/PosterFile';
 import Button from 'react-bootstrap/Button';
+
+//Validation:
+// After submit, store data in state, set validated state = true.
+// this gets passsed to each component and
+//  validate: tells the componenet whether a validation attempt has been made
+//  fieldValidation: tells the components which fields have passed/failed serverside validation
 function PosterApplication({ auth, data }) {
     const [validated, setValidated] = useState(false);
+    const [fieldValidation, setFieldValidation] = useState(null);
+    const [fieldData, setFieldData] = useState(null);
+    const [clientValidated, setClientValidated] = useState(false)
+    const [serverValidated, setServerValidated] = useState(false);
     const requests = data;
 
+
+    const handleFieldUpdate = (event) => {
+        //copy fieldData
+        console.log("update field event");
+        let newData = {...fieldData};
+        var name = event.target.name;
+        var value = event.target.value;
+        console.log(`updating ${name} to ${value}`);
+        newData[name] = value;
+        setFieldData(newData);
+    }
+
     const handleSubmit = (event) => {
+
         console.log("Form Submitted");
-        
+        //Get the form data into the json fieldValidation state var
         event.preventDefault();
-        
         const form = event.currentTarget;
         const data = new FormData(form);
         console.log(data);
         if (form.checkValidity() === false) {
+            //Clientside validation failed. We show the feedback on the forms by setting client validated to true
             console.log(`invalid form data: ${data['first_name']}`);
+            setClientValidated(true);
         }
         else{
-            
+            //Validated by client browser, send to api for further evaluation.
+            //Here we do not apply client validation, so we set client validated to false
+            setClientValidated(false);
             console.log("Valid data entered, sending for backend validation"+JSON.stringify(data));
+            //Call validation api
+
+            //set the validation object which should update the front end fields
+            setFieldValidation({'first_name': false, 'last_name': true});
+            setServerValidated(true)
         }
-        setValidated(true);
+
         event.stopPropagation();
+    }
+
+    //Send data to API for validation and to make new poster request.
+    const submitRequest = () => {
+        let options = {
+            method : 'POST',
+        }
+        let fetch()
     }
 
     const HeaderSection = (
@@ -43,10 +82,10 @@ function PosterApplication({ auth, data }) {
     return (
         <>
         {HeaderSection}
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-            <RequisitionerDetails/>    
-            <PaymentMethod/>  
-            <PosterDetails/>  
+        <Form noValidate validated={clientValidated} onSubmit={handleSubmit}>
+            <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate}/>
+            <PaymentMethod/>
+            <PosterDetails/>
             <PosterFile/>
             <Button type="submit">Submit</Button>
         </Form>
