@@ -59,7 +59,8 @@ return new class extends Migration
             $table->string('grant_holder_name')->nullable();
             $table->string('designate_name')->nullable();
             $table->string('grant_holder_email')->nullable();
-            $table->enum('position', ['graduate', 'faculty', 'staff', 'undergraduate']);
+            $table->boolean('applied_for_discount');
+            $table->enum('position', ['graduate', 'faculty', 'staff', 'undergraduate'])->nullable();
             $table->integer('quantity');
             // $table->string('email');
 

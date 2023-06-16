@@ -53,7 +53,7 @@ function PosterApplication({ auth, data }) {
             setClientValidated(false);
             console.log("Valid data entered, sending for backend validation"+JSON.stringify(data));
             //Call validation api
-
+            submitRequest();
             //set the validation object which should update the front end fields
             setFieldValidation({'first_name': false, 'last_name': true});
             setServerValidated(true)
@@ -63,11 +63,28 @@ function PosterApplication({ auth, data }) {
     }
 
     //Send data to API for validation and to make new poster request.
+
     const submitRequest = () => {
-        let options = {
-            method : 'POST',
+        //Extra step here for the undergrad vs other position. Since it's a checkbox
+        // it may not have changed and may not have a value. Back end expects a position value
+        // so default it to facstaffgrad
+        if(!('apply_for_discount' in fieldData))
+        {
+            fieldData['apply_for_discount'] = 0;
         }
-        let fetch()
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(fieldData),
+            headers: {
+                // the content type header value is usually auto-set
+                // depending on the request body
+                "Content-Type": 'application/json',
+                'Accept': 'application/json'
+              },
+            }
+        fetch('api/application/NewApplication', options)
+            .then(response => response.json())
+            .then(response => console.log(JSON.stringify(response)))
     }
 
     const HeaderSection = (

@@ -21,8 +21,8 @@ class RequestsFactory extends Factory
 
         //extra logic to keep speedcode and grant_holder together
 
-        
-        $returnArray = 
+
+        $returnArray =
         [
             'poster_id' => Posters::factory(),
             'course_id' => Courses::factory(),
@@ -31,7 +31,8 @@ class RequestsFactory extends Factory
             'email' => fake()->email(),
             'department' => fake()->randomElement(['Anthropology', 'Brain and Mind', 'Dan Management', 'Deans Office', 'Economics', 'Geography', 'History', 'Indigenous Studies', 'Nest', 'Political Science', 'Psychology', 'Sociology', 'SSTS', 'Other']),
             'payment_method' => fake()->randomElement(['cash', 'speedcode']),
-            'position' => fake()->randomElement(['graduate', 'faculty', 'undergraduate', 'staff']),
+            'applied_for_discount' => fake()->boolean(),
+            // 'position' => fake()->randomElement(['graduate', 'faculty', 'undergraduate', 'staff']),
             'quantity' => fake()->randomDigitNotZero(),
         ];
 

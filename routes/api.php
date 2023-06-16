@@ -57,5 +57,5 @@ Route::controller(CoursesController::class)->group(function (){
 });
 
 Route::controller(ApplicationController::class)->group(function (){
-    Route::post('/NewApplication', 'newApplication');
+    Route::post('/application/NewApplication', 'newApplication');
 });

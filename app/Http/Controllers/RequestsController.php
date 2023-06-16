@@ -28,8 +28,8 @@ class RequestsController extends Controller
     static function successResponse($data, $message = null, $code = 200)
 	{
 		return response()->json([
-			'status'=> 'Success', 
-			'message' => $message, 
+			'status'=> 'Success',
+			'message' => $message,
 			'data' => $data
 		], $code);
 	}
@@ -66,7 +66,7 @@ class RequestsController extends Controller
      * Summary of rejectRequest
      *      If a request needs to be cancelled it must move the associated poster state to 'rejected'.
      *      By doing this we can see that a poster job was not done, and no financial reconciliation should
-     *      take place. 
+     *      take place.
      * @return \Illuminate\Http\JsonResponse
      */
     public function rejectRequest($requestId){

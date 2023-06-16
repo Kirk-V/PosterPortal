@@ -30,8 +30,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
         type="checkbox"
         id={`discountText`}
         label="Apply for Undergrad Discount"
-        name="position"
-        value={ApplyingForDiscount? "undergrad": "FacStaffGrad"}
+        name="apply_for_discount"
+        value={ApplyingForDiscount? 0: 1}
         onChange={(e) => {handleControlUpdate(e), ToggleApplyForDiscount()}}
       />
      </Form.Group>
@@ -49,9 +49,9 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
           >
             <Form.Control
               required
-              type="text"
+              type="number"
               name="course_number"
-              maxLength="5"
+              maxLength="4"
               onChange={handleControlUpdate}
               defaultValue={formData?.course_number}
             />

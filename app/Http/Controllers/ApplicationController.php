@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Posters;
+use App\Models\Courses;
+use App\Models\Requests;
 use App\Models\Settings;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -9,10 +12,29 @@ use LdapRecord\Models\ActiveDirectory\Group;
 use LdapRecord\Models\ActiveDirectory\User;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Illuminate\Support\ItemNotFoundException;
 
 
 class ApplicationController extends Controller
 {
+    static function successResponse($data, $message = null, $code = 200)
+	{
+		return response()->json([
+			'status'=> 'Success',
+			'message' => $message,
+			'data' => $data
+		], $code);
+	}
+
+    static function errorResponse($message = null, $code)
+	{
+		return response()->json([
+			'status'=>'Error',
+			'message' => $message,
+			'data' => null
+		], $code);
+	}
+
     //applicationForm
     public function applicationForm()
     {
@@ -134,53 +156,134 @@ class ApplicationController extends Controller
      * @param mixed $group - the access group (set in config/app.access)
      * @return bool if user is in one of the groups represented in $group
      */
-    public function newApplication()
+    public function newApplication(Request $request)
     {
-        try {
-            $validUser = false;
-            $user = User::where('cn', $_SERVER['LOGON_USER'])
-                ->limit(1)
-                ->get()
-                ->first();
-            $email = $user->getAttribute("mail")[0];
-            $userName = $user->getAttribute("cn")[0];
-            //Now check the appropriate groups to see if user is eligible to submit a poster
-            $userGroups = $user->groups()->get();
-            $rString = "";
+        $validUser = true; //For testing, must turn on in prod.
 
-            //Eligible groups
-            $External = Settings::where('setting', 'external')->get()->first()->value;
-            $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+        // try {
+        //     $user = User::where('cn', $_SERVER['LOGON_USER'])
+        //         ->limit(1)
+        //         ->get()
+        //         ->first();
+        //     $rString = "";
 
-            // Check the necessary groups for user existance
-            // First we check for SSC exitance
-            if($this->userInAccessGroup($user, 'normal'))
+        //     //Eligible groups
+        //     $External = Settings::where('setting', 'external')->get()->first()->value;
+        //     $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+
+        //     // Check the necessary groups for user existance
+        //     // First we check for SSC exitance
+        //     if($this->userInAccessGroup($user, 'normal'))
+        //     {
+        //         $rString .= "User is a valid SSC user<br>";
+        //         $validUser = true;
+        //     }
+        //     //Check external
+        //     elseif ($External == 1) {
+        //         $rString .= "We are currently Accepting new External applications<br>";
+        //         //check if user is an external user:
+        //         if($this->userInAccessGroup($user, 'external'))
+        //         {
+        //             $validUser = true;
+        //         }
+        //     }
+        //     //check undergrad
+        //     elseif ($uGrad == 1) {
+        //         //Currently Accepting Ugrad Applications.
+        //         $rString .= "<br>We are currently Accepting new UGrad applications<br>";
+        //         //check if user is an external user:
+        //         if($this->userInAccessGroup($user, 'undergrad'))
+        //         {
+        //             $validUser = true;
+        //         }
+        //     }
+        // } catch (Exception $e) {
+        //     //Should return a page indicating that user does not have access to application process
+        //     return "<h1>invalid user</h1>";
+        // }
+        if($validUser)
+        {
+            //validate data
+            $validationArray = array();
+            $validData = true;
+            try{
+                //Make the poster and request model to put into DB. Only make these here, do not save unless all validation
+                // passes.
+                $data = $request->all();
+                log::info($data);
+                //Make Poster Object
+                $poster = new Posters;
+                $poster->state = 'pending';
+                $poster->width = $request->width;
+                $validationArray["width"] = true;
+                $poster->height = $request->height;
+                $validationArray['height'] = true;
+                $poster->units = $request->units;
+                $validationArray['units'] = true;
+
+
+                //make Request Object
+                $posterRequest = new Requests;
+                $posterRequest->first_name = $request->first_name;
+                $validationArray['first_name'] = true;
+                $posterRequest->last_name = $request->last_name;
+                $validationArray['last_name'] = true;
+                $posterRequest->email = $request->email;
+                $validationArray['email'] = true;
+                $posterRequest->department = $request->department;
+                $validationArray['department'] = true;
+                // $posterRequest->quantity = $request->quantity;
+                // $posterRequest->position = $request->position;
+                //Check if discount is eligible
+                $posterRequest->applied_for_discount = $request->apply_for_discount;
+                log::info($request->apply_for_discount);
+                log::info($posterRequest->applied_for_discount);
+                if($posterRequest->applied_for_discount == 1)
+                {
+                    log::info("applying for disc");
+                    //Undergrad discount request, check course and dept
+                    $yearString = date("Y")."/".date("Y")+1;
+                    try{
+                        $course = Courses::where('year', $yearString)
+                            ->where('department', $posterRequest->department)
+                            ->where('course_id', $posterRequest->course_number)->firstOrFail();
+                        //if we reach this line we have found the course so the user can apply for the discount
+
+                        $validationArray['applied_for_discount'] = true;
+                        $posterRequest->courses()->save($course);
+                    }
+                    catch(ItemNotFoundException $e)
+                    {
+                        //Couldn't find course
+                        log::info("Course not found, cannot apply for student discount");
+                        $validationArray['applied_for_discount'] = false;
+                        $validData = false;
+                        return $this->successResponse($validationArray, "not valid");
+                    }
+                }
+                else
+                {
+                    log::info("not applying for disc");
+                }
+
+                //Validation succeeded, add in models to DB
+                //Poster First
+                // $poster->save();
+                // $posterRequest->save();
+                return $this->successResponse("success", "Added request");
+            }
+            catch(\Exception $e)
             {
-                $rString .= "User is a valid SSC user<br>";
-                $validUser = true;
+                log::info("Failed to validate poster data");
+                $validData = false;
+                return $this->successResponse($validationArray, "not valid");
             }
-            //Check external
-            elseif ($External == 1) {
-                $rString .= "We are currently Accepting new External applications<br>";
-                //check if user is an external user:
-                if($this->userInAccessGroup($user, 'external'))
-                {
-                    $validUser = true;
-                }
-            }
-            //check undergrad
-            elseif ($uGrad == 1) {
-                //Currently Accepting Ugrad Applications.
-                $rString .= "<br>We are currently Accepting new UGrad applications<br>";
-                //check if user is an external user:
-                if($this->userInAccessGroup($user, 'undergrad'))
-                {
-                    $validUser = true;
-                }
-            }
-        } catch (Exception $e) {
-            //Should return a page indicating that user does not have access to application process
-            return "no user found";
+
         }
+        else
+        {
+            log::info("User attempted to submit poster but was not authorized");
+        }
+
     }
 }
