@@ -32,6 +32,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
         label="Apply for Undergrad Discount"
         name="apply_for_discount"
         value={ApplyingForDiscount? 0: 1}
+
         onChange={(e) => {handleControlUpdate(e), ToggleApplyForDiscount()}}
       />
      </Form.Group>
@@ -49,10 +50,11 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
           >
             <Form.Control
               required
-              type="number"
+              type="text"
               name="course_number"
-              maxLength="4"
+              maxLength="5"
               onChange={handleControlUpdate}
+              isInvalid={ serverValidationAttempted? !validationFields?.course_number: false}
               defaultValue={formData?.course_number}
             />
           </FloatingLabel>
@@ -144,8 +146,9 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               required
               name="department"
               isInvalid={ serverValidationAttempted? !validationFields?.department: false }
-              onChange={(e) => handleControlUpdate(e)}>
+              onChange={handleControlUpdate}>
               <option value="" disabled hidden></option>
+              <option value="labore">lab</option>
               {departments.map((departmentName) => (
                 <option key={departmentName} value={departmentName}>{departmentName}</option>
               ))}

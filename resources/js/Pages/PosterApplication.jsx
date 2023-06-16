@@ -55,7 +55,7 @@ function PosterApplication({ auth, data }) {
             //Call validation api
             submitRequest();
             //set the validation object which should update the front end fields
-            setFieldValidation({'first_name': false, 'last_name': true});
+            // setFieldValidation({'first_name': false, 'last_name': true});
             setServerValidated(true)
         }
 
@@ -84,7 +84,10 @@ function PosterApplication({ auth, data }) {
             }
         fetch('api/application/NewApplication', options)
             .then(response => response.json())
-            .then(response => console.log(JSON.stringify(response)))
+            .then(response => {
+                console.log(JSON.stringify(response));
+                setFieldValidation(response.data);
+            });
     }
 
     const HeaderSection = (

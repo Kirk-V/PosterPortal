@@ -26,12 +26,12 @@ class ApplicationController extends Controller
 		], $code);
 	}
 
-    static function errorResponse($message = null, $code)
+    static function errorResponse($message = null, $code, $data=null)
 	{
 		return response()->json([
 			'status'=>'Error',
 			'message' => $message,
-			'data' => null
+			'data' => $data
 		], $code);
 	}
 
@@ -244,21 +244,26 @@ class ApplicationController extends Controller
                     //Undergrad discount request, check course and dept
                     $yearString = date("Y")."/".date("Y")+1;
                     try{
+                        log::info("looking for course".$yearString." ".$posterRequest->department." ".$posterRequest->course_number);
                         $course = Courses::where('year', $yearString)
                             ->where('department', $posterRequest->department)
-                            ->where('course_id', $posterRequest->course_number)->firstOrFail();
+                            ->where('number', $request->course_number)->firstOrFail();
                         //if we reach this line we have found the course so the user can apply for the discount
 
                         $validationArray['applied_for_discount'] = true;
+                        $validationArray['course_number'] = true;
+                        $validationArray['department'] = true;
                         $posterRequest->courses()->save($course);
                     }
-                    catch(ItemNotFoundException $e)
+                    catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e)
                     {
                         //Couldn't find course
                         log::info("Course not found, cannot apply for student discount");
                         $validationArray['applied_for_discount'] = false;
+                        $validationArray['department'] = false;
+                        $validationArray['course_number'] = false;
                         $validData = false;
-                        return $this->successResponse($validationArray, "not valid");
+                        return $this->errorResponse("Course Not Found", 200, $validationArray);
                     }
                 }
                 else
@@ -274,9 +279,9 @@ class ApplicationController extends Controller
             }
             catch(\Exception $e)
             {
-                log::info("Failed to validate poster data");
+                log::info("Failed to validate poster data $e");
                 $validData = false;
-                return $this->successResponse($validationArray, "not valid");
+                return $this->errorResponse("not valid", 200, $validationArray );
             }
 
         }
