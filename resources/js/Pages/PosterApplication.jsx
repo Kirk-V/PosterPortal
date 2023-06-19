@@ -1,6 +1,6 @@
 // import RequestTableRow from '@/Components/RequestTableRow';
 import { router } from '@inertiajs/react'
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row'
 import RequisitionerDetails from '@/Components/ApplicationComponents/RequisitionerDetails';
@@ -14,13 +14,43 @@ import Button from 'react-bootstrap/Button';
 // this gets passsed to each component and
 //  validate: tells the componenet whether a validation attempt has been made
 //  fieldValidation: tells the components which fields have passed/failed serverside validation
-function PosterApplication({ auth, data }) {
+function PosterApplication({ auth, data, departments }) {
     const [validated, setValidated] = useState(false);
     const [fieldValidation, setFieldValidation] = useState(null);
     const [fieldData, setFieldData] = useState(null);
     const [clientValidated, setClientValidated] = useState(false)
     const [serverValidated, setServerValidated] = useState(false);
+    const [formSettings, setFormSettings] = useState(null);
     const requests = data;
+
+    //Get the settings data with a call to API
+    useEffect(() => {
+        let options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            },
+        }
+        fetch(`api/settings/findFormSettings`, options)
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return res.json();
+        })
+        .then((response) => {
+            console.log("req data:");
+            console.log(`okay, Setting Data is: ${JSON.stringify(response)}`);
+            if(response.status == "Success")
+            {
+                console.log("settings: "+ JSON.stringify(response.data));
+                setFormSettings(response.data);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });    
+    }, []);
 
 
     const handleFieldUpdate = (event) => {
@@ -44,7 +74,7 @@ function PosterApplication({ auth, data }) {
         console.log(data);
         if (form.checkValidity() === false) {
             //Clientside validation failed. We show the feedback on the forms by setting client validated to true
-            console.log(`invalid form data: ${data['first_name']}`);
+            // console.log(`invalid form data: ${data['first_name']}`);
             setClientValidated(true);
         }
         else{
@@ -68,6 +98,7 @@ function PosterApplication({ auth, data }) {
         //Extra step here for the undergrad vs other position. Since it's a checkbox
         // it may not have changed and may not have a value. Back end expects a position value
         // so default it to facstaffgrad
+        console.log(JSON.stringify(fieldData));
         if(!('apply_for_discount' in fieldData))
         {
             fieldData['apply_for_discount'] = 0;
@@ -103,8 +134,8 @@ function PosterApplication({ auth, data }) {
         <>
         {HeaderSection}
         <Form noValidate validated={clientValidated} onSubmit={handleSubmit}>
-            <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate}/>
-            <PaymentMethod/>
+            <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
+            <PaymentMethod  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <PosterDetails/>
             <PosterFile/>
             <Button type="submit">Submit</Button>

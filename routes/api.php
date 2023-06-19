@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(SettingsController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/settings/all', 'getAllSettings');
+    Route::get('/settings/find&setting={setting}', 'getSetting');
+    Route::get('/settings/findFormSettings', 'getFormSettings');
     Route::put('/settings/update', 'updateSetting');
 });
 

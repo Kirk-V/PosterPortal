@@ -10,7 +10,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { CurrencyDollar } from 'react-bootstrap-icons';
 
-export default function PosterDetails(PosterCost) {
+export default function PosterDetails({serverValidationAttempted, validationFields, formData, handleControlUpdate, formSettings}) {
     const [costPerPoster, setCostPerPoster] = useState(0);
     const [Total, setTotal] = useState(0);
     return (
@@ -31,7 +31,7 @@ export default function PosterDetails(PosterCost) {
                         <Form.Control
                             required
                             type="number"
-                            name="grant_holder_name"
+                            name="width"
                         />
                     </FloatingLabel>
                 </Form.Group>
@@ -45,7 +45,7 @@ export default function PosterDetails(PosterCost) {
                         <Form.Control
                             required
                             type="number"
-                            name="grant_holder_name"
+                            name="height"
                         />
                     </FloatingLabel>
                 </Form.Group>

@@ -38,13 +38,23 @@ class RequestsFactory extends Factory
 
         if($returnArray["payment_method"] == 'speedcode')
         {
+            $returnArray['approver_type'] = fake()->randomElement(['dosa', 'administrator', 'grant holder']);
             $returnArray['grant_holder_name'] = fake()->name();
-            $returnArray['grant_holder_email'] = fake()->email();
+            $returnArray['approver_email'] = fake()->email();
+            if($returnArray['approver_type'] == 'dosa')
+            {
+                $returnArray['approver_name'] = fake()->name();
+            }
+            else
+            {
+                $returnArray['approver_name'] = $returnArray['grant_holder_name'];
+            }
         }
         else
         {
             $returnArray['grant_holder_name'] = null;
-            $returnArray['grant_holder_email'] = null;
+            $returnArray['approver_email'] = null;
+            $returnArray['approver_type'] = null;
         }
 
         return $returnArray;

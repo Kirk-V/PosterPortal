@@ -44,7 +44,8 @@ class ApplicationController extends Controller
         // This can also give us some information on the user
 
         //This line is for testing without authorization of user.
-        return Inertia::render('PosterApplication');
+        return Inertia::render('PosterApplication', [
+            'departments'=> config('app.departments')]);
         try {
             $user = User::where('cn', $_SERVER['LOGON_USER'])
                 ->limit(1)
@@ -232,8 +233,8 @@ class ApplicationController extends Controller
                 $validationArray['email'] = true;
                 $posterRequest->department = $request->department;
                 $validationArray['department'] = true;
-                // $posterRequest->quantity = $request->quantity;
-                // $posterRequest->position = $request->position;
+                $posterRequest->quantity = $request->quantity;
+                $validationArray['quantity'] = true;
                 //Check if discount is eligible
                 $posterRequest->applied_for_discount = $request->apply_for_discount;
                 log::info($request->apply_for_discount);
@@ -270,12 +271,36 @@ class ApplicationController extends Controller
                 {
                     log::info("not applying for disc");
                 }
+                $posterRequest->payment_method = $request->payment_method;
+                $validationArray['payment_method'] = true;
+
+                if($posterRequest->payment_method == 'speed_code')
+                {
+                    $posterRequest->approver_type = $request->approver_type;
+                    $validationArray['approver_type'] = true;
+                    $posterRequest->approver_name = $request->approver_name;
+                    $validationArray['approver_name'] = true;
+                    $posterRequest->approver_email = $request->approver_email;
+                    $validationArray['approver_email'] = true;
+                    if($posterRequest->approver_type == 'grant_holder')
+                    {
+                        //If grant_holder, the approver name is equal to the grant holder name
+                        $posterRequest->grant_holder_name = $posterRequest->approver_name;
+                        $validationArray['grant_holder_name'] = true;
+                    }
+                    else{
+                        //If dosa or administrator approver, the grant_holder name needs to be collected and is different
+                        // than then approver name                        
+                        $posterRequest->grant_holder_name = $request->grant_holder_name;
+                        $validationArray['grant_holder_name'] = true;
+                    }
+                }
 
                 //Validation succeeded, add in models to DB
                 //Poster First
                 // $poster->save();
                 // $posterRequest->save();
-                return $this->successResponse("success", "Added request");
+                return $this->successResponse($validationArray, "success");
             }
             catch(\Exception $e)
             {

@@ -7,11 +7,9 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-export default function RequisitionerDetails({allowUndergrad = true, serverValidationAttempted, validationFields, formData, handleControlUpdate}) {
+export default function RequisitionerDetails({allowUndergrad = true, serverValidationAttempted, validationFields, formData, handleControlUpdate, departmentList, formSettings}) {
   const [ApplyingForDiscount, setApplyingforDiscount] = useState(false);
-  const departments = ['dept1', 'dept2', 'dept3'];
-    console.log("validationFields "+JSON.stringify(validationFields));
-
+  const departments = departmentList;
   const DiscountText = (
     <>
       <p>This printing service is only available to Social Science undergraduate students who are enrolled in the Pre-approved courses arranged by the course Professor. We are aware that the Psychology thesis poster presentation is Friday March 24. The undergraduate Social Science student donation discount ($12.00) only applies when funds are available and the correct Pre-approved course number, Department, and Cash payment options are selected. Posters are printed on a first come, first served basis. We will be dedicating our printing service to try and print all posters for this event. Discounts DO NOT apply to speedcode payments.</p>
@@ -55,6 +53,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               maxLength="5"
               onChange={handleControlUpdate}
               isInvalid={ serverValidationAttempted? !validationFields?.course_number: false}
+              isValid={ serverValidationAttempted? validationFields?.course_number: false}
               defaultValue={formData?.course_number}
             />
           </FloatingLabel>
@@ -85,6 +84,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               maxLength="50"
               pattern="[A-Za-z]+"
               isInvalid={ serverValidationAttempted? !validationFields?.first_name: false}
+              isValid={ serverValidationAttempted? validationFields?.first_name: false}
               onChange={(e) => handleControlUpdate(e)}
             />
           </FloatingLabel>
@@ -102,6 +102,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               name="last_name"
               pattern="[A-Za-z ]+"
               isInvalid={ serverValidationAttempted? !validationFields?.last_name: false }
+              isValid={ serverValidationAttempted? validationFields?.last_name: false }
               maxLength="50"
               onChange={(e) => handleControlUpdate(e)}
             />
@@ -123,15 +124,16 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               required
               type="email"
               name="email"
-              pattern="[a-z0-9._%+-]+[@]\buwo.ca"
+              pattern="[a-z0-9._%+-]+[@]\buwo\.ca"
               isInvalid={ serverValidationAttempted? !validationFields?.email: false }
+              isValid={ serverValidationAttempted? validationFields?.email: false }
               onChange={(e) => handleControlUpdate(e)}
             />
           </FloatingLabel>
         </Form.Group>
       </Row>
 
-          {allowUndergrad ? UnderGradCheckBox: null}
+          {formSettings?.undergrad =="1" ? UnderGradCheckBox: null}
 
       <Row>
         {ApplyingForDiscount? CourseInfo :null}
@@ -146,9 +148,9 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               required
               name="department"
               isInvalid={ serverValidationAttempted? !validationFields?.department: false }
+              isValid={ serverValidationAttempted? validationFields?.department: false }
               onChange={handleControlUpdate}>
               <option value="" disabled hidden></option>
-              <option value="labore">lab</option>
               {departments.map((departmentName) => (
                 <option key={departmentName} value={departmentName}>{departmentName}</option>
               ))}

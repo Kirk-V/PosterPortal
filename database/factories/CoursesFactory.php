@@ -17,13 +17,13 @@ class CoursesFactory extends Factory
     public function definition(): array
     {
 
-        $year = fake()->numberBetween(2020,2030);
+        $year = fake()->numberBetween(2020,2024);
 
         return [
             //id auto gen'd
-            'number' => fake()->bothify('####?'),
+            'number' => fake()->bothify('####'),
             'year' => "$year/".($year+1),
-            'department'=> fake()->word(),
+            'department'=> fake()->randomElement(config('app.departments')),
             'instructor' => fake()->name(),
         ];
     }

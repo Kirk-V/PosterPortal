@@ -59,6 +59,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Departments
+    |--------------------------------------------------------------------------
+    |
+    | This list holds all the supported departments in the application. Othe is 
+    | used to represent external poster jobs. Usually accompanied by more info
+    | in the request.
+    |
+    */
+    'departments' =>  ["Anthropology","Brain","DAN","Deans","Economics","Geography","History","Indigenous","NEST","Politcal","Psychology","Sociology","SSTS", "Other"],
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
     |

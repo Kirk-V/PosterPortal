@@ -10,7 +10,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { InfoCircle } from 'react-bootstrap-icons';
 
-export default function PaymentMethod() {
+export default function PaymentMethod({serverValidationAttempted, validationFields, formData, handleControlUpdate, departmentList}) {
     const [PaymentMethod, setPaymentMethod] = useState(null);
     const [ApproverType, setApproverType] = useState(null);
 
@@ -46,7 +46,31 @@ export default function PaymentMethod() {
         </Row>
     )
 
+    const DosaGrantHolderSection = (
+        
+        <Row>
+            <Form.Group as={Col} sm="6" controlId="Dosa_grantHolder">
+                <FloatingLabel
+                    controlId="floatingInput"
+                    label="Grant Holder's Name"
+                    className="mb-3"
+                >
+                    <Form.Control
+                        required
+                        type="text"
+                        name="grant_holder_name"
+                        pattern="([A-Za-z \-]+){2,}"
+                        onChange={(e) => handleControlUpdate(e)}
+                        isInvalid={ serverValidationAttempted? !validationFields?.grant_holder_name: false}
+                        isValid={ serverValidationAttempted? validationFields?.grant_holder_name: false}
+                    />
+                </FloatingLabel>
+            </Form.Group>
+        </Row>
+    )
+
     const ApproverSection = (
+        <>
         <Row>
             <Form.Group as={Col} sm="6" controlId="validationCustomUsername">
                 <FloatingLabel
@@ -57,7 +81,11 @@ export default function PaymentMethod() {
                     <Form.Control
                         required
                         type="text"
-                        name="grant_holder_name"
+                        name="approver_name"
+                        pattern="([A-Za-z \-]+){2,}"
+                        onChange={handleControlUpdate}
+                        isInvalid={ serverValidationAttempted? !validationFields?.approver_name: false}
+                        isValid={ serverValidationAttempted? validationFields?.approver_name: false}
                     />
                 </FloatingLabel>
             </Form.Group>
@@ -70,12 +98,18 @@ export default function PaymentMethod() {
                     <Form.Control
                         required
                         type="email"
-                        name="email"
-                        pattern="[a-z0-9._%+-]+[@]\buwo.ca"
+                        name="approver_email"
+                        pattern="^[a-z0-9_.%+\-]+@uwo\.ca"
+                        onChange={handleControlUpdate}
+                        isInvalid={ serverValidationAttempted? !validationFields?.approver_email: false}
+                        isValid={ serverValidationAttempted? validationFields?.approver_email: false}
                     />
                 </FloatingLabel>
             </Form.Group>
         </Row>
+        {formData?.approver_type != "grant_holder" ? DosaGrantHolderSection: null}
+        </>
+
     )
 
     const SpeedCodeSection = (
@@ -110,12 +144,17 @@ export default function PaymentMethod() {
                         className="mb-3"
                     >
                         <Form.Select
-                            aria-label="Department Select"
+                            aria-label="Approver type Select"
                             required
-                            defaultValue="">
+                            defaultValue=""
+                            name="approver_type"
+                            onChange={(e) => {HandleApproverTypeChange(e), handleControlUpdate(e)}}
+                            isInvalid={ serverValidationAttempted? !validationFields?.approver_type: false}
+                            isValid={ serverValidationAttempted? validationFields?.approver_type: false}
+                            >
                             <option value="" disabled hidden></option>
                             <option value="grant_holder">Research Grant Holder</option>
-                            <option value="designate">DoSA Designate</option>
+                            <option value="dosa">DoSA Designate</option>
                             <option value="administrator">Administrator</option>
                         </Form.Select>
                     </FloatingLabel>
@@ -146,7 +185,9 @@ export default function PaymentMethod() {
                         type="radio"
                         id="payment_method"
                         value="cash"
-                        onChange={HandlePaymentChange}
+                        onChange={(e) => {HandlePaymentChange(e), handleControlUpdate(e)}}
+                        isInvalid={ serverValidationAttempted? !validationFields?.payment_method: false}
+                        isValid={ serverValidationAttempted? validationFields?.payment_method: false}
                     />
                 </Col>
                 <Col sm="3">
@@ -158,7 +199,9 @@ export default function PaymentMethod() {
                         type="radio"
                         id="payment_method"
                         value="speed_code"
-                        onChange={HandlePaymentChange}
+                        isInvalid={ serverValidationAttempted? !validationFields?.payment_method: false}
+                        isValid={ serverValidationAttempted? validationFields?.payment_method: false}
+                        onChange={(e) => {HandlePaymentChange(e), handleControlUpdate(e)}}
                     />
                 </Col>
             </Row>

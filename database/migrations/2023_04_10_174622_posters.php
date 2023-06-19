@@ -57,8 +57,10 @@ return new class extends Migration
             $table->string('department');
             $table->enum('payment_method', ['cash','speedcode']);
             $table->string('grant_holder_name')->nullable();
+            $table->string('approver_name')->nullable();
+            $table->string('approver_type')->nullable();
             $table->string('designate_name')->nullable();
-            $table->string('grant_holder_email')->nullable();
+            $table->string('approver_email')->nullable();
             $table->boolean('applied_for_discount');
             $table->enum('position', ['graduate', 'faculty', 'staff', 'undergraduate'])->nullable();
             $table->integer('quantity');
