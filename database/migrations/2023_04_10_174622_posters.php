@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('state', ['pending', 'ready', 'rejected', 'accepted', 'printed', 'paid', 'complete']);
             $table->float('width', 8, 2);
             $table->float('height', 8, 2);
+            $table->integer('quantity');
             $table->enum('units', ['centimeters', 'inches']);
             // $table->foreignId('transaction_id')->nullable()->references('transaction_id')->on('Transactions')->nullOnDelete();
             $table->boolean('discount_eligible');
@@ -63,7 +64,7 @@ return new class extends Migration
             $table->string('approver_email')->nullable();
             $table->boolean('applied_for_discount');
             $table->enum('position', ['graduate', 'faculty', 'staff', 'undergraduate'])->nullable();
-            $table->integer('quantity');
+            
             // $table->string('email');
 
         });

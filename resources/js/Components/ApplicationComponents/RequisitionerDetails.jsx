@@ -21,6 +21,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
     setApplyingforDiscount(!ApplyingForDiscount);
   }
 
+  
+
   const UnderGradCheckBox = (
     <Row className="mb-3">
      <Form.Group as={Col} md="6" controlId="validationCustomUsername">
@@ -149,7 +151,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               name="department"
               isInvalid={ serverValidationAttempted? !validationFields?.department: false }
               isValid={ serverValidationAttempted? validationFields?.department: false }
-              onChange={handleControlUpdate}>
+              onChange={handleControlUpdate}
+              defaultValue="">
               <option value="" disabled hidden></option>
               {departments.map((departmentName) => (
                 <option key={departmentName} value={departmentName}>{departmentName}</option>

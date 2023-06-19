@@ -53,6 +53,31 @@ function PosterApplication({ auth, data, departments }) {
     }, []);
 
 
+    const calcCostPer = (width, height, units, quantity) => {
+        let cost = formSettings?.cost ?? 0;
+
+        console.log("units set to " + units);
+        console.log("quantity set to " + quantity);
+        if(units == 'cm')
+        {
+            //convert to inches
+            width = convertCmToInch(width);
+            height = convertCmToInch(height);
+        }
+        let footHeight = height/12;
+        let footWidth = width/12;
+        let costPer = cost * (footHeight * footWidth);
+        let total = costPer * quantity;
+        return [costPer, total];
+    }
+
+
+    const convertCmToInch = (val) =>
+    {
+        return 0.39370*val;
+    }
+
+
     const handleFieldUpdate = (event) => {
         //copy fieldData
         console.log("update field event");
@@ -61,8 +86,21 @@ function PosterApplication({ auth, data, departments }) {
         var value = event.target.value;
         console.log(`updating ${name} to ${value}`);
         newData[name] = value;
+        if(['width', 'height', 'quantity', 'units'].includes(name))
+        {
+            let width = newData?.width ?? 0;
+            let height = newData?.height ?? 0;
+            let quantity = newData?.quantity ?? 0;
+            let units = newData?.units ?? 'cms';
+            console.log("sending for cost update");
+            newData['cost'] = calcCostPer(width, height, units, quantity)[0];
+            newData['total'] = calcCostPer(width, height, units, quantity)[1];
+        }
+
         setFieldData(newData);
+        
     }
+    console.log(JSON.stringify(fieldData));
 
     const handleSubmit = (event) => {
 
@@ -136,7 +174,7 @@ function PosterApplication({ auth, data, departments }) {
         <Form noValidate validated={clientValidated} onSubmit={handleSubmit}>
             <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <PaymentMethod  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
-            <PosterDetails/>
+            <PosterDetails  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <PosterFile/>
             <Button type="submit">Submit</Button>
         </Form>

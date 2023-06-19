@@ -33,7 +33,7 @@ class RequestsFactory extends Factory
             'payment_method' => fake()->randomElement(['cash', 'speedcode']),
             'applied_for_discount' => fake()->boolean(),
             // 'position' => fake()->randomElement(['graduate', 'faculty', 'undergraduate', 'staff']),
-            'quantity' => fake()->randomDigitNotZero(),
+            // 'quantity' => fake()->randomDigitNotZero(),
         ];
 
         if($returnArray["payment_method"] == 'speedcode')

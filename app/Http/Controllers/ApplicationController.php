@@ -6,6 +6,7 @@ use App\Models\Posters;
 use App\Models\Courses;
 use App\Models\Requests;
 use App\Models\Settings;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use LdapRecord\Models\ActiveDirectory\Group;
@@ -204,14 +205,35 @@ class ApplicationController extends Controller
         // }
         if($validUser)
         {
+            $data = $request->all();
+            log::info($data);
+            $validated = $request->validate([
+                'first_name' => ['required'],
+                'width'=> ['required'],
+                'height' => ['required'],
+                'units' => ['required'],
+                'last_name' => ['required'],
+                'email' => ['required'],
+                'department' => ['required'],
+                'quantity' => ['required'],
+                'applied_for_discount' => ['integer','between:0:1' ],
+                'course_number' => [Rule::requiredIf($request->applied_for_discount == 1), Rule::prohibitedIf($request->applied_for_discount != 1)],
+                'payment_method' => ['required'],
+                'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code')],
+                'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code')],
+                'approver_email' => [Rule::requiredIf($request->payment_method == 'speed_code')],
+                'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type != 'grant_holder')],
+                // 'first_name' => ['required'],
+
+
+            ]);
             //validate data
             $validationArray = array();
             $validData = true;
             try{
                 //Make the poster and request model to put into DB. Only make these here, do not save unless all validation
                 // passes.
-                $data = $request->all();
-                log::info($data);
+                
                 //Make Poster Object
                 $poster = new Posters;
                 $poster->state = 'pending';
@@ -269,6 +291,7 @@ class ApplicationController extends Controller
                 }
                 else
                 {
+                    $posterRequest->applied_for_discount = 0;
                     log::info("not applying for disc");
                 }
                 $posterRequest->payment_method = $request->payment_method;

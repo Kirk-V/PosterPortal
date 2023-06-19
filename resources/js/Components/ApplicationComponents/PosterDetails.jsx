@@ -11,8 +11,11 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { CurrencyDollar } from 'react-bootstrap-icons';
 
 export default function PosterDetails({serverValidationAttempted, validationFields, formData, handleControlUpdate, formSettings}) {
-    const [costPerPoster, setCostPerPoster] = useState(0);
+    const [costPerPoster, setCostPerPoster] = useState(formData?.cost ?? 0);
     const [Total, setTotal] = useState(0);
+
+
+
     return (
         <>
             <Row>
@@ -32,6 +35,9 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             required
                             type="number"
                             name="width"
+                            onChange={(e) => handleControlUpdate(e)}
+                            isInvalid={ serverValidationAttempted? !validationFields?.width: false}
+                            isValid={ serverValidationAttempted? validationFields?.width: false}
                         />
                     </FloatingLabel>
                 </Form.Group>
@@ -46,18 +52,25 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             required
                             type="number"
                             name="height"
+                            onChange={(e) => handleControlUpdate(e)}
+                            isInvalid={ serverValidationAttempted? !validationFields?.height: false}
+                            isValid={ serverValidationAttempted? validationFields?.height: false}
                         />
                     </FloatingLabel>
                 </Form.Group>
                 <Form.Group as={Col} sm="2">
                     <FloatingLabel
                         controlId="FloatingUnitsSelect"
-                        label="Height"
+                        label="units"
                         className="mb-3">
                         <Form.Select
                             required
                             name="units"
-                            defaultValue="cm">
+                            defaultValue=""
+                            onChange={(e) => handleControlUpdate(e)}
+                            isInvalid={ serverValidationAttempted? !validationFields?.units: false}
+                            isValid={ serverValidationAttempted? validationFields?.units: false}>
+                            <option value="" hidden></option>
                             <option value="cm">cm</option>
                             <option value="inches">inches</option>
                         </Form.Select>
@@ -78,6 +91,9 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             name="quantity"
                             type="number"
                             aria-describedby="basic-addon1"
+                            onChange={(e) => {handleControlUpdate(e)}}
+                            isInvalid={ serverValidationAttempted? !validationFields?.quantity: false}
+                            isValid={ serverValidationAttempted? validationFields?.quantity: false}
                         />
                         </FloatingLabel>
                     </InputGroup>
@@ -85,13 +101,13 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                 <Col sm="2">
                     <div className="bg-secondary bg-opacity-10 rounded p-1">
                         <h6>Cost Per Poster</h6>
-                        <CurrencyDollar size="25"/>{costPerPoster.toFixed(2)}
+                        <CurrencyDollar size="25"/>{formData?.cost?.toFixed(2) ?? 0}
                     </div>
                 </Col>
                 <Col sm="2">
                     <div className="bg-secondary bg-opacity-10 rounded p-1">
                         <h6>Estimated Total</h6>
-                        <CurrencyDollar size="25"/>{Total.toFixed(2)}
+                        <CurrencyDollar size="25"/>{formData?.total?.toFixed(2) ?? 0}
                     </div>
                 </Col>
             </Row>
