@@ -42,8 +42,8 @@ export default function PosterFile({serverValidationAttempted, validationFields,
               type="text"
               name="one_drive_link"
               onChange={(e) => {handleControlUpdate(e)}}
-              isInvalid={ serverValidationAttempted? validationFields.hasOwn('one_drive_link') ? true: false: false}
-              isValid={ serverValidationAttempted? validationFields.hasOwn('one_drive_link') ? false: true: false }
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('one_drive_link') ??false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('one_drive_link') ??false ? false: true: false }
             />
           </FloatingLabel>
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -73,8 +73,8 @@ export default function PosterFile({serverValidationAttempted, validationFields,
             id="poster_file_one_drive"
             value="oneDrive"
             onChange={(e) => {handleControlUpdate(e)}}
-            isInvalid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? true: false: false}
-            isValid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? false: true: false }
+            isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('poster_file') ??false ? true: false: false}
+            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('poster_file') ??false ? false: true: false }
             
           />
         </Col>
@@ -88,8 +88,8 @@ export default function PosterFile({serverValidationAttempted, validationFields,
             id="poster_file_email"
             value="email"
             onChange={(e) => {handleControlUpdate(e)}}
-            isInvalid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? true: false: false}
-            isValid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? false: true: false }
+            isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('poster_file') ??false ? true: false: false}
+            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('poster_file') ??false ? false: true: false }
           />
         </Col>
       </Row>

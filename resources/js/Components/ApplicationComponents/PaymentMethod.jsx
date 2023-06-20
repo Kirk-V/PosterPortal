@@ -61,8 +61,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         name="grant_holder_name"
                         pattern="([A-Za-z \-]+){2,}"
                         onChange={(e) => handleControlUpdate(e)}
-                        isInvalid={ serverValidationAttempted? validationFields?.hasOwn('grant_holder_name')??false  ? true: false: false}
-                isValid={ serverValidationAttempted? validationFields?.hasOwn('grant_holder_name') ?? false ? true: false: false }
+                        isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('grant_holder_name')??false  ? true: false: false}
+                isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('grant_holder_name') ?? false ? true: false: false }
                     />
                 </FloatingLabel>
             </Form.Group>
@@ -84,8 +84,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         name="approver_name"
                         pattern="([A-Za-z \-]+){2,}"
                         onChange={handleControlUpdate}
-                        isInvalid={ serverValidationAttempted? validationFields?.hasOwn('approver_name') ??false ? true: false: false}
-                        isValid={ serverValidationAttempted? validationFields?.hasOwn('approver_name') ??false ? true: false :false}
+                        isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_name') ??false ? true: false: false}
+                        isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_name') ??false ? true: false :false}
                     />
                 </FloatingLabel>
             </Form.Group>
@@ -101,8 +101,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         name="approver_email"
                         pattern="^[a-z0-9_.%+\-]+@uwo\.ca"
                         onChange={handleControlUpdate}
-                        isInvalid={ serverValidationAttempted? validationFields?.hasOwn('approver_email') ??false ? true: false: false}
-                        isValid={ serverValidationAttempted? validationFields?.hasOwn('approver_email') ??false ? true: false :false }
+                        isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_email') ??false ? true: false: false}
+                        isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_email') ??false ? true: false :false }
                     />
                 </FloatingLabel>
             </Form.Group>
@@ -149,8 +149,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                             defaultValue=""
                             name="approver_type"
                             onChange={(e) => {HandleApproverTypeChange(e), handleControlUpdate(e)}}
-                            isInvalid={ serverValidationAttempted? validationFields?.hasOwn('approver_type') ??false? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields?.hasOwn('approver_type') ??false ? true: false:false  }
+                            isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_type') ??false? true: false: false}
+                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_type') ??false ? true: false:false  }
                             >
                             <option value="" disabled hidden></option>
                             <option value="grant_holder">Research Grant Holder</option>
@@ -186,8 +186,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         id="payment_method"
                         value="cash"
                         onChange={(e) => {HandlePaymentChange(e), handleControlUpdate(e)}}
-                        isInvalid={ serverValidationAttempted? validationFields?.hasOwn('payment_method') ??false ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields?.hasOwn('payment_method') ??false ? true: false: false  }
+                        isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false}
+                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false  }
                     />
                 </Col>
                 <Col sm="3">
@@ -199,8 +199,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         type="radio"
                         id="payment_method"
                         value="speed_code"
-                        isInvalid={ serverValidationAttempted? validationFields?.hasOwn('payment_method') ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields?.hasOwn('payment_method') ??false ? true: false: false  }
+                        isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ? true: false: false}
+                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false  }
                         onChange={(e) => {HandlePaymentChange(e), handleControlUpdate(e)}}
                     />
                 </Col>

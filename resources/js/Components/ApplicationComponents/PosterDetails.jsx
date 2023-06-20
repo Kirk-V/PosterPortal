@@ -36,8 +36,8 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             type="number"
                             name="width"
                             onChange={(e) => handleControlUpdate(e)}
-                            isInvalid={ serverValidationAttempted? validationFields.hasOwn('width') ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields.hasOwn('width') ? false: true: false }
+                            isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('width') ??false ? true: false: false}
+                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('width') ??false ? false: true: false }
                         />
                     </FloatingLabel>
                 </Form.Group>
@@ -53,8 +53,8 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             type="number"
                             name="height"
                             onChange={(e) => handleControlUpdate(e)}
-                            isInvalid={ serverValidationAttempted? validationFields.hasOwn('height') ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields.hasOwn('height') ? false: true: false }
+                            isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('height') ??false ? true: false: false}
+                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('height') ??false ? false: true: false }
                         />
                     </FloatingLabel>
                 </Form.Group>
@@ -68,8 +68,8 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             name="units"
                             defaultValue=""
                             onChange={(e) => handleControlUpdate(e)}
-                            isInvalid={ serverValidationAttempted? validationFields.hasOwn('units') ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields.hasOwn('units') ? false: true: false }>
+                            isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('units') ??false ? true: false: false}
+                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('units') ??false ? false: true: false }>
                             <option value="" hidden></option>
                             <option value="cm">cm</option>
                             <option value="inches">inches</option>
@@ -92,8 +92,8 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             type="number"
                             aria-describedby="basic-addon1"
                             onChange={(e) => {handleControlUpdate(e)}}
-                            isInvalid={ serverValidationAttempted? validationFields.hasOwn('quantity') ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields.hasOwn('quantity') ? false: true: false }
+                            isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('quantity') ??false ? true: false: false}
+                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('quantity') ??false ? false: true: false }
                         />
                         </FloatingLabel>
                     </InputGroup>
