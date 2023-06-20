@@ -68,7 +68,7 @@ function PosterApplication({ auth, data, departments }) {
         let footWidth = width/12;
         let costPer = cost * (footHeight * footWidth);
         let total = costPer * quantity;
-        return [costPer, total];
+        return [costPer.toFixed(2), total.toFixed(2)];
     }
 
 

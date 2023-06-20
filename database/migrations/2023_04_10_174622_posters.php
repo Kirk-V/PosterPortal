@@ -64,6 +64,7 @@ return new class extends Migration
             $table->string('approver_email')->nullable();
             $table->boolean('applied_for_discount');
             $table->enum('position', ['graduate', 'faculty', 'staff', 'undergraduate'])->nullable();
+            $table->string('user_logged_in');
             
             // $table->string('email');
 

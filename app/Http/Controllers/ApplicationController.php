@@ -209,25 +209,28 @@ class ApplicationController extends Controller
             log::info($data);
             $validated = $request->validate([
                 'first_name' => ['required', 'string', 'max:250'],
-                'width'=> ['required'],
-                'height' => ['required'],
-                'units' => ['required'],
+                'width'=> ['required', 'decimal:0,4'],
+                'height' => ['required','decimal:0,4'],
+                'units' => ['required', 'in:cm,inches'],
                 'last_name' => ['required','string', 'max:250'],
                 'email' => ['required', 'email','string', 'max:250'],
                 'department' => ['required', Rule::in(config('app.departments'))],
-                'quantity' => ['required'],
+                'quantity' => ['required', 'integer'],
                 'applied_for_discount' => ['integer','between:0:1' ],
-                'course_number' => [Rule::requiredIf($request->applied_for_discount == '1'), Rule::prohibitedIf($request->applied_for_discount == '0')],
-                'payment_method' => ['required'],
-                'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
+                'course_number' => [Rule::requiredIf($request->applied_for_discount == '1'), Rule::prohibitedIf($request->applied_for_discount == '0'), 'size:4'],
+                'payment_method' => ['required', 'in:speed_code,cash'],
+                'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250', 'in:dosa,grant_holder,administrator'],
                 'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
                 'approver_email' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
                 'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type != 'grant_holder')],
-                // 'first_name' => ['required'],
-
-
+                'cost' => ['required','decimal:0,4'],
+                'poster_file' => ['required', 'in:oneDrive,email'],
+                'one_drive_link' => [Rule::requiredIf($request->poster_file == 'oneDrive')]
             ]);
             //validate data
+            log::info("validation passed checking for existing posters");
+
+            //Check to see if user has already put in requests
             $validationArray = array();
             $validData = true;
             try{
@@ -338,5 +341,17 @@ class ApplicationController extends Controller
             log::info("User attempted to submit poster but was not authorized");
         }
 
+    }
+
+
+    /**
+     * Summary of checkForReduntantPosters: This fn will check all pending work associated with username
+     * parameter. Returns false if beyond threshold set in app.config.
+     * @param mixed $userName
+     * @return bool
+     */
+    private function checkForReduntantPosters($userName)
+    {  
+        Posters::where()
     }
 }

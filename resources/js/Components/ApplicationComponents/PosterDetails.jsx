@@ -101,13 +101,13 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                 <Col sm="2">
                     <div className="bg-secondary bg-opacity-10 rounded p-1">
                         <h6>Cost Per Poster</h6>
-                        <CurrencyDollar size="25"/>{formData?.cost?.toFixed(2) ?? 0}
+                        <CurrencyDollar size="25"/>{formData?.cost ?? 0}
                     </div>
                 </Col>
                 <Col sm="2">
                     <div className="bg-secondary bg-opacity-10 rounded p-1">
                         <h6>Estimated Total</h6>
-                        <CurrencyDollar size="25"/>{formData?.total?.toFixed(2) ?? 0}
+                        <CurrencyDollar size="25"/>{formData?.total ?? 0}
                     </div>
                 </Col>
             </Row>
