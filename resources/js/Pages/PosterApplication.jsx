@@ -52,7 +52,7 @@ function PosterApplication({ auth, data, departments }) {
         });    
     }, []);
 
-
+    // console.log(fieldValidation?.first_name);
     const calcCostPer = (width, height, units, quantity) => {
         let cost = formSettings?.cost ?? 0;
 
@@ -124,7 +124,7 @@ function PosterApplication({ auth, data, departments }) {
             submitRequest();
             //set the validation object which should update the front end fields
             // setFieldValidation({'first_name': false, 'last_name': true});
-            setServerValidated(true)
+            
         }
 
         event.stopPropagation();
@@ -155,7 +155,10 @@ function PosterApplication({ auth, data, departments }) {
             .then(response => response.json())
             .then(response => {
                 console.log(JSON.stringify(response));
-                setFieldValidation(response.data);
+                setFieldValidation(response.errors);
+                setServerValidated(true)
+                console.log("set fieldValidation to "+ JSON.stringify(response.errors));
+                
             });
     }
 
@@ -175,7 +178,7 @@ function PosterApplication({ auth, data, departments }) {
             <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <PaymentMethod  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <PosterDetails  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
-            <PosterFile/>
+            <PosterFile formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <Button type="submit">Submit</Button>
         </Form>
         </>

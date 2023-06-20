@@ -208,20 +208,20 @@ class ApplicationController extends Controller
             $data = $request->all();
             log::info($data);
             $validated = $request->validate([
-                'first_name' => ['required'],
+                'first_name' => ['required', 'string', 'max:250'],
                 'width'=> ['required'],
                 'height' => ['required'],
                 'units' => ['required'],
-                'last_name' => ['required'],
-                'email' => ['required'],
-                'department' => ['required'],
+                'last_name' => ['required','string', 'max:250'],
+                'email' => ['required', 'email','string', 'max:250'],
+                'department' => ['required', Rule::in(config('app.departments'))],
                 'quantity' => ['required'],
                 'applied_for_discount' => ['integer','between:0:1' ],
-                'course_number' => [Rule::requiredIf($request->applied_for_discount == 1), Rule::prohibitedIf($request->applied_for_discount != 1)],
+                'course_number' => [Rule::requiredIf($request->applied_for_discount == '1'), Rule::prohibitedIf($request->applied_for_discount == '0')],
                 'payment_method' => ['required'],
-                'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code')],
-                'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code')],
-                'approver_email' => [Rule::requiredIf($request->payment_method == 'speed_code')],
+                'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
+                'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
+                'approver_email' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
                 'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type != 'grant_holder')],
                 // 'first_name' => ['required'],
 

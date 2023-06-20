@@ -10,7 +10,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { CurrencyDollar } from 'react-bootstrap-icons';
 
-export default function PosterFile() {
+export default function PosterFile({serverValidationAttempted, validationFields, formData, handleControlUpdate, formSettings}) {
   const [posterFileType, setPosterFileType] = useState(null);
 
   const HandleFileTypeChange = (e) => {
@@ -41,6 +41,9 @@ export default function PosterFile() {
               required
               type="text"
               name="one_drive_link"
+              onChange={(e) => {handleControlUpdate(e)}}
+              isInvalid={ serverValidationAttempted? validationFields.hasOwn('one_drive_link') ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields.hasOwn('one_drive_link') ? false: true: false }
             />
           </FloatingLabel>
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -69,7 +72,10 @@ export default function PosterFile() {
             type="radio"
             id="poster_file_one_drive"
             value="oneDrive"
-            onChange={HandleFileTypeChange}
+            onChange={(e) => {handleControlUpdate(e)}}
+            isInvalid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? true: false: false}
+            isValid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? false: true: false }
+            
           />
         </Col>
         <Col sm="3">
@@ -81,11 +87,13 @@ export default function PosterFile() {
             type="radio"
             id="poster_file_email"
             value="email"
-            onChange={HandleFileTypeChange}
+            onChange={(e) => {handleControlUpdate(e)}}
+            isInvalid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? true: false: false}
+            isValid={ serverValidationAttempted? validationFields.hasOwn('poster_file') ? false: true: false }
           />
         </Col>
       </Row>
-      {posterFileType == "oneDrive"? OneDriveSection: posterFileType == "email"? EmailSecton : null}
+      {formData?.poster_file == "oneDrive"? OneDriveSection: formData?.poster_file == "email"? EmailSecton : null}
     </>
   )
 }

@@ -54,8 +54,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               name="course_number"
               maxLength="5"
               onChange={handleControlUpdate}
-              isInvalid={ serverValidationAttempted? !validationFields?.course_number: false}
-              isValid={ serverValidationAttempted? validationFields?.course_number: false}
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwn('course_number') ?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwn('course_number') ??false ? false: true: false }
               defaultValue={formData?.course_number}
             />
           </FloatingLabel>
@@ -85,8 +85,9 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               name="first_name"
               maxLength="50"
               pattern="[A-Za-z]+"
-              isInvalid={ serverValidationAttempted? !validationFields?.first_name: false}
-              isValid={ serverValidationAttempted? validationFields?.first_name: false}
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwn('first_name')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwn('first_name')?? false ? false: true: false }
+              //If server validation has not occured false. If server validation has occuredcheck for first_name: if first_name exists false, else true
               onChange={(e) => handleControlUpdate(e)}
             />
           </FloatingLabel>
@@ -103,8 +104,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               type="text"
               name="last_name"
               pattern="[A-Za-z ]+"
-              isInvalid={ serverValidationAttempted? !validationFields?.last_name: false }
-              isValid={ serverValidationAttempted? validationFields?.last_name: false }
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwn('last_name')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwn('last_name')?? false ? false: true: false }
               maxLength="50"
               onChange={(e) => handleControlUpdate(e)}
             />
@@ -127,8 +128,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               type="email"
               name="email"
               pattern="[a-z0-9._%+-]+[@]\buwo\.ca"
-              isInvalid={ serverValidationAttempted? !validationFields?.email: false }
-              isValid={ serverValidationAttempted? validationFields?.email: false }
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwn('email')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwn('email')?? false ? false: true: false }
               onChange={(e) => handleControlUpdate(e)}
             />
           </FloatingLabel>
@@ -149,8 +150,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
               aria-label="Department Select"
               required
               name="department"
-              isInvalid={ serverValidationAttempted? !validationFields?.department: false }
-              isValid={ serverValidationAttempted? validationFields?.department: false }
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwn('department')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwn('department')?? false ? false: true: false }
               onChange={handleControlUpdate}
               defaultValue="">
               <option value="" disabled hidden></option>
