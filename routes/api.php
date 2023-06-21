@@ -61,3 +61,8 @@ Route::controller(CoursesController::class)->group(function (){
 Route::controller(ApplicationController::class)->group(function (){
     Route::post('/application/NewApplication', 'newApplication');
 });
+
+
+Route::controller(CoursesController::class)->group(function (){
+    Route::post('/courses/addCourse', 'addCourse');
+});

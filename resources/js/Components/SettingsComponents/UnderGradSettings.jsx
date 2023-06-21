@@ -56,10 +56,41 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
         {
             //valid form send course infor to back end:
             console.log(`form Data is: ${JSON.stringify(addCourseFormData)}`);
+            addNewCourse();
         }
 
         //
 
+    }
+
+    const addNewCourse = () => {
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(addCourseFormData),
+            headers: {
+                // the content type header value is usually auto-set
+                // depending on the request body
+                "Content-Type": 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+        fetch(`api/courses/addCourse`, options)
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return res.json()
+        })
+        .then((response) => {
+            console.log("req data:");
+            console.log(`okay, course replt ${JSON.stringify(response)}`);
+            // setRequest(response);
+
+        },
+        (error) => {
+            console.log(error)
+        }
+        )
     }
 
     const handleUpdateCost = (event) => {
