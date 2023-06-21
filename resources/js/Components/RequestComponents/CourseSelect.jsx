@@ -6,7 +6,8 @@ export default function CourseSelect({courseData, value}) {
     <>
     <Form.Label>Course</Form.Label>
 
-    <Form.Select aria-label="Default select example">
+    <Form.Select aria-label="Default select example"
+        defaultValue={value}>
         {Object.values(courseData).map((course, key) => <option key={key} value={course.course_id}>{course.number} - {course.year} - {course.department}</option>)}
     </Form.Select>
     </>

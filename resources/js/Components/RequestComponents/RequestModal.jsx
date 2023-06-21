@@ -137,7 +137,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     // 4) this component updateas its form object state
     // 5) this component re-renders, sending the
     function handleFromUpdate(newData){
-        console.log("update form in modal");
+        console.log("update form in modal new data:");
         console.log(JSON.stringify(newData));
         setFormData(newData);
         // updateTotal();

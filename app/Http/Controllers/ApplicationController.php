@@ -253,7 +253,7 @@ class ApplicationController extends Controller
                     'quantity' => $request->quantity,
                     'units' => $request->units,
                     'discount_eligible' => $request->apply_for_discount,
-                    'speed_code_approved' => 1,
+                    'speed_code_approved' => 0,
                     'discount' => floatval(0.00),
                     'cost' => $request->cost,
                     'file_location' => $request->poster_file, //This will have to be changed when we start uploading files directly.

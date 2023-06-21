@@ -19,7 +19,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
     // can become its own component.
 
-    console.log("Re-render form");
+    console.log("Re-render form data: "+JSON.stringify(formD));
 
     function handleOpenFile() {
         console.log("file opening");
@@ -37,7 +37,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     const calculateTotal = (data) => {
         let costPer = data.cost;
         let quantity = data.quantity;
-        let discount = data.discount_eligible == "1" ? data.discount : 0;
+        let discount = data.discount;
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + (costPer - discount) * quantity);
         return ((costPer - discount) * quantity).toFixed(2);
@@ -53,7 +53,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         console.log(`using width: ${inchWidth}`);
         console.log(`using height: ${inchHeight}`);
         var total = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
-        console.log("total:"+ total);
+        console.log("cost:"+ total);
         return total;
     }
 
@@ -85,7 +85,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     }
 
     const handleApproved = () => {
-        let data = { ...formD };
+        let data = { ...formData };
         data.speed_code_approved = 1;
         onUpdate(data);
     }
@@ -104,6 +104,13 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         event.stopPropagation();
         setValidated(true);
     };
+
+    const handleApplyDiscount = (event) => {
+        let data = {...formD};
+        console.log("adding in discount " +settings.discount);
+        data['discount'] = settings.discount;
+        onUpdate(data);
+    }
 
 
     var GrantHolderInfo = (
@@ -183,6 +190,24 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     value={formD.course_id}
                 />
             </Col>
+            <Col xs={3}>
+                <Form.Group
+                        className="mb-3"
+                        controlId="requestFormFirstName"
+                    >
+                        <Form.Label>Remaining SDF Balance</Form.Label>
+                        <Form.Control
+                            name="sdf_balance"
+                            type="number"
+                            className="border-0"
+                            readOnly
+                            required
+                        />
+                    </Form.Group>
+            </Col>
+            <Col xs={3} className="align-self-center">
+                <Button variant="primary" onClick={handleApplyDiscount}>Apply discount</Button>{' '}
+            </Col>
         </>
     );
 
@@ -254,23 +279,21 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         className="mb-3"
                         controlId="requestFormFirstName"
                     >
-                        <Form.Label>Position</Form.Label>
+                        <Form.Label>Applied For Discount</Form.Label>
                         <Form.Select
                             name="position"
-                            defaultValue={formD.position}
+                            defaultValue={formD.applied_for_discount}
                             onChange={(e) => handleControlChange(e)}
                             required
                         >
-                            <option value="undergraduate">undergraduate</option>
-                            <option value="graduate">graduate</option>
-                            <option value="faculty">faculty</option>
-                            <option value="staff">staff</option>
+                            <option value={1}>Yes</option>
+                            <option value={0}>no</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>
             </Row>
             <Row className="mb-3">
-                {formD.position == "undergraduate" ? undergradInfo : null}
+                {formD.applied_for_discount == 1 ? undergradInfo : null}
             </Row>
             <Row>
                 <Col>
@@ -380,7 +403,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                                 as="input"
                                 type="number"
                                 name="cost"
-                                defaultValue={parseFloat(formD.cost).toFixed(2)}
+                                value={parseFloat(formD.cost).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
                             />
                         </InputGroup>
@@ -412,9 +435,10 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <Form.Control
                                 name="discount"
                                 type="number"
-                                defaultValue={formD.discount_eligible == "0" ? null : parseFloat(formD.discount).toFixed(2)}
-                                onChange={(e) => handleControlChange(e)}
-                                disabled={formD.discount_eligible == "0" ? true : false}
+                                value={parseFloat(formD.discount).toFixed(2)}
+                                readOnly
+                                // onChange={(e) => handleControlChange(e)}
+                                // disabled={formD.discount_eligible == "0" ? true : false}
                             />
                         </InputGroup>
                     </Form.Group>

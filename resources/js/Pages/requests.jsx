@@ -23,7 +23,7 @@ function Requests({ auth, data}) {
             console.log("req data:");
             console.log(`okay, Setting data: ${JSON.stringify(response)}`);
             // setRequest(response);
-            setSettings(response);
+            setSettings(response.data);
         },
         (error) => {
             console.log(error)
