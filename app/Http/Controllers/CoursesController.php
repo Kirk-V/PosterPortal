@@ -41,13 +41,13 @@ class CoursesController extends Controller
         return Courses::where('course_year', $year);
     }
 
-    public function addCourse($number, $year, $dept, $instructor)
+    public function addCourse(Request $request)
     {
         $course = new Courses;
-        $course->course_number = $number;
-        $course->course_year = $year;
-        $course->course_department = $dept;
-        $course->course_instructor = $instructor;
+        $course->course_number = $request->number;
+        // $course->course_year = $request->year;
+        $course->course_department = $request->dept;
+        $course->course_instructor = $request->instructor;
         if($course->save())
         {
             return response()->json(['success'=>true]);
