@@ -25,7 +25,7 @@ class Posters extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [ 'state', 'width','height','quantity','units','disount_eligible', 'discount', 'speed_code_approved','cost','file_location'];
+    protected $fillable = [ 'state', 'width','height','quantity','units','discount_eligible', 'discount','speed_code_approved','cost','file_location'];
 
 
     #region Relationships

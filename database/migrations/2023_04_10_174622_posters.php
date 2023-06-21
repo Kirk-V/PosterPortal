@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->enum('units', ['cm', 'inches']);
             // $table->foreignId('transaction_id')->nullable()->references('transaction_id')->on('Transactions')->nullOnDelete();
-            $table->boolean('discount_eligible')->nullable();
+            $table->boolean('discount_eligible');
             $table->string('speed_code')->nullable();
             $table->boolean('speed_code_approved');
             $table->float('discount', 8, 2);

@@ -256,7 +256,7 @@ class ApplicationController extends Controller
                     'speed_code_approved' => 1,
                     'discount' => floatval(0.00),
                     'cost' => $request->cost,
-                    'file_location' => $request->poster_file //This will have to be changed when we start uploading files directly.
+                    'file_location' => $request->poster_file, //This will have to be changed when we start uploading files directly.
                 ]);
 
                 $requestModel = new Requests([
