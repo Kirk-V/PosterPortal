@@ -60,7 +60,7 @@ class JobsController extends Controller
      */
     public function getJobsHeadings()
     {
-        return  ['Poster No.' => 'poster_id', 'State' => 'job_state', 'Payment Type' => 'payment_method', 'Requisitioner' => 'First_name', 'Requisition type' => 'position', 'Requisitioner Eamil' => 'email', 'Department' => 'department', 'Print Date' => 'print_date'];
+        return  ['Poster No.' => 'poster_id', 'State' => 'job_state', 'Payment Type' => 'payment_method', 'First Name' => 'first_name', 'Last Name' => 'last_name',  'Requisitioner Eamil' => 'email', 'Department' => 'department', 'Print Date' => 'print_date'];
     }
 
     public function getJobsData($page, $entriesPerPage = 50)

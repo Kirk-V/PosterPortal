@@ -56,18 +56,24 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             flexDirection: 'col',
             marginLeft: 10,
             marginRight: 10,
-            width: "100%",
+            width: "50%",
         },
         infoColumnSmall: {
             flexDirection: 'col',
             marginLeft: 10,
             marginRight: 10,
-            width: 150,
+            width: 100,
+        },
+        infoColumnMedium: {
+            flexDirection: 'col',
+            marginLeft: 10,
+            marginRight: 10,
+            width: 140,
         },
         infoColumnSmallRight: {
             flexDirection: 'col',
             marginRight: 10,
-            width: 150,
+            width: 100,
             marginLeft: "auto"
         },
         headerRow: {
@@ -102,13 +108,17 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 <Text>Grant Holder Information</Text>
             </View>
             <View style={styles.rowView}>
-                <View style={styles.infoColumn}>
-                    <Text style={styles.label}>Name</Text>
-                    <Text style={styles.value}>{jobData.grant_holder_name}</Text>
+                <View style={styles.infoColumnMedium}>
+                    <Text style={styles.label}>Approver Type</Text>
+                    <Text style={styles.value}>{jobData.approver_type}</Text>
                 </View>
                 <View style={styles.infoColumn}>
-                    <Text style={styles.label}>Email</Text>
-                    <Text style={styles.value}>{jobData.grant_holder_email}</Text>
+                    <Text style={styles.label}>Approver Name</Text>
+                    <Text style={styles.value}>{jobData.approver_name}</Text>
+                </View>
+                <View style={styles.infoColumn}>
+                    <Text style={styles.label}>Approver Email</Text>
+                    <Text style={styles.value}>{jobData.approver_email}</Text>
                 </View>
             </View>
             <View style={styles.rowView}>
@@ -117,12 +127,20 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     <Text style={styles.value}>{redactSpeedCode ? "" : jobData.speed_code}</Text>
                 </View>
                 <View style={styles.infoColumn}>
-                    <Text style={styles.label}>Designate Name</Text>
-                    <Text style={styles.value}>Need to add designate to migrations</Text>
+                    <Text style={styles.label}>Grant Holder</Text>
+                    <Text style={styles.value}>{redactSpeedCode ? "" : jobData.grant_holder}</Text>
                 </View>
-
             </View>
         </>
+    )
+
+    let DiscountField = (
+        <View style={styles.rowView}>
+                <View style={styles.infoColumnSmallRight}>
+                    <Text style={styles.label}>SDF Discount</Text>
+                    <Text style={styles.value}>$ {parseFloat(jobData.discount).toFixed(2)}</Text>
+                </View> 
+            </View>
     )
 
     let DetailsSection = (
@@ -141,19 +159,20 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 </View>
                 <View style={styles.infoColumnSmall}>
                     <Text style={styles.label}>Cost Per Poster</Text>
-                    <Text style={styles.value}>{jobData.cost}</Text>
+                    <Text style={styles.value}>$ {parseFloat(jobData.cost).toFixed(2)}</Text>
                 </View>
             </View>
             <View style={styles.rowView}>
                 <View style={styles.infoColumnSmallRight}>
                     <Text style={styles.label}>Sub Total</Text>
-                    <Text style={styles.value}>{jobData.total}</Text>
+                    <Text style={styles.value}>$ {parseFloat(jobData.total).toFixed(2)}</Text>
                 </View> 
             </View>
+            {jobData.discount_eligible? DiscountField : null}
             <View style={styles.rowView}>
                 <View style={styles.infoColumnSmallRight}>
                     <Text style={styles.label}>Total</Text>
-                    <Text style={styles.value}>{jobData.total_received}</Text>
+                    <Text style={styles.value}>$ {parseFloat(jobData.total_received).toFixed(2)}</Text>
                 </View> 
             </View>
         </>
@@ -176,6 +195,13 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
     )
 
 
+    let CourseField = (
+        <View style={styles.infoColumn}>
+            <Text style={styles.label}>Course Number</Text>
+            <Text style={styles.value}>{jobData.course}</Text>
+        </View>
+    )
+
     // Create Document Component
     let MyDocument = (
         <Document>
@@ -190,10 +216,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         <Text style={styles.label}>Technician</Text>
                         <Text style={styles.value}>{jobData.technician}</Text>
                     </View>
-                    <View style={styles.infoColumn}>
-                        <Text style={styles.label}>Department</Text>
-                        <Text style={styles.value}>{jobData.department}</Text>
-                    </View>
+                    
                     <View style={styles.infoColumn}>
                         <Text style={styles.label}>Poster No.</Text>
                         <Text style={styles.value}>{jobData.poster_id}</Text>
@@ -214,13 +237,11 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 </View>
                 <View style={styles.rowView}>
                     <View style={styles.infoColumn}>
-                        <Text style={styles.label}>Requisitioner Type</Text>
-                        <Text style={styles.value}>{jobData.position}</Text>
+                        <Text style={styles.label}>Department</Text>
+                        <Text style={styles.value}>{jobData.department}</Text>
                     </View>
-                    <View style={styles.infoColumn}>
-                        <Text style={styles.label}>Course No.</Text>
-                        <Text style={styles.value}>NEED TO GET COURSE INFO</Text>
-                    </View>
+                    {jobData.discount_eligible ? CourseField: null}
+                    
                 </View>
                 <View style={styles.sectionHeader}>
                     <Text>Payment</Text>

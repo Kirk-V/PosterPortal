@@ -40,7 +40,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let discount = data.discount;
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + (costPer - discount) * quantity);
-        return ((costPer - discount) * quantity).toFixed(2);
+        return ((costPer * quantity)- discount).toFixed(2);
     };
 
     const calculateCost = (data) => {
@@ -63,7 +63,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         var data = { ...formD }; //Deep copy so that setformD will trigger rerender
         console.log(`${name} being updated`);
         data[`${name}`] = value;
-        if (["width", "height", "units"].includes(name)) {
+        if (["width", "height", "units", "discount"].includes(name)) {
             data.cost = calculateCost(data);
             data.total = calculateTotal(data);
             console.log(`cost now: ${data.cost}`);
@@ -109,6 +109,9 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let data = {...formD};
         console.log("adding in discount " +settings.discount);
         data['discount'] = settings.discount;
+        data['discount_eligible'] = 1;
+        data.cost = calculateCost(data);
+        data.total = calculateCost(data);
         onUpdate(data);
     }
 
@@ -281,7 +284,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     >
                         <Form.Label>Applied For Discount</Form.Label>
                         <Form.Select
-                            name="position"
+                            name="applied_for_discount"
                             defaultValue={formD.applied_for_discount}
                             onChange={(e) => handleControlChange(e)}
                             required
@@ -436,9 +439,9 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                                 name="discount"
                                 type="number"
                                 value={parseFloat(formD.discount).toFixed(2)}
-                                readOnly
-                                // onChange={(e) => handleControlChange(e)}
-                                // disabled={formD.discount_eligible == "0" ? true : false}
+                                // readOnly={formD.discount_eligible ? false: true}
+                                onChange={(e) => handleControlChange(e)}
+                                disabled={formD.discount_eligible == "0" ? true : false}
                             />
                         </InputGroup>
                     </Form.Group>

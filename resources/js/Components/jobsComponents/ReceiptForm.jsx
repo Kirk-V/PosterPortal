@@ -98,7 +98,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
 
     const updateTotalCost = () =>
     {
-        jobsData.total = jobsData.cost * jobsData.quantity;
+        jobsData.total = (jobsData.cost * jobsData.quantity).toFixed(2);
         console.log("new total = " + jobsData.total);
         let data = { ...jobsData };
         dataUpdateHandler(data);
@@ -111,26 +111,40 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <h4>Grant Holder Information</h4>
                 </Col>
             </Row>
+            
             <Row>
-                <Col xs={6}>
+            <Col xs={3}>
+                        <Form.Label className="mb-0">
+                            Approver Type
+                        </Form.Label>
+                        <Form.Select
+                            name="approver_type"
+                            defaultValue={jobsData.approver_type}
+                            onChange={(e) => handleControlChange(e)}>
+                            <option value="dosa">Designate</option>
+                            <option value="grant_holder">Grant Holder</option>
+                            <option value="administrator">Administrator</option>
+                        </Form.Select>
+                    </Col>
+                <Col xs={4}>
                     <Form.Label className="mb-0">
-                        Name
+                        Approver Name
                     </Form.Label>
                     <Form.Control
                         type="Text"
-                        name="grant_holder_name"
-                        defaultValue={jobsData.grant_holder_name}
+                        name="approver_name"
+                        defaultValue={jobsData.approver_name}
                         onChange={(e) => handleControlChange(e)}
                     />
                 </Col>
-                <Col xs={6}>
+                <Col xs={5}>
                     <Form.Label className="mb-0">
                         Email
                     </Form.Label>
                     <Form.Control
                         type="Text"
-                        name="grant_holder_email"
-                        defaultValue={jobsData.grant_holder_email}
+                        name="approver_email"
+                        defaultValue={jobsData.approver_email}
                         onChange={(e) => handleControlChange(e)}
                     />
                 </Col>
@@ -149,12 +163,12 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 </Col>
                 <Col xs={6}>
                     <Form.Label className="mb-0">
-                        Designate's Name
+                        Grant Holder
                     </Form.Label>
                     <Form.Control
                         type="Text"
-                        name="designate"
-                        defaultValue={jobsData.designate}
+                        name="grant_holder"
+                        defaultValue={jobsData.grant_holder}
                         onChange={(e) => handleControlChange(e)}
                     />
                 </Col>
@@ -365,7 +379,6 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     </Col>
                 </Row>
 
-                {jobsData.discount_eligible == "1" ? DiscountSection : null}
                 <Row className="justify-content-end">
                     <Col xs={3}>
                         <Form.Label className="mb-0">
@@ -385,6 +398,9 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         </InputGroup>
                     </Col>
                 </Row>
+
+                {jobsData.discount_eligible == "1" ? DiscountSection : null}
+                
 
                 <Row className="justify-content-end">
                     <Col xs={3}>

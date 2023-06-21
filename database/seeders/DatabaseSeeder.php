@@ -28,11 +28,11 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         // error_log('Some message here.');
-        Posters::factory()
-        ->has(Requests::factory())
-        // ->has(Jobs::factory())
-        ->count(100)
-        ->create();
+        // Posters::factory()
+        // ->has(Requests::factory())
+        // // ->has(Jobs::factory())
+        // ->count(100)
+        // ->create();
 
         DB::table('settings')->insert([
             'setting' => 'cost',

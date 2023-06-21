@@ -12,7 +12,6 @@ export default function JobsTable() {
     const [headingsLoaded, setHeadingsLoaded] = useState(false);
     const [bodyData, setBodyData] = useState(null);
     const [bodyDataLoaded, setBodyDataLoaded] = useState(false);
-
     const [modalData, setModalData] = useState(null);
     const [showingModal, setShowingModal] = useState(false);
 

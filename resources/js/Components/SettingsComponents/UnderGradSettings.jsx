@@ -45,7 +45,7 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
 
     const handleAddCourse = (event) => {
         setValidated(true);
-        console.log("receiptform submitted");
+        console.log("course form submitted");
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
