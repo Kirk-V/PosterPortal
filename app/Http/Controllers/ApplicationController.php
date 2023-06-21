@@ -245,7 +245,6 @@ class ApplicationController extends Controller
                 // passes.
                 log::info($request->apply_for_discount. "<<<");
                 //Make Poster Object
-                DB::enableQueryLog();
                 $poster = new Posters;
                 $poster->fill([
                     'state' => 'pending',
@@ -259,8 +258,6 @@ class ApplicationController extends Controller
                     'cost' => $request->cost,
                     'file_location' => $request->poster_file //This will have to be changed when we start uploading files directly.
                 ]);
-                
-                $poster->save();
 
                 $requestModel = new Requests([
                     'first_name' => $request->first_name ?? null,
@@ -274,12 +271,9 @@ class ApplicationController extends Controller
                     'designate_name' => $request->designate_name ?? null,
                     'approver_email' => $request->approver_email ?? null,
                     'applied_for_discount'=> $request->apply_for_discount ?? null,
-                    'user_logged_in' =>  $request->user_logged_in ?? null,
+                    'user_logged_in' =>  $user->cn[0],
                 ]);
-                //Add in relationships
-                $requestModel->posters($poster);
-                
-                
+
                 if($requestModel->applied_for_discount == 1)
                 {
                     //Undergrad discount request, check course and dept
@@ -288,8 +282,6 @@ class ApplicationController extends Controller
                         $course = Courses::where('year', $yearString)
                             ->where('department', $requestModel->department)
                             ->where('number', $request->course_number)->firstOrFail();
-                        //if we reach this line we have found the course so the user can apply for the discount
-                        $requestModel->courses()->save($course);
                     }
                     catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e)
                     {
@@ -297,7 +289,50 @@ class ApplicationController extends Controller
                         return $this->errorResponse("Course Not Found", 200, $validationArray);
                     }
                 }
-                $requestModel->save();
+
+                DB::transaction( function() use ($poster, $requestModel, $course)  {
+                    //Transaction allows for automatic rollback in case an exception is thrown
+                    $poster->save();
+                    $requestModel->posters()->associate($poster);
+                    if($course)
+                    {
+                        $requestModel->courses()->associate($course);
+                    }
+                    $requestModel->save();
+                });
+                
+
+                // $requestModel = $poster->requests()->create([
+                //     'first_name' => $request->first_name ?? null,
+                //     'last_name' => $request->last_name ?? null,
+                //     'email' => $request->email ?? null,
+                //     'department' => $request->department ?? null,
+                //     'payment_method' => $request->payment_method ?? null,
+                //     'grant_holder_name' =>  $request->grant_holder_name ?? null,
+                //     'approver_name' => $request->approver_name ?? null,
+                //     'approver_type' => $request->approver_type ?? null,
+                //     'designate_name' => $request->designate_name ?? null,
+                //     'approver_email' => $request->approver_email ?? null,
+                //     'applied_for_discount'=> $request->apply_for_discount ?? null,
+                //     'user_logged_in' =>  $user->cn[0],
+                // ]);
+                
+
+                // $requestModel = new Requests();
+                // //Add in relationships
+                // $poster = $requestModel->posters()->create([
+                //     'state' => 'pending',
+                //     'width' => $request->width,
+                //     'height' => $request->height,
+                //     'quantity' => $request->quantity,
+                //     'units' => $request->units,
+                //     'discount_eligible' => $request->apply_for_discount,
+                //     'speed_code_approved' => 1,
+                //     'discount' => floatval(0.00),
+                //     'cost' => $request->cost,
+                //     'file_location' => $request->poster_file //This will have to be changed when we start uploading files directly.
+                // ]);
+                
                 return $this->successResponse(null, "success");
             }
             catch(\Exception $e)
