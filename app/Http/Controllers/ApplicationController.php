@@ -15,7 +15,7 @@ use LdapRecord\Models\ActiveDirectory\User;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Illuminate\Support\ItemNotFoundException;
-
+use App\Rules\CourseExists;
 
 class ApplicationController extends Controller
 {
@@ -221,7 +221,7 @@ class ApplicationController extends Controller
                 'department' => ['required', Rule::in(config('app.departments'))],
                 'quantity' => ['required', 'integer'],
                 'applied_for_discount' => ['integer','between:0:1' ],
-                'course_number' => [Rule::requiredIf($request->applied_for_discount == '1'), Rule::prohibitedIf($request->applied_for_discount == '0'), 'size:4'],
+                'course_number' => [Rule::requiredIf($request->applied_for_discount == '1'), Rule::prohibitedIf($request->applied_for_discount == '0'), 'size:4', new CourseExists],
                 'payment_method' => ['required', 'in:speed_code,cash'],
                 'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250', 'in:dosa,grant_holder,administrator'],
                 'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
@@ -294,10 +294,10 @@ class ApplicationController extends Controller
                     catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e)
                     {
                         //Couldn't find course
-                        $validData = false;
                         return $this->errorResponse("Course Not Found", 200, $validationArray);
                     }
                 }
+                $requestModel->save();
                 return $this->successResponse(null, "success");
             }
             catch(\Exception $e)
