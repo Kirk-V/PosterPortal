@@ -16,6 +16,8 @@ class Requests extends Model
 
     public $timestamps = false;
 
+    protected $fillable = ['first_name', 'last_name', 'email', 'department', 'payment_method', 'grant_holder_name', 'approver_name', 'approver_type', 'designate_name', 'approver_email', 'applied_for_discount', 'user_logged_in'];
+
     public function posters(): BelongsTo
     {
         return $this->belongsTo(Posters::class,'poster_id', 'poster_id');

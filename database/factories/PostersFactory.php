@@ -25,7 +25,7 @@ class PostersFactory extends Factory
             'width' => fake()->randomFloat(2),
             'height' => fake()->randomFloat(2),
             'quantity' => fake()->randomDigitNotZero(),
-            'units' => fake()->randomElement(['centimeters', 'inches']),
+            'units' => fake()->randomElement(['cm', 'inches']),
             // 'transaction_id' => fake()->randomNumber(5, false),
             'discount_eligible' => fake()->randomElement([0,1]),
             'speed_code' => fake()->optional($weight = 0.4)->bothify('?????-#####'),
