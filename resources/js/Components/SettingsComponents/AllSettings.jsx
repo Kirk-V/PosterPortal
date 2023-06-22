@@ -8,6 +8,7 @@ import PosterSettings from './PosterSettings';
 function AllSettings({departments}) {
     const [settingsData, setSettingsData] = useState(null);
     const [settingsDataIsLoaded, setsettingsDataIsLoaded] = useState(false);
+    const [SDFBalance, setSDFBalance] = useState(null);
     
     useEffect(() => {
         let options = {
@@ -31,6 +32,33 @@ function AllSettings({departments}) {
                 console.log("ssetting settings");
                 setSettingsData(response.data);
                 setsettingsDataIsLoaded(true);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });    
+    }, []);
+
+    useEffect(() => {
+        let options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+                },
+        }
+        fetch(`api/SDFBalance`, options)
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return res.json();
+        })
+        .then((response) => {
+            console.log("req data:");
+            console.log(`okay, Balance is: ${JSON.stringify(response)}`);
+            if(response.status == "Success")
+            {
+                setSDFBalance(response.data);
             }
         })
         .catch((error) => {
@@ -69,8 +97,12 @@ function AllSettings({departments}) {
         });  
     }
 
+    const handleSDFUpdate = (type, value) => {
+        
+    }
+
     const UndergradCard = (
-        <UnderGradSettingsCard settingsData={settingsData} handleSettingUpdate={handleSettingUpdate}/>
+        <UnderGradSettingsCard settingsData={settingsData} handleSettingUpdate={handleSettingUpdate} SDFBalance={SDFBalance} handleSDFUpdate={handleSDFUpdate}/>
     )
     return (
         <>

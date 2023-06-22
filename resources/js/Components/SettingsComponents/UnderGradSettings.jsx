@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, InputGroup, Accordion, Collapse, Card } from 'r
 import { useState} from 'react';
 import CourseList from './CourseList';
 
-function UnderGradSettingsCard({ settingsData, updateSetting, departments}) {
+function UnderGradSettingsCard({ settingsData, updateSetting, departments, SDFBalance, handleSDFUpdate}) {
     const [showDeposit, setShowDeposit] = useState(false);
     const [showWithdrawal, setShowWithdrawal] = useState(false);
     const [courseData, setCourseData] = useState(null);
@@ -11,6 +11,8 @@ function UnderGradSettingsCard({ settingsData, updateSetting, departments}) {
     const [addCourseValidated, setAddCourseValidated] = useState(false);
     const [validated, setValidated] = useState(false);
     const [allSettings, setAllSettings] = useState(settingsData);
+    const [withdrawalAmount, setWithdrawalAmount] = useState(null);
+    const [depositAmount, setDepositAmount] = useState(null);
     //Get Course Data On Load;
 
 
@@ -126,12 +128,23 @@ function UnderGradSettingsCard({ settingsData, updateSetting, departments}) {
         console.log(`accept ugrad set to : ${allSettings.undergrad}`)
     }
 
+    const handleWithDrawalAmountChange = (event) => {
+        setWithdrawalAmount(event.target.value);
+    }
+
+    const handleDepositAmountChange = (event) => {
+        setDepositAmount(event.target.value);
+    }
+
     let WithdrawalSection = (
         <><Collapse in={showWithdrawal} className="mt-3">
             <InputGroup className="mt-3">
                 <InputGroup.Text>$</InputGroup.Text>
                 <Form.Control
-                    type="number" />
+                    type="number" 
+                    name="withdrawal"
+                    defaultValue={withdrawalAmount ?? 0}
+                    onChange={handleWithDrawalAmountChange}/>
                 <Button>Withdrawal</Button>
             </InputGroup>
         </Collapse>
@@ -144,12 +157,20 @@ function UnderGradSettingsCard({ settingsData, updateSetting, departments}) {
                 <InputGroup className="mt-3">
                     <InputGroup.Text>$</InputGroup.Text>
                     <Form.Control
-                        type="number" />
+                        type="number" 
+                        name="deposit"
+                    defaultValue={depositAmount ?? 0}
+                    onChange={handleDepositAmountChange}/>
                     <Button>Deposit</Button>
                 </InputGroup>
             </Collapse>
         </>
     )
+
+    const HandleSDFUpdate = (event) => {
+        let type = event.name;
+        type == 'deposit' ? updateSDFBalance(type, depositAmount): updateSDFBalance(type, withdrawalAmount);
+    }
 
 
 
@@ -270,7 +291,7 @@ function UnderGradSettingsCard({ settingsData, updateSetting, departments}) {
                 <Card.Body>
                     <Row>
                         <Col xs={6} className="fw-bold">
-                            Remaining SDF: { }
+                            Remaining SDF: ${SDFBalance ?? 0.0}
                         </Col>
                         <Col xs={3}>
                             <Button onClick={handleToggleShowDeposit}>Deposit</Button>

@@ -43,9 +43,29 @@ class TransactionController extends Controller
         Log::info("Poster Discounts: $discounts");
 
         $SDFBalance -= $discounts;
-        self::successResponse(["Balance"=>$SDFBalance], "success");
+        return self::successResponse(["Balance"=>$SDFBalance], "success");
     }
 
     //Add SDF Transaction
+    static function addSDFTransaction(Request $request)
+    {
+        //Validate:
+        $validated = $request->validate([
+            'type' => ['required', 'string', 'in:deposit,withdrawal'],
+            'value'=> ['required', 'decimal:0,2', 'gt:0'],
+        ]);
+        $type = $request->type();
+        $value = $request->value();
+        $sdfTransaction = new SDFTransactions(['type'=> $type, 'ammount' => $value]);
+        try{
+            $sdfTransaction->save();
+            return self::getSDFBalance();
+        }
+        catch(\Exception $e)
+        {
+            log::info($e);
+            return self::errorResponse("Could not update balance", 500);
+        }
+    }
 
 }
