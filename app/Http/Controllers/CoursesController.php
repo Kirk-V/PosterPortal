@@ -44,10 +44,10 @@ class CoursesController extends Controller
     public function addCourse(Request $request)
     {
         $course = new Courses;
-        $course->course_number = $request->number;
-        // $course->course_year = $request->year;
-        $course->course_department = $request->dept;
-        $course->course_instructor = $request->instructor;
+        $course->number = $request->number;
+        $course->year = date("Y")."/".date("Y")+1;
+        $course->department = $request->department;
+        $course->instructor = $request->instructor;
         if($course->save())
         {
             return response()->json(['success'=>true]);

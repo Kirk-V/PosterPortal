@@ -5,7 +5,7 @@ import Settings from './Settings';
 
 import { useState, useEffect } from 'react';
 
-function PosterPortal({ auth, currentView, data, user }) {
+function PosterPortal({ auth, currentView, data, user, departments }) {
 
 
 
@@ -14,7 +14,7 @@ function PosterPortal({ auth, currentView, data, user }) {
         pageView = <Requests data={data}/>;
     }
     else if (currentView === 'settings') {
-        pageView =<Settings/>;
+        pageView =<Settings departments={departments}/>;
     }
     else if (currentView === 'jobs') {
         pageView = <Jobs />;

@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, InputGroup, Accordion, Collapse, Card } from 'r
 import { useState} from 'react';
 import CourseList from './CourseList';
 
-function UnderGradSettingsCard({ settingsData, updateSetting }) {
+function UnderGradSettingsCard({ settingsData, updateSetting, departments}) {
     const [showDeposit, setShowDeposit] = useState(false);
     const [showWithdrawal, setShowWithdrawal] = useState(false);
     const [courseData, setCourseData] = useState(null);
@@ -180,8 +180,9 @@ function UnderGradSettingsCard({ settingsData, updateSetting }) {
                             onChange={(e) => updateAddCourseData(e)}
                             name="department"
                             defaultValue={""}
-                            required={true}><option disabled="disabled" value="">Select One</option>
-                            {Depts.map((dept) => (
+                            required={true}>
+                            <option disabled="disabled" value="">Select One</option>
+                            {departments.map((dept) => (
                                 <option value={dept} key={dept}>{dept}</option>)
                             )}
                         </Form.Select>

@@ -2,10 +2,10 @@
 import { router } from '@inertiajs/react'
 import AllSettings from '@/Components/SettingsComponents/AllSettings';
 
-function Settings({ auth, data }) {
+function Settings({ auth, data, departments }) {
     const requests = data;
     return (
-        <AllSettings/>   
+        <AllSettings departments={departments}/>   
     );
 }
 export default Settings

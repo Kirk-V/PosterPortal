@@ -5,7 +5,7 @@ import { Row, Col, Placeholder } from 'react-bootstrap';
 import UnderGradSettingsCard from './UnderGradSettings';
 import PosterSettings from './PosterSettings';
 
-function AllSettings() {
+function AllSettings({departments}) {
     const [settingsData, setSettingsData] = useState(null);
     const [settingsDataIsLoaded, setsettingsDataIsLoaded] = useState(false);
     
@@ -76,7 +76,7 @@ function AllSettings() {
         <>
         <Row className="mt-3">
             <Col xs={6}>
-                {settingsDataIsLoaded ?  <UnderGradSettingsCard settingsData={settingsData} updateSetting={updateASetting}/> : <h1>not loaded</h1>}
+                {settingsDataIsLoaded ?  <UnderGradSettingsCard settingsData={settingsData} updateSetting={updateASetting} departments={departments}/> : <h1>not loaded</h1>}
                 
             </Col>
             <Col>

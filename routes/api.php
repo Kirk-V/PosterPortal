@@ -31,6 +31,7 @@ Route::controller(SettingsController::class)->group(function (){
     Route::get('/settings/find&setting={setting}', 'getSetting');
     Route::get('/settings/findFormSettings', 'getFormSettings');
     Route::put('/settings/update', 'updateSetting');
+    Route::get('/settings/departments', 'getDepartments');
 });
 
 Route::controller(JobsController::class)->group(function (){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Settings;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -82,5 +83,11 @@ class SettingsController extends Controller
             return self::errorResponse("Error retrieving form settings", 500);
         }
 
+    }
+
+
+    static function getDepartments(): JsonResponse
+    {
+        return self::successResponse(config('app.deparments'), "success");
     }
 }

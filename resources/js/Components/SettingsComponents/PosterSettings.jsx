@@ -53,7 +53,7 @@ export default function PosterSettings({allSettinsData, updateSetting}) {
                 <Form.Check 
                     type="switch"
                     id="custom-switch"
-                    label="Accept Undergrad Requestss"
+                    label="Accept Non SSC Requests"
                     checked={settingsData.external == 0 ? false: true}
                     onChange={toggleExternalRequests}
                 />
