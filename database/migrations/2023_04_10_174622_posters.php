@@ -84,7 +84,6 @@ return new class extends Migration
         Schema::create('SDFTransactions', function (Blueprint $table) {
             $table->id("sdf_transaction_id");
             $table->enum('type', ['deposit', 'withdrawal']);
-            $table->foreignId('transaction_id')->nullable()->references('transaction_id')->on('transactions')->cascadeOnDelete();
             $table->float('ammount');
         });
 
