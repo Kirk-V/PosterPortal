@@ -21,8 +21,8 @@ class Approvals extends Controller
         try
         {
             $user = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
-            ->limit(1)
-            ->get()->first();
+                ->limit(1)
+                ->get()->first();
             // $rString = $user->getAttribute("cn")[0];
             // if($user->groups()->exists('uwo-u-staff'))
             // {
@@ -30,10 +30,10 @@ class Approvals extends Controller
             // }
             $email = $user->getAttribute("mail")[0];
             $userName = $user->getAttribute("cn")[0];
-            if(in_array($request->grant_holder_email, array($email, $userName)))
+            if(in_array($request->approver_email, array($email, $userName)))
             {
                 //User can access
-                return view('SpeedCodeApproval', ['cost'=>2, 'poster_id'=>$poster_id]);
+                return view('SpeedCodeApproval', ['request'=>$request, 'poster'=> $poster]);
             }
             else
             {
@@ -55,11 +55,11 @@ class Approvals extends Controller
         $rString .= $request->input('speedcode');
         if(Posters::updateApprovalStatus($id, "accept", $request->input('speedcode')))
         {
-            return "Speed code accepted";
+            return view('approvalUpdated', ['success'=>true]);
         }
         else
         {
-            return 'speedcode not accepted';
+            return view('unableToProcess', ['success'=>true]);
         }
     }
 

@@ -205,7 +205,7 @@ class Posters extends Model
 
             $email = $user->getAttribute("mail")[0];
             $userName = $user->getAttribute("cn")[0];
-            if(in_array($request->grant_holder_email, array($email, $userName)))
+            if(in_array($request->approver_email, array($email, $userName)))
             {
                 //User can update
                 if($approval_status == 'accept')
@@ -218,7 +218,7 @@ class Posters extends Model
                     $poster->speed_code_approved = 0;
                 }
                 $poster->save();
-                return true;
+                return false;
             }
             else
             {

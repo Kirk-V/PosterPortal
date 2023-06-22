@@ -316,12 +316,12 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             defaultValue={formD.payment_method}
                             onChange={(e) => handleControlChange(e)}
                         >
-                            <option value="speedcode">Speedcode</option>
+                            <option value="speed_code">Speedcode</option>
                             <option value="cash">Cash</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>
-                {formD.payment_method == "speedcode"
+                {formD.payment_method == "speed_code"
                     ? GrantHolderInfo
                     : null}
             </Row>

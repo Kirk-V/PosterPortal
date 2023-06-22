@@ -23,26 +23,13 @@ use App\Http\Controllers\RequestsController;
 */
 
 Route::get('/', function () {
-    // return "hello";
     return Inertia::render('posterportal');
-    // return Inertia::render('Welcome', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    // ]);
 });
 
 
 Route::get('/posterportal', function () {
     return Inertia::render('posterportal');
 });
-
-// Route::get('/jobs', function () {
-//     return Inertia::render('posterportal', [
-//         'currentView' => 'jobs'
-//     ]);
-// });
 
 
 Route::controller(JobsController::class)->group(function () {

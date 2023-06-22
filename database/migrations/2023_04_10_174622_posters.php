@@ -56,7 +56,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email');
             $table->string('department');
-            $table->enum('payment_method', ['cash','speedcode']);
+            $table->enum('payment_method', ['cash','speed_code']);
             $table->string('grant_holder_name')->nullable();
             $table->string('approver_name')->nullable();
             $table->string('approver_type')->nullable();
@@ -105,6 +105,6 @@ return new class extends Migration
         Schema::dropIfExists('Requests');
         Schema::dropIfExists('Courses');
         Schema::dropIfExists('Posters');
-
+        Schema::dropIfExists('SDFTransactions');
     }
 };
