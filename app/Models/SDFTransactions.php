@@ -10,4 +10,8 @@ class SDFTransactions extends Model
     use HasFactory;
 
     protected $table = 'SDFTransactions';
+
+    protected $fillable = ['type', 'ammount'];
+
+    public $timestamps = false;
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\SDFTransactions;
 
+
 class TransactionController extends Controller
 {
     //
@@ -47,15 +48,17 @@ class TransactionController extends Controller
     }
 
     //Add SDF Transaction
-    static function addSDFTransaction(Request $request)
+    public function addSDFTransaction(Request $request)
     {
+        $data = $request->all();
+        log::info($data);
         //Validate:
         $validated = $request->validate([
             'type' => ['required', 'string', 'in:deposit,withdrawal'],
             'value'=> ['required', 'decimal:0,2', 'gt:0'],
         ]);
-        $type = $request->type();
-        $value = $request->value();
+        $type = $request->type;
+        $value = $request->value;
         $sdfTransaction = new SDFTransactions(['type'=> $type, 'ammount' => $value]);
         try{
             $sdfTransaction->save();

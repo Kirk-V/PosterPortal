@@ -289,6 +289,10 @@ class ApplicationController extends Controller
                         return $this->errorResponse("Course Not Found", 200, $validationArray);
                     }
                 }
+                else
+                {
+                    $course = null;
+                }
 
                 DB::transaction( function() use ($poster, $requestModel, $course)  {
                     //Transaction allows for automatic rollback in case an exception is thrown

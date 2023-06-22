@@ -71,4 +71,5 @@ Route::controller(CoursesController::class)->group(function (){
 
 Route::controller(TransactionController::class)->group(function (){
     Route::get('/SDFBalance', 'getSDFBalance');
+    Route::put('/SDFTransaction', 'addSDFTransaction');
 });
