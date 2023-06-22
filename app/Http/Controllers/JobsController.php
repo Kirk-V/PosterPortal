@@ -189,7 +189,7 @@ class JobsController extends Controller
         // $transaction->total_received = $request->total_received;
         // $poster->transactions()->save($transaction);
 
-        $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
+        $poster = $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
         Posters::updateAllPosterData($request->poster_id, $request->all());
         return self::successResponse("Success", "Success");
     }

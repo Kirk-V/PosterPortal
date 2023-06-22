@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobsController;
@@ -66,4 +67,8 @@ Route::controller(ApplicationController::class)->group(function (){
 
 Route::controller(CoursesController::class)->group(function (){
     Route::post('/courses/addCourse', 'addCourse');
+});
+
+Route::controller(TransactionController::class)->group(function (){
+    Route::get('/SDFBalance', 'getSDFBalance');
 });

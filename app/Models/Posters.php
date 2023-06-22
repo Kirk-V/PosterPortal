@@ -188,6 +188,7 @@ class Posters extends Model
         }
         $transaction->save();
     }
+
     
 
     public static function updateApprovalStatus($poster_id, $approval_status, $speed_code=null)
