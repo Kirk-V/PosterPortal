@@ -21,6 +21,7 @@ function PosterApplication({ auth, data, departments }) {
     const [clientValidated, setClientValidated] = useState(false)
     const [serverValidated, setServerValidated] = useState(false);
     const [formSettings, setFormSettings] = useState(null);
+    const [formDidSubmit, setFormDidSubmit] = useState(false);
     const requests = data;
 
     //Get the settings data with a call to API
@@ -156,11 +157,22 @@ function PosterApplication({ auth, data, departments }) {
             .then(response => {
                 console.log(JSON.stringify(response));
                 setFieldValidation(response.errors);
-                setServerValidated(true)
-                console.log("set fieldValidation to "+ JSON.stringify(response.errors));
-                
+                setServerValidated(true);
+                if(response.status == "Success")
+                {
+                    console.log("successss");
+                    setFormDidSubmit(true);
+                }
             });
     }
+
+    const SubmitSection = (
+        <>
+        <Row>
+            <p>Thank-you we have recieved your request. Please check your inbox for confirmation.</p>
+        </Row>
+        </>
+    )
 
     const HeaderSection = (
         <>
@@ -171,9 +183,8 @@ function PosterApplication({ auth, data, departments }) {
         </Row>
         </>
     )
-    return (
-        <>
-        {HeaderSection}
+
+    const FormSection = (
         <Form noValidate validated={clientValidated} onSubmit={handleSubmit}>
             <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <PaymentMethod  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
@@ -181,6 +192,11 @@ function PosterApplication({ auth, data, departments }) {
             <PosterFile formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
             <Button type="submit">Submit</Button>
         </Form>
+    )
+    return (
+        <>
+        {formDidSubmit ? SubmitSection : HeaderSection}
+        {formDidSubmit ? FormSection : null}
         </>
     );
 }

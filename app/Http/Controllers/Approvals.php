@@ -40,11 +40,10 @@ class Approvals extends Controller
                 return "User Cannot Access";
             }
         }
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             return "no user found";
         }
-        return $rstring;
     }
 
     public function approveSpeedCode(Request $request, $id)
@@ -77,5 +76,5 @@ class Approvals extends Controller
             return 'speedcode not rejected';
         }
     }
-    
+
 }

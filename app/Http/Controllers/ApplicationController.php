@@ -375,7 +375,8 @@ class ApplicationController extends Controller
                 //     'cost' => $request->cost,
                 //     'file_location' => $request->poster_file //This will have to be changed when we start uploading files directly.
                 // ]);
-                
+
+                //Send Email notification Here
                 return $this->successResponse(null, "success");
             }
             catch(\Exception $e)
@@ -405,7 +406,8 @@ class ApplicationController extends Controller
     {  
         $count = DB::table('Posters')
         ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
-        ->where('user_logged_in', $userName->cn[0])->count();
+        ->where('user_logged_in', $userName->cn[0])
+        ->where('state', 'pending')->count();
         log::info("User ".$userName->cn[0]." already has $count pending jobs");
         return $count > config('app.user_request_limit') ? true:false;
     }
