@@ -6,7 +6,9 @@ use App\Models\Posters;
 use App\Models\Courses;
 use App\Models\Requests;
 use App\Models\Settings;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -37,6 +39,37 @@ class ApplicationController extends Controller
 		], $code);
 	}
 
+
+    public function UserCanSubmit():bool{
+        $user = User::where('cn', $_SERVER['LOGON_USER'])
+            ->limit(1)
+            ->get()
+            ->first();
+        $External = Settings::where('setting', 'external')->get()->first()->value;
+        $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+        if($this->userInAccessGroup($user, 'normal'))
+        {
+            return true;
+        }
+        elseif ($External == 1) {
+            //check if user is an external user:
+            if($this->userInAccessGroup($user, 'external'))
+            {
+                return true;
+            }
+        }
+        //check undergrad
+        elseif ($uGrad == 1) {
+            //Currently Accepting Ugrad Applications.
+            //check if user is an external user:
+            if($this->userInAccessGroup($user, 'undergrad'))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //applicationForm
     public function applicationForm()
     {
@@ -44,10 +77,11 @@ class ApplicationController extends Controller
         // We can do this by checking the signed in user in ActiveDirectory (AD) and checking
         // the settings to see what groups should be allowed in.
         // This can also give us some information on the user
+        $user = Auth::user();
 
         //This line is for testing without authorization of user.
-        return Inertia::render('PosterApplication', [
-            'departments'=> config('app.departments')]);
+        // return Inertia::render('PosterApplication', [
+        //     'departments'=> config('app.departments')]);
         try {
             $user = User::where('cn', $_SERVER['LOGON_USER'])
                 ->limit(1)
@@ -67,8 +101,8 @@ class ApplicationController extends Controller
             //First we check for SSC exitance
             if($this->userInAccessGroup($user, 'normal'))
             {
-                $rString .= "User is a valid SSC user<br>";
-                return Inertia::render('PosterApplication');
+                log::info("user  is normal");
+                return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
             }
 
             //Check external
@@ -78,6 +112,7 @@ class ApplicationController extends Controller
                 if($this->userInAccessGroup($user, 'external'))
                 {
                     $rString .= "User is a valid external user";
+                    return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
                 }
             }
             else
@@ -163,45 +198,49 @@ class ApplicationController extends Controller
      */
     public function newApplication(Request $request)
     {
-        $validUser = true; //For testing, must turn on in prod.
+        $validUser = false; 
 
         try {
+            if($this->UserCanSubmit())
+            {
+                $validUser = true;
+            }
             $user = User::where('cn', $_SERVER['LOGON_USER'])
                 ->limit(1)
                 ->get()
                 ->first();
-            $rString = "";
+            // $rString = "";
 
-            //Eligible groups
-            $External = Settings::where('setting', 'external')->get()->first()->value;
-            $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+            // //Eligible groups
+            // $External = Settings::where('setting', 'external')->get()->first()->value;
+            // $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
 
-            // Check the necessary groups for user existance
-            // First we check for SSC exitance
-            if($this->userInAccessGroup($user, 'normal'))
-            {
-                $rString .= "User is a valid SSC user<br>";
-                $validUser = true;
-            }
-            //Check external
-            elseif ($External == 1) {
-                $rString .= "We are currently Accepting new External applications<br>";
-                //check if user is an external user:
-                if($this->userInAccessGroup($user, 'external'))
-                {
-                    $validUser = true;
-                }
-            }
-            //check undergrad
-            elseif ($uGrad == 1) {
-                //Currently Accepting Ugrad Applications.
-                $rString .= "<br>We are currently Accepting new UGrad applications<br>";
-                //check if user is an external user:
-                if($this->userInAccessGroup($user, 'undergrad'))
-                {
-                    $validUser = true;
-                }
-            }
+            // // Check the necessary groups for user existance
+            // // First we check for SSC exitance
+            // if($this->userInAccessGroup($user, 'normal'))
+            // {
+            //     $rString .= "User is a valid SSC user<br>";
+            //     $validUser = true;
+            // }
+            // //Check external
+            // elseif ($External == 1) {
+            //     $rString .= "We are currently Accepting new External applications<br>";
+            //     //check if user is an external user:
+            //     if($this->userInAccessGroup($user, 'external'))
+            //     {
+            //         $validUser = true;
+            //     }
+            // }
+            // //check undergrad
+            // elseif ($uGrad == 1) {
+            //     //Currently Accepting Ugrad Applications.
+            //     $rString .= "<br>We are currently Accepting new UGrad applications<br>";
+            //     //check if user is an external user:
+            //     if($this->userInAccessGroup($user, 'undergrad'))
+            //     {
+            //         $validUser = true;
+            //     }
+            // }
         } catch (\Exception $e) {
             //Should return a page indicating that user does not have access to application process
             log::info("Caught Exception when checking authorization for poster request: $e");

@@ -77,4 +77,5 @@ class Approvals extends Controller
             return 'speedcode not rejected';
         }
     }
+    
 }
