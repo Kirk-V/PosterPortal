@@ -1,12 +1,16 @@
 export default function RequestTableRow({ rowData, headers, handleClick }) {
-    // console.log(`rowdata: ${JSON.stringify(rowData)}`);
+    console.log(`rowdata: ${JSON.stringify(rowData)}`);
 
     function rowColor(){
-        if(rowData.requests.payment_method == 'speedcode' && rowData.speed_code_approved == '1')
+        if(rowData.payment_method == 'speedcode' && rowData.speed_code_approved == '1')
         {
             return 'table-danger';
         }
-        if(rowData.requests.payment_method == "cash" && rowData.state == 'ready')
+        if(rowData.payment_method == "cash" && rowData.state == 'ready')
+        {
+            return 'table-danger';
+        }
+        if(rowData.state == 'ready')
         {
             return 'table-danger';
         }

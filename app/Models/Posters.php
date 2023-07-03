@@ -229,6 +229,7 @@ class Posters extends Model
                 {
                     $poster->speed_code = $speed_code;
                     $poster->speed_code_approved = 1;
+                    $poster->state = "ready";
                 }
                 else
                 {

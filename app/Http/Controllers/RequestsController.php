@@ -108,11 +108,13 @@ class RequestsController extends Controller
         $r = DB::table('Posters')
             ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.poster_id')
             ->leftJoin('Courses', 'Requests.course_id', '=', 'Courses.course_id')
+            ->select('Posters.*', 'Requests.*')
             ->where('Requests.request_id', $id)->first();
 
         log::info(DB::table('Posters')
-        ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.request_id')
+        ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.poster_id')
         ->leftJoin('Courses', 'Requests.course_id', '=', 'Courses.course_id')
+        ->select('Posters.*', 'Requests.*')
         ->where('Requests.request_id', $id)->toSql());
         return $r;
     }

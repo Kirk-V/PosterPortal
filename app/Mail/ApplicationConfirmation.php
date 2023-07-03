@@ -46,7 +46,7 @@ class ApplicationConfirmation extends Mailable
             replyTo: [
                 new Address('ssts-poster@uwo.ca')
             ],
-            subject: 'Poster Printing Service Confirmation',
+            subject: 'Poster Printing Service Confirmation and Instructions',
         );
     }
 

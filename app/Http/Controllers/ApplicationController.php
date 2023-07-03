@@ -259,7 +259,7 @@ class ApplicationController extends Controller
                 //Make Poster Object
                 $poster = new Posters;
                 $poster->fill([
-                    'state' => 'pending',
+                    'state' => $request->payment_method == "speed_code"? 'pending': 'ready',
                     'width' => $request->width,
                     'height' => $request->height,
                     'quantity' => $request->quantity,
