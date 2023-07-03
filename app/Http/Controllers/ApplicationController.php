@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Illuminate\Support\ItemNotFoundException;
 use App\Rules\CourseExists;
+use Exception;
 
 class ApplicationController extends Controller
 {
@@ -315,7 +316,13 @@ class ApplicationController extends Controller
                     $requestModel->save();
                 });
                 //Send Email notification Here
-                Mail::to("kvande85@uwo.ca")->send(new ApplicationConfirmation($poster->poster_id));
+                try{
+                    Mail::to("kvande85@uwo.ca")->send(new ApplicationConfirmation($poster->poster_id));
+                }
+                catch(Exception $e)
+                {
+                    log::error("Failed to send email notification that application has been recieved $e");
+                }
                 return $this->successResponse(null, "success");
             }
             catch(\Exception $e)

@@ -1,8 +1,13 @@
-@if(strTolower($poster->requests->payment_method) == "speed_code")
-    <p>An email will also be sent to $grantHolderEmail for a speedcode and authorization to charge the grant.</p>
+<html><body>
+@if($poster->file_location == 'email')
+    <p>Your printing request has been received and we now require the poster file(s) be sent to Social Science Technology Services by replying to this email.
+    Please ensure the poster dimensions of the file(s) you are attaching are the same dimensions that were entered on the Poster Submission Form {{$poster->width}} x {{$poster->height}} ({{$poster->units}}).</p>
+    <b>Please reply to this email with an attached copy of the poster file in .pdf and Powerpoint format (if available)</b>
 @endif
 
-<html><body>
+@if(strTolower($poster->requests->payment_method) == "speed_code")
+    <p>An email will also be sent to {{$poster->requests->approver_name }}: {{$poster->requests->approver_email }} for a speed code and authorization to charge the grant.</p>
+@endif
 <p>This is an automated notification that {{$poster->requests->first_name}} {{$poster->requests->last_name}} ({{$poster->requests->email}}) has requested the printing of the Poster(s) following details:</p>
 <p>Dimensions: {{$poster->width}} x {{$poster->height}} ({{$poster->units}})</p>
 <p>Cost Per Poster: ${{$poster->cost}}</p>

@@ -10,8 +10,9 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\Mime\Address;
+use Illuminate\Mail\Mailables\Address;
 
 class ApplicationConfirmation extends Mailable
 {
@@ -22,14 +23,15 @@ class ApplicationConfirmation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public String $poster_id, )
+    public function __construct(public String $poster_id)
     {
         //retrieve the poster data
         try{
-            $this->poster = Posters::findFirst($poster_id);
+            $this->poster = Posters::findOrFail($poster_id);
         }
         catch(ModelNotFoundException $e)
         {
+            Log::info("Could not find poster model $e");
             Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Sending Application Confirmation, could not find poster $poster_id in database $e"));
         }
         
@@ -44,7 +46,7 @@ class ApplicationConfirmation extends Mailable
             replyTo: [
                 new Address('ssts-poster@uwo.ca')
             ],
-            subject: 'SSTS - Poster Printing Application Confirmation',
+            subject: 'Poster Printing Service Confirmation',
         );
     }
 
@@ -54,7 +56,7 @@ class ApplicationConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.ApplicationConfirmationMail',
+            view: 'mail.ApplicationConfirmationMail',
         );
     }
 

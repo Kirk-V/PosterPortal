@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -27,6 +28,18 @@ class Posters extends Model
 
     protected $fillable = [ 'state', 'width','height','quantity','units','discount_eligible', 'discount','speed_code_approved','cost','file_location'];
 
+
+    /**
+     * Get the posters cost with 2 decimals.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function cost(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => number_format((float)$value, 2, '.', '' )
+        );
+    }
 
     #region Relationships
 
