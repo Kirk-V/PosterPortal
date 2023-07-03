@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ApplicationConfirmation;
 use App\Models\Posters;
 use App\Models\Courses;
 use App\Models\Requests;
@@ -9,6 +10,7 @@ use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -209,38 +211,10 @@ class ApplicationController extends Controller
                 ->limit(1)
                 ->get()
                 ->first();
-            // $rString = "";
-
-            // //Eligible groups
-            // $External = Settings::where('setting', 'external')->get()->first()->value;
-            // $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
-
-            // // Check the necessary groups for user existance
-            // // First we check for SSC exitance
-            // if($this->userInAccessGroup($user, 'normal'))
-            // {
-            //     $rString .= "User is a valid SSC user<br>";
-            //     $validUser = true;
-            // }
-            // //Check external
-            // elseif ($External == 1) {
-            //     $rString .= "We are currently Accepting new External applications<br>";
-            //     //check if user is an external user:
-            //     if($this->userInAccessGroup($user, 'external'))
-            //     {
-            //         $validUser = true;
-            //     }
-            // }
-            // //check undergrad
-            // elseif ($uGrad == 1) {
-            //     //Currently Accepting Ugrad Applications.
-            //     $rString .= "<br>We are currently Accepting new UGrad applications<br>";
-            //     //check if user is an external user:
-            //     if($this->userInAccessGroup($user, 'undergrad'))
-            //     {
-            //         $validUser = true;
-            //     }
-            // }
+            if($this->checkForReduntantPosters($user))
+            {
+                return $this->errorResponse("Too Many pending Posters", 500, $data=null);
+            }
         } catch (\Exception $e) {
             //Should return a page indicating that user does not have access to application process
             log::info("Caught Exception when checking authorization for poster request: $e");
@@ -272,10 +246,7 @@ class ApplicationController extends Controller
             ]);
             //validate data
             log::info("validation passed checking for existing posters");
-            if($this->checkForReduntantPosters($user))
-            {
-                return $this->errorResponse("Too Many pending Posters", 500, $data=null);
-            }
+            
             //Check to see if user has already put in requests
             $validationArray = array();
             $validData = true;
@@ -343,40 +314,8 @@ class ApplicationController extends Controller
                     }
                     $requestModel->save();
                 });
-                
-
-                // $requestModel = $poster->requests()->create([
-                //     'first_name' => $request->first_name ?? null,
-                //     'last_name' => $request->last_name ?? null,
-                //     'email' => $request->email ?? null,
-                //     'department' => $request->department ?? null,
-                //     'payment_method' => $request->payment_method ?? null,
-                //     'grant_holder_name' =>  $request->grant_holder_name ?? null,
-                //     'approver_name' => $request->approver_name ?? null,
-                //     'approver_type' => $request->approver_type ?? null,
-                //     'designate_name' => $request->designate_name ?? null,
-                //     'approver_email' => $request->approver_email ?? null,
-                //     'applied_for_discount'=> $request->apply_for_discount ?? null,
-                //     'user_logged_in' =>  $user->cn[0],
-                // ]);
-                
-
-                // $requestModel = new Requests();
-                // //Add in relationships
-                // $poster = $requestModel->posters()->create([
-                //     'state' => 'pending',
-                //     'width' => $request->width,
-                //     'height' => $request->height,
-                //     'quantity' => $request->quantity,
-                //     'units' => $request->units,
-                //     'discount_eligible' => $request->apply_for_discount,
-                //     'speed_code_approved' => 1,
-                //     'discount' => floatval(0.00),
-                //     'cost' => $request->cost,
-                //     'file_location' => $request->poster_file //This will have to be changed when we start uploading files directly.
-                // ]);
-
                 //Send Email notification Here
+                Mail::to("kvande85@uwo.ca")->send(new ApplicationConfirmation($poster->poster_id));
                 return $this->successResponse(null, "success");
             }
             catch(\Exception $e)
@@ -392,7 +331,6 @@ class ApplicationController extends Controller
             log::info("User attempted to submit poster but was not authorized");
             return $this->errorResponse("Too Many Pending Requests", 200);
         }
-
     }
 
 

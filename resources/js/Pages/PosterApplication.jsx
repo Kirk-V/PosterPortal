@@ -22,6 +22,7 @@ function PosterApplication({ auth, data, departments }) {
     const [serverValidated, setServerValidated] = useState(false);
     const [formSettings, setFormSettings] = useState(null);
     const [formDidSubmit, setFormDidSubmit] = useState(false);
+    const [formSubmitError, setFormSubmitError] = useState(null);
     const requests = data;
 
     //Get the settings data with a call to API
@@ -47,9 +48,14 @@ function PosterApplication({ auth, data, departments }) {
                 console.log("settings: "+ JSON.stringify(response.data));
                 setFormSettings(response.data);
             }
+            else {
+                console.log("failed to retrieve settings, unsuccessful status");
+            }
         })
         .catch((error) => {
             console.log(error);
+
+            setFormSubmitError(response.message);
         });    
     }, []);
 
@@ -163,6 +169,9 @@ function PosterApplication({ auth, data, departments }) {
                     console.log("successss");
                     setFormDidSubmit(true);
                 }
+                else{
+                    console.log("failed to submit application");
+                }
             });
     }
 
@@ -174,15 +183,26 @@ function PosterApplication({ auth, data, departments }) {
         </>
     )
 
-    const HeaderSection = (
+    const ErrorWithSubmission = (
         <>
-        <Row>
-            <p>For general poster printing information please visit our <a href="https://ssts.uwo.ca/services/postergraphics/index.html" target="_blank">Poster Printing and Graphics page</a></p>
-            <p>If you have any questions or concerns please review our <a href="https://ssts.uwo.ca/services/postergraphics/index.html" target="_blank">FAQs page</a></p>
-            <p><strong>This printing service is for Social Science Only</strong>. If you wish to cancel an application after submitting please notify SSTS by email <a href="mailto:ssts-posters@uwo.ca" >ssts-posters@uwo.ca</a></p>
+        <Row className="warning">
+            <p>Error submitting poster, please try again. If the problem persists please contact SSTS at<a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
         </Row>
         </>
     )
+
+    const HeaderSection = (
+        <>
+        {ErrorWithSubmission ?? false ? null: ErrorWithSubmission} 
+        <Row>
+            <p>For general poster printing information please visit our <a href="https://ssts.uwo.ca/services/postergraphics/index.html" target="_blank">Poster Printing and Graphics page</a></p>
+            <p>If you have any questions or concerns please review our <a href="https://ssts.uwo.ca/services/postergraphics/index.html" target="_blank">FAQs page</a></p>
+            <p><strong>This printing service is for Social Science Only</strong>. If you wish to cancel an application after submitting please notify SSTS by email <a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
+        </Row>
+        </>
+    )
+
+
 
     const FormSection = (
         <Form noValidate validated={clientValidated} onSubmit={handleSubmit}>
@@ -196,7 +216,7 @@ function PosterApplication({ auth, data, departments }) {
     return (
         <>
         {formDidSubmit ? SubmitSection : HeaderSection}
-        {formDidSubmit ? FormSection : null}
+        {formDidSubmit ? null : FormSection}
         </>
     );
 }
