@@ -69,11 +69,11 @@ class Approvals extends Controller
         $rString .= $request->input('speedcode');
         if(Posters::updateApprovalStatus($id, "reject"))
         {
-            return "Speed code rejected";
+            return view('approvalUpdated', ['success'=>true]);
         }
         else
         {
-            return 'speedcode not rejected';
+            return view('unableToProcess', ['success'=>true]);
         }
     }
 

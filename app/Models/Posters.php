@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\PosterAcceptedForPrintingNotice;
 use App\Mail\SSTSErrorNotification;
 use App\Mail\SSTSSpeedCodeApprovedNotification;
 use Exception;
@@ -83,6 +84,8 @@ class Posters extends Model
             $poster = Posters::find($id);
             $poster->state = 'accepted';
             $poster->save();
+            //send email notification here
+            Mail::to("kvande85@uwo.ca")->send(new PosterAcceptedForPrintingNotice($poster->poster_id));
             return True;
         }
         catch(Exception $e)
@@ -231,8 +234,10 @@ class Posters extends Model
                     $poster->speed_code_approved = 1;
                     $poster->state = "ready";
                 }
-                else
+                elseif($approval_status == 'reject')
                 {
+                    //poster rejected
+                    $poster->state = "rejected";
                     $poster->speed_code_approved = 0;
                 }
                 $poster->save();
