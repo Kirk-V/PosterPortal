@@ -14,6 +14,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
     const [PaymentMethod, setPaymentMethod] = useState(null);
     const [ApproverType, setApproverType] = useState(null);
 
+    console.log("rerender" +  formData?.apply_for_discount );
+
     const HandleApproverTypeChange = (event) => {
         setApproverType(event.value)
     }
@@ -44,6 +46,23 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
             Cash payments can be made at the time of pick-up.
             </Col>
         </Row>
+    )
+
+    const SpeedCodeButton = (
+        <Col sm="3">
+            <Form.Check
+                inline
+                required
+                label="Speed Code"
+                name="payment_method"
+                type="radio"
+                id="payment_method"
+                value="speed_code"
+                isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ? true: false: false}
+                    isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false  }
+                onChange={(e) => {HandlePaymentChange(e), handleControlUpdate(e)}}
+            />
+        </Col>
     )
 
     const DosaGrantHolderSection = (
@@ -187,23 +206,11 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         value="cash"
                         onChange={(e) => {HandlePaymentChange(e), handleControlUpdate(e)}}
                         isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false  }
+                        isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false  }
                     />
                 </Col>
-                <Col sm="3">
-                    <Form.Check
-                        inline
-                        required
-                        label="Speed Code"
-                        name="payment_method"
-                        type="radio"
-                        id="payment_method"
-                        value="speed_code"
-                        isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ? true: false: false}
-                            isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('payment_method') ??false ? true: false: false  }
-                        onChange={(e) => {HandlePaymentChange(e), handleControlUpdate(e)}}
-                    />
-                </Col>
+                {(formData?.apply_for_discount ?? 0) == 0? SpeedCodeButton: console.log("noshow")}
+                
             </Row>
             {PaymentMethod == "speed_code"? SpeedCodeSection : CashSection}
         </>

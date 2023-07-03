@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ApplicationConfirmation;
+use App\Mail\ApprovalForSpeedCode;
 use App\Models\Posters;
 use App\Models\Courses;
 use App\Models\Requests;
@@ -318,6 +319,11 @@ class ApplicationController extends Controller
                 //Send Email notification Here
                 try{
                     Mail::to("kvande85@uwo.ca")->send(new ApplicationConfirmation($poster->poster_id));
+                    if($requestModel->payment_method == 'speed_code')
+                    {
+                        //Also need to send approver an email.
+                        Mail::to("kvande85@uwo.ca")->send(new ApprovalForSpeedCode($poster->poster_id));
+                    }
                 }
                 catch(Exception $e)
                 {
@@ -325,11 +331,11 @@ class ApplicationController extends Controller
                 }
                 return $this->successResponse(null, "success");
             }
-            catch(\Exception $e)
+            catch(Exception $e)
             {
                 log::info("Failed to validate poster data $e");
                 log::info(implode(DB::getQueryLog()));
-                return $this->errorResponse("not valid", 200, $validationArray);
+                return $this->errorResponse("Provided data was not valid", 200, $validationArray);
             }
 
         }

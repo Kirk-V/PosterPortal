@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Mail\SSTSErrorNotification;
+use App\Mail\SSTSSpeedCodeApprovedNotification;
 use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use LdapRecord\Models\ActiveDirectory\User;
 use App\Models\Requests;
@@ -204,7 +207,7 @@ class Posters extends Model
 
     
 
-    public static function updateApprovalStatus($poster_id, $approval_status, $speed_code=null)
+    public static function updateApprovalStatus($poster_id, $approval_status, $speed_code=null): bool
     {
         //First get the poster and compare to user
         $poster = Posters::findOrFail($poster_id);
@@ -218,6 +221,7 @@ class Posters extends Model
 
             $email = $user->getAttribute("mail")[0];
             $userName = $user->getAttribute("cn")[0];
+            //Check that the user logged in is able to approve
             if(in_array($request->approver_email, array($email, $userName)))
             {
                 //User can update
@@ -231,10 +235,21 @@ class Posters extends Model
                     $poster->speed_code_approved = 0;
                 }
                 $poster->save();
-                return false;
+                //Send notice that poster was accepted.
+                try
+                {
+                    Mail::to("kvande85@uwo.ca")->send(new SSTSSpeedCodeApprovedNotification($poster->poster_id));
+                }
+                catch(Exception $e)
+                {
+                    log::error("Failed to sent ssts notice that a speedcode has been approved  $e");
+                    Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error updating speedcode for poster # ".$poster->poster_id." $e"));
+                }
+                return true;
             }
             else
             {
+                log::info("Invalid user tried to approve speedcode");
                 return false;
             }
         }

@@ -9,14 +9,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SSTSErrorNotification extends Mailable
+class SSTSNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(public string $msg)
+    public function __construct()
     {
         //
     }
@@ -27,7 +27,7 @@ class SSTSErrorNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Poster Error Notification',
+            subject: 'S S T S Notification',
         );
     }
 
@@ -37,7 +37,7 @@ class SSTSErrorNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.SSTSErrorMail',
+            view: 'view.name',
         );
     }
 
