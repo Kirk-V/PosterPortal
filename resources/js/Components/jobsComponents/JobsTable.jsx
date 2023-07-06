@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 // import RequestTableBody from './RequestTableBody';
 // import RequestModal from './RequestModal';
 
-export default function JobsTable() {
+export default function JobsTable({showErrorHandle}) {
     // Two objects for the headings and data within a table.
     const [headings, setHeadings] = useState(null);
     const [headingsLoaded, setHeadingsLoaded] = useState(false);
@@ -81,7 +81,7 @@ export default function JobsTable() {
                 {bodyDataLoaded == true && headingsLoaded == true ? <JobsTableBody data={bodyData} headers={headings} onRowClick={handleRowClick}></JobsTableBody> :null}
                 {/* {error == true? <h1>error</h1> : null} */}
         </Table>
-        <JobsModal show={showingModal} modalData={modalData} onHide={handleClose} key={modalData}/>
+        <JobsModal show={showingModal} modalData={modalData} onHide={handleClose} key={modalData} showErrorHandle={showErrorHandle}/>
         </>
 
     )

@@ -85,7 +85,6 @@ class Posters extends Model
             $poster->state = 'accepted';
             $poster->save();
             //send email notification here
-            Mail::to("kvande85@uwo.ca")->send(new PosterAcceptedForPrintingNotice($poster->poster_id));
             return True;
         }
         catch(Exception $e)

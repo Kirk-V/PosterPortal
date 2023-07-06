@@ -34,7 +34,6 @@ class ApplicationConfirmation extends Mailable
             Log::info("Could not find poster model $e");
             Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Sending Application Confirmation, could not find poster $poster_id in database $e"));
         }
-        
     }
 
     /**

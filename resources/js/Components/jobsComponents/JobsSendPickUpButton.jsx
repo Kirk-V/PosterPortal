@@ -7,6 +7,39 @@ export default function JobsSendPickUpButton({jobID, posterState, updateStateHan
     function sendEmail(){
         //make API call to send an email to jobID
         console.log("sending Email");
+        let options = {
+            method: 'PUT',
+            body: JSON.stringify({'job_id': jobsData.job_id}),
+            headers: {
+                // the content type header value is usually auto-set
+                // depending on the request body
+                "Content-Type": 'application/json',
+                'Accept': 'application/json'
+              },
+        }
+        fetch(`api/jobs/sendPickUpNotice`, options)
+        .then( (res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return res.json()
+        })
+        .then((response) => {
+            console.log("email:");
+            console.log(`okay, Update state reply: ${JSON.stringify(response)}`);
+            // setRequest(response);
+            if(response.success)
+            {
+                console.log("success");
+            }
+            else
+            {
+                
+            }
+        },
+        (error) => {
+            console.log(error)
+        })
     }
 
     function sendPickUpNoticeAndChangeState(jobID){

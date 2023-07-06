@@ -244,7 +244,7 @@ class ApplicationController extends Controller
                 'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type != 'grant_holder')],
                 'cost' => ['required','decimal:0,4'],
                 'poster_file' => ['required', 'in:oneDrive,email'],
-                'one_drive_link' => [Rule::requiredIf($request->poster_file == 'oneDrive')]
+                'file' => [Rule::requiredIf($request->poster_file == 'oneDrive')]
             ]);
             //validate data
             log::info("validation passed checking for existing posters");
@@ -268,7 +268,7 @@ class ApplicationController extends Controller
                     'speed_code_approved' => 0,
                     'discount' => floatval(0.00),
                     'cost' => $request->cost,
-                    'file_location' => $request->poster_file, //This will have to be changed when we start uploading files directly.
+                    'file_location' => $request->file, //This will have to be changed when we start uploading files directly.
                 ]);
 
                 $requestModel = new Requests([
@@ -318,11 +318,13 @@ class ApplicationController extends Controller
                 });
                 //Send Email notification Here
                 try{
-                    Mail::to("kvande85@uwo.ca")->send(new ApplicationConfirmation($poster->poster_id));
+                    $email = $requestModel->email;
+                    Mail::to($email)->send(new ApplicationConfirmation($poster->poster_id));
                     if($requestModel->payment_method == 'speed_code')
                     {
                         //Also need to send approver an email.
-                        Mail::to("kvande85@uwo.ca")->send(new ApprovalForSpeedCode($poster->poster_id));
+                        $approverEmail = $requestModel->approver_email;
+                        Mail::to($approverEmail)->send(new ApprovalForSpeedCode($poster->poster_id));
                     }
                 }
                 catch(Exception $e)

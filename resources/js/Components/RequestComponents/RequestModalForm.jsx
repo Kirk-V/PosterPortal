@@ -335,8 +335,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     <Form.Label>File</Form.Label>
                     <InputGroup className="mb-3">
                         <Form.Control
-                            name="file_name"
-                            defaultValue={formD.payment_method}
+                            name="file_location"
+                            defaultValue={formD.file_location?? 'email'}
                             aria-describedby="basic-addon2"
                         />
                         <Button

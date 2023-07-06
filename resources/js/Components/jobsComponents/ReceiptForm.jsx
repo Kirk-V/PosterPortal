@@ -195,6 +195,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         </Row>
     )
 
+
+
     return (
         <>
             <Form className="border rounded p-3" noValidate validated={validated} onSubmit={handleFormSubmit}>
@@ -205,7 +207,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             onChange={(e) => handleControlChange(e)}
                             type="date"
                             name="transaction_date"
-                            defaultValue={jobsData.transaction_date ?? ""}
+                            defaultValue={jobsData.transaction_date ?? new Date().toISOString().split('T')[0]}
                             placeholder="DateRange"
                             aria-label="Disabled input example"
                             required

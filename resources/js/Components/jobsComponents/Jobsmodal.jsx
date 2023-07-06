@@ -6,26 +6,25 @@
 // import RequestModalForm from './RequestModalForm';
 import { useState, useEffect } from "react";
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
-import JobsSendPickUpButton from "./JobsSendPickUpButton";
 import PDF from "./PDFDocument";
 import JobForm from "./ReceiptForm";
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
-export default function JobsModal({ modalData, onHide, show }) {
+export default function JobsModal({ modalData, onHide, show, showErrorHandle }) {
     console.log(`OPened module with data: ${JSON.stringify(modalData)}`);
     return (
         <>
             {modalData == null ? (
-                <UnLoadedModal onHide={onHide} show={show} />
+                <UnLoadedModal onHide={onHide} show={show} showErrorHandle={showErrorHandle}/>
             ) : (
-                <LoadedModal modalData={modalData} onHide={onHide} show={show} />
+                <LoadedModal modalData={modalData} onHide={onHide} show={show} showErrorHandle={showErrorHandle}/>
             )}
         </>
     );
 }
 
-function UnLoadedModal({ onHide, show }) {
+function UnLoadedModal({ onHide, show, showErrorHandle }) {
     return (
         <Modal
             show={show}
@@ -53,7 +52,7 @@ function UnLoadedModal({ onHide, show }) {
     );
 }
 
-function LoadedModal({ modalData, onHide, show }) {
+function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
     const [jobState, setJobState] = useState(modalData.job_state);
     const [showingReceipt, setShowingReceipt] = useState(false);
     const [showingMakeTransaction, setshowingMakeTransaction] = useState(false);
@@ -128,6 +127,10 @@ function LoadedModal({ modalData, onHide, show }) {
                 console.log("successfully sent pick up notice");
                 updateState('pending_pickup');
                 // jobsData.state = newState;
+            }
+            else
+            {
+                showErrorHandle("Could not Send Email!", "Email Failed")
             }
 
         },
@@ -281,6 +284,9 @@ function LoadedModal({ modalData, onHide, show }) {
                     >
                         Close
                     </Button>
+                    <Col xs={2}>
+                <Button variant="info" onClick={()=>showErrorHandle("test", "no")}>error toast test</Button>
+            </Col>
                 </Modal.Footer>
             </Modal>           
         </>

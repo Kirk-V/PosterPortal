@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PosterRejectedNotice;
 use App\Models\Requests;
 use App\Models\Posters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
@@ -78,6 +80,8 @@ class RequestsController extends Controller
             $request->posters->save();
             if($request->posters->state == 'rejected')
             {
+                //Send email notification
+                Mail::to($request->email)->send(new PosterRejectedNotice($request->poster_id));
                 return self::successResponse("false");
             }
             else

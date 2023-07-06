@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PosterAcceptedForPrintingNotice;
+use App\Mail\SSTSErrorNotification;
 use App\Models\Jobs;
 use App\Models\Posters;
 use App\Models\Requests;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use LdapRecord\Models\ActiveDirectory\User;
 // use LdapRecord\Models\ActiveDirectory\Entry;
 // use LdapRecord\Models\ActiveDirectory\Group;
@@ -59,8 +62,27 @@ class PosterController extends Controller
         Jobs::newJob($posterID, $request->technician);
         $total = $request->total;
         log::info("Total = ".$request->total);
-        $poster = Posters::find($posterID)->transactions()->updateOrCreate(['poster_id' => $posterID, 'total' => floatval($total)]);
+        try{
+            $poster = Posters::find($posterID)->transactions()->updateOrCreate(['poster_id' => $posterID, 'total' => floatval($total)]);
+        }
+        catch(Exception $e)
+        {
+            Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Finding poster when attempting to send notice. $e"));
+            return response(["success" => false]);
+        }
+        
         // $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
+        try{
+            Mail::to($request->email)->send(new PosterAcceptedForPrintingNotice($poster->poster_id));
+        }
+        catch(Exception $e)
+        {
+            //Mail Failed alert SSTS
+            log::error("Failed to send email notification that poster has been approve $e");
+            Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Sending Poster Accepted for printing notice. $e"));
+            //mailing error but still moved to accepted state so we can return true to front end.
+            return response(["success" => True]);
+        }
         return response(["success" => True]);
     }
 

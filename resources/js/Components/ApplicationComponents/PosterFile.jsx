@@ -40,10 +40,10 @@ export default function PosterFile({serverValidationAttempted, validationFields,
             <Form.Control
               required
               type="text"
-              name="one_drive_link"
+              name="file"
               onChange={(e) => {handleControlUpdate(e)}}
-              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('one_drive_link') ??false ? true: false: false}
-              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('one_drive_link') ??false ? false: true: false }
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('file') ??false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('file') ??false ? false: true: false }
             />
           </FloatingLabel>
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
