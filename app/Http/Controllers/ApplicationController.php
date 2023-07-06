@@ -217,7 +217,7 @@ class ApplicationController extends Controller
             {
                 return $this->errorResponse("Too Many pending Posters", 500, $data=null);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //Should return a page indicating that user does not have access to application process
             log::info("Caught Exception when checking authorization for poster request: $e");
             return $this->errorResponse('User Not elgible for printing services', 500);
@@ -270,7 +270,7 @@ class ApplicationController extends Controller
                     'cost' => $request->cost,
                     'file_location' => $request->file, //This will have to be changed when we start uploading files directly.
                 ]);
-
+                log::info($request->apply_for_discount. "<<<");
                 $requestModel = new Requests([
                     'first_name' => $request->first_name ?? null,
                     'last_name' => $request->last_name ?? null,
@@ -285,7 +285,7 @@ class ApplicationController extends Controller
                     'applied_for_discount'=> $request->apply_for_discount ?? null,
                     'user_logged_in' =>  $user->cn[0],
                 ]);
-
+                log::info($request->apply_for_discount. "<<<");
                 if($requestModel->applied_for_discount == 1)
                 {
                     //Undergrad discount request, check course and dept
@@ -316,8 +316,9 @@ class ApplicationController extends Controller
                     }
                     $requestModel->save();
                 });
+                log::info($request->apply_for_discount. "saved");
                 //Send Email notification Here
-                try{
+                // try{
                     $email = $requestModel->email;
                     Mail::to($email)->send(new ApplicationConfirmation($poster->poster_id));
                     if($requestModel->payment_method == 'speed_code')
@@ -326,11 +327,11 @@ class ApplicationController extends Controller
                         $approverEmail = $requestModel->approver_email;
                         Mail::to($approverEmail)->send(new ApprovalForSpeedCode($poster->poster_id));
                     }
-                }
-                catch(Exception $e)
-                {
+                // }
+                // catch(Exception $e)
+                // {
                     log::error("Failed to send email notification that application has been recieved $e");
-                }
+                // }
                 return $this->successResponse(null, "success");
             }
             catch(Exception $e)
