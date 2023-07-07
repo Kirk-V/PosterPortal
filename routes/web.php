@@ -9,6 +9,7 @@ use App\Http\Controllers\JobsController;
 use App\Http\Controllers\PosterController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequestsController;
 
 /*
@@ -36,6 +37,11 @@ Route::controller(JobsController::class)->group(function () {
     Route::get('/jobs', 'index');
     Route::get('/jobs/jobsHeaders', 'getJobsHeadings');
     Route::get('/jobs&page={page}', 'getJobsData');
+});
+
+Route::controller(ReportController::class)->group(function () {
+    Route::get('/reports', 'showReportView');
+    
 });
 
 
