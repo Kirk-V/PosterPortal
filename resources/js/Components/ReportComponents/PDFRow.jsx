@@ -1,17 +1,10 @@
-import React from 'react'
-import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image, } from '@react-pdf/renderer';
-import Modal from 'react-bootstrap/Modal';
-import { useState } from 'react';
-import { ModalBody } from 'react-bootstrap';
-import PDFRow from './PDFRow';
 
-export default function ReportPDF({ reportSettings, reportData, handleCloseModal }) {
-    const [show, setShow] = useState(true);
 
-    const handleClose = () => {
-        setShow(false);
-        handleCloseModal();
-    }
+import React from 'react';
+import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image,  } from '@react-pdf/renderer';
+
+export default function PDFRow({rowData}) {
+    // console.log("NEW ROW "+JSON.stringify(rowData));
     const styles = StyleSheet.create({
         page: {
             flexDirection: 'column',
@@ -105,21 +98,21 @@ export default function ReportPDF({ reportSettings, reportData, handleCloseModal
             height: 50,
         }
     });
-
     return (
-        <>
-            <Modal show={show} onHide={handleCloseModal} size='xl'>
-                <ModalBody>
-                    <PDFViewer width={"100%"} height={"800px"} showToolbar={false}>
-                        <Document>
-                            <Page size="A4" style={styles.page}>
-                                {reportData.map( (row) => {return  <PDFRow key={(row.poster_id)} rowData={row}></PDFRow>})}
-                            </Page>     
-                        </Document>
-                    </PDFViewer>
-
-                </ModalBody>
-            </Modal>
-        </>
+        <View style={styles.rowView}>
+                    <View style={styles.infoColumn}>
+                        <Text style={styles.label}>Date</Text>
+                        <Text style={styles.value}>{jobData.transaction_date}</Text>
+                    </View>
+                    <View style={styles.infoColumn}>
+                        <Text style={styles.label}>Technician</Text>
+                        <Text style={styles.value}>{jobData.technician}</Text>
+                    </View>
+                    
+                    <View style={styles.infoColumn}>
+                        <Text style={styles.label}>Poster No.</Text>
+                        <Text style={styles.value}>{jobData.poster_id}</Text>
+                    </View>
+                </View>
     )
 }

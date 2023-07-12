@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import ReportTableHead from './ReportTableHead';
 import ReportRow from './ReportRow';
 import ReportTableBottomRow from './ReportTableBottomRow';
+import ReportPDF from './ReportPDF';
 
 export default function ReportTable({tableOptions, handleReconciled}) {
     // const [tableSettings, setTableSettings] = useState(tableOptions)
@@ -53,7 +54,6 @@ export default function ReportTable({tableOptions, handleReconciled}) {
     {
         let receivedTotal= 0, grantPayment= 0,SDFDiscount= 0, cashPayment = 0, subtotal=0;
         allRows.forEach((row) => {
-            console.log(JSON.stringify(row));
             subtotal += parseFloat(row.transactions.total);
             receivedTotal += parseFloat(row.transactions.total_received);
             grantPayment += row.requests.payment_method == 'speed_code' ? parseFloat(row.transactions.total): 0;
@@ -67,13 +67,18 @@ export default function ReportTable({tableOptions, handleReconciled}) {
             SDF: SDFDiscount,
             received: receivedTotal
         };
-        console.log(JSON.stringify(totals));
+
         return totals;
     }
 
     const makePrintPDF = () => 
     {
         setShowPDF(true);
+    }
+
+    const closePrintPDF = () => 
+    {
+        setShowPDF(false);
     }
 
 
@@ -98,7 +103,7 @@ export default function ReportTable({tableOptions, handleReconciled}) {
                 
             </Table>        
         </div>
-        {showPDF? <makePrintPDF reportData={rowData}/>: null}
+        {showPDF? <ReportPDF handleCloseModal={closePrintPDF} reportData={rowData} reportSettings={tableOptions}/>: null}
         </>
         
     )
