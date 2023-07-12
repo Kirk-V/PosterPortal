@@ -30,7 +30,7 @@ class RequestsFactory extends Factory
             'last_name' => fake()->lastName(),
             'email' => fake()->email(),
             'department' => fake()->randomElement(['Anthropology', 'Brain and Mind', 'Dan Management', 'Deans Office', 'Economics', 'Geography', 'History', 'Indigenous Studies', 'Nest', 'Political Science', 'Psychology', 'Sociology', 'SSTS', 'Other']),
-            'payment_method' => fake()->randomElement(['cash', 'speedcode']),
+            'payment_method' => fake()->randomElement(['cash', 'speed_code']),
             'applied_for_discount' => fake()->boolean(),
             'user_logged_in' => fake()->userName(),
             // 'position' => fake()->randomElement(['graduate', 'faculty', 'undergraduate', 'staff']),

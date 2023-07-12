@@ -18,6 +18,6 @@ class Transactions extends Model
 
     public function posters(): BelongsTo
     {
-        return $this->belongsTo(Posters::class,'poster_id', 'poster_id');
+        return $this->belongsTo(Posters::class, 'poster_id');
     }
 }

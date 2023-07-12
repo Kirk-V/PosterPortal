@@ -24,6 +24,10 @@ class JobsFactory extends Factory
             'poster_id' => Posters::factory(),
             'job_state' => $state,
             'print_date' => $print_date,
+            'emailed_receipt_req' => $state == 'printed'? fake()->randomElement([1, 0,]) : 0,
+            'emailed_receipt_grant_holder' => $state == 'printed'? fake()->randomElement([1, 0,]) : 0,
+            'emailed_receipt_ssts' => $state == 'printed'? fake()->randomElement([1, 0,]) : 0,
+            'technician' => fake()->randomElement(['Rick', 'Steve', 'Kirk'])
         ];
     }
 }

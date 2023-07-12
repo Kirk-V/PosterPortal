@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Posters;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -9,6 +11,24 @@ use Inertia\Inertia;
 class ReportController extends Controller
 {
     //
+    static function successResponse($data, $message = null, $code = 200)
+	{
+		return response()->json([
+			'status'=> 'Success',
+			'message' => $message,
+			'data' => $data
+		], $code);
+	}
+
+    static function errorResponse($message = null, $code, $data=null)
+	{
+		return response()->json([
+			'status'=>'Error',
+			'message' => $message,
+			'data' => $data
+		], $code);
+	}
+
     public function showReportView(Request $request)
     {
         return Inertia::render('Reports');
@@ -18,9 +38,41 @@ class ReportController extends Controller
     {
         //get the attributes
         $startDate = $request->query('start') ?? null;
-        $endDate = $request->query('end');
-        $payment_type = $request->query('payment');
-        $PosterNumber = $request->poster_id ?? null;
-        Log::info("Retrieve data for $startDate, $endDate");
+        $endDate = $request->query('end') ?? null;
+        $payment_type = $request->query('payment') ?? null;
+        $budgetYear = $request->query('budget_year') ?? null;
+        $posterNumber = $request->poster_id ?? null;
+        if(!is_Null($posterNumber))
+        {
+            //Just pull data for that poster if it exists
+        }
+
+
+        Log::info("Retrieve data for $startDate, $endDate, $payment_type");
+        $reportQuery = Transactions::whereDate('transaction_date', '>', $startDate)->with(['posters', 'posters.requests'])->get();
+
+            log::info($reportQuery->toJson() );
+    
+        
+        // $reportQuery->load(['posters']);
+        // $reportQuery->load(['posters.requests']);
+        switch($payment_type)
+        {
+            case "SDF":
+                log::info("SDF only");
+                $reportQuery = $reportQuery->where('posters.requests.applied_for_discount', 1);
+                break;
+            case "CASH":
+                $reportQuery = $reportQuery->where('payment_method', 'cash');
+                break;
+            case "All":
+                break;
+            case "SPEED":
+                $reportQuery = $reportQuery->where('payment_method', 'speed_code');
+                break;
+            default:                
+        }
+        // $reportData = Transactions::whereDate('transaction_date', '>', $startDate)->get();
+        return $this->successResponse($reportQuery);
     }
 }

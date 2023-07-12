@@ -8,6 +8,11 @@ import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 
 export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPosters }) {
+
+    let n = 5; //go back 5 yeras in the budget year dropdown
+    let year = new Date().getFullYear();
+    let BudgetYears = Array.from(Array(n), (_, i) => year - i);
+    console.log(BudgetYears);
     return (
         <Row> 
             <Col xs="4">
@@ -46,14 +51,29 @@ export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPost
             <Col xs="2">
                 {/* Type */}
                 <Form.Label>
+                    Budget Year
+                </Form.Label>
+                <Form.Select
+                    name="budget_year"
+                    defaultValue={parentOptions?.payment_type ?? null}
+                    onChange={(e) => handleOptionsUpdate(e)}>
+                    {BudgetYears.map((year) => {
+                        return <option key={year} value={year}>{year}/{year-1}</option>
+                    })}
+                </Form.Select>
+            </Col>
+            <Col xs="2">
+                {/* Type */}
+                <Form.Label>
                     Payment Type
                 </Form.Label>
                 <Form.Select
-                    name="PaymentType"
+                    name="payment_type"
                     defaultValue={parentOptions?.payment_type ?? null}
                     onChange={(e) => handleOptionsUpdate(e)}>
                     <option value="SDF">SDF</option>
                     <option value="CASH">Cash</option>
+                    <option value="SPEED">Speed Code</option>
                     <option value="All">All</option>
                 </Form.Select>
             </Col>

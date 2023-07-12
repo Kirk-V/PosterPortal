@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Posters;
+use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -34,5 +36,17 @@ class PostersFactory extends Factory
             'cost' => fake()->randomFloat(2),
             'file_location' => fake()->word()."/".fake()->fileExtension(),
         ];
+        
     }
+
+    // public function configure(): static
+    // {
+    //     return $this->afterCreating(function (Posters $poster){
+    //         if($poster->state == "printed")
+    //         {
+    //             $total = $poster->cost*$poster->quantity;
+    //             $poster->transactions->create(['total' => $total]);
+    //         }
+    //     });
+    // }
 }

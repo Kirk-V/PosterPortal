@@ -1,5 +1,7 @@
 import {React, useState, useEffect} from 'react'
 import Table from 'react-bootstrap/Table';
+import ReportTableHead from './ReportTableHead';
+import ReportRow from './ReportRow';
 
 export default function ReportTable({tableOptions, handleReconciled}) {
     // const [tableSettings, setTableSettings] = useState(tableOptions)
@@ -18,17 +20,18 @@ export default function ReportTable({tableOptions, handleReconciled}) {
                 'Accept': 'application/json',
             }   
         }
-        fetch(`api/reportData?start=${tableOptions.start_date ?? -1}&end=${tableOptions.end_date ?? -1}&payment=${tableOptions.payment_type ?? -1}`, options)
-        .then( (res) => {
-            if (!res.ok) {
+        fetch(`api/reportData?start=${tableOptions?.start_date ?? -1}&end=${tableOptions?.end_date ?? -1}&payment=${tableOptions?.payment_type ?? -1}`, options)
+        .then( (response) => {
+            if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return res.json();
+            return response.json();
         })
         .then((response) => {
-            console.log(JSON.stringify(respone));
-            if(response.status == "success")
+            console.log(JSON.stringify(response));
+            if(response.status == "Success")
             {
+                console.log("SETTING DATA");
                 setHasData(true);
                 setRowData(response.data);
             }
@@ -40,6 +43,21 @@ export default function ReportTable({tableOptions, handleReconciled}) {
 
 
     return (
-        <div>ReportTable</div>
+        <>
+            <div>ReportTable</div>
+            <Table
+                striped={true}>
+                <ReportTableHead></ReportTableHead>
+                <tbody>
+                {hasData? rowData.map((row)=> {
+                    console.log(`row being added: ${JSON.stringify(row)}`);
+                    return <ReportRow key={row.poster_id} data={row}/>
+                }): null}
+                </tbody>
+                
+            </Table>
+            
+        </>
+        
     )
 }
