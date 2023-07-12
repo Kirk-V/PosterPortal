@@ -15,9 +15,8 @@ export default function PDFRow({rowData}) {
         rowView:
         {
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingLeft: 20,
-            paddingTop: 5
+            paddingTop: 5,
+            border: '1'
         },
         infoColumn: {
             flexDirection: 'col',
@@ -32,12 +31,11 @@ export default function PDFRow({rowData}) {
             marginBottom: 2,
         },
         value: {
-            fontSize: 14,
-            height: 30,
+            fontSize: 8,
+            height: 20,
             width: "100%",
-            padding: 4,
             textAlign: 'left',
-            border: '2px solid gray',
+            border: '2px',
         },
         sectionHeader: {
             marginLeft: 20,
@@ -71,7 +69,6 @@ export default function PDFRow({rowData}) {
         },
         infoColumnSmallRight: {
             flexDirection: 'col',
-            marginRight: 10,
             width: 100,
             marginLeft: "auto"
         },
@@ -101,17 +98,14 @@ export default function PDFRow({rowData}) {
     return (
         <View style={styles.rowView}>
                     <View style={styles.infoColumn}>
-                        <Text style={styles.label}>Date</Text>
-                        <Text style={styles.value}>{jobData.transaction_date}</Text>
+                        <Text style={styles.value}>{rowData.poster_id}</Text>
                     </View>
                     <View style={styles.infoColumn}>
-                        <Text style={styles.label}>Technician</Text>
-                        <Text style={styles.value}>{jobData.technician}</Text>
+                        <Text style={styles.value}>{rowData.cost}</Text>
                     </View>
                     
                     <View style={styles.infoColumn}>
-                        <Text style={styles.label}>Poster No.</Text>
-                        <Text style={styles.value}>{jobData.poster_id}</Text>
+                        <Text style={styles.value}>{rowData.poster_id}</Text>
                     </View>
                 </View>
     )
