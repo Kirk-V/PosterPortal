@@ -1,9 +1,9 @@
 
 
 import React from 'react';
-import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image,  } from '@react-pdf/renderer';
+import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image, } from '@react-pdf/renderer';
 
-export default function PDFRow({rowData}) {
+export default function PDFRow({ rowData }) {
     // console.log("NEW ROW "+JSON.stringify(rowData));
     const styles = StyleSheet.create({
         page: {
@@ -20,8 +20,6 @@ export default function PDFRow({rowData}) {
         },
         infoColumn: {
             flexDirection: 'col',
-            marginLeft: 10,
-            marginRight: 10,
             width: "50%",
         },
         label: {
@@ -35,7 +33,6 @@ export default function PDFRow({rowData}) {
             height: 20,
             width: "100%",
             textAlign: 'left',
-            border: '2px',
         },
         sectionHeader: {
             marginLeft: 20,
@@ -97,16 +94,29 @@ export default function PDFRow({rowData}) {
     });
     return (
         <View style={styles.rowView}>
-                    <View style={styles.infoColumn}>
-                        <Text style={styles.value}>{rowData.poster_id}</Text>
-                    </View>
-                    <View style={styles.infoColumn}>
-                        <Text style={styles.value}>{rowData.cost}</Text>
-                    </View>
-                    
-                    <View style={styles.infoColumn}>
-                        <Text style={styles.value}>{rowData.poster_id}</Text>
-                    </View>
-                </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.value}>{rowData.transactions.transaction_date}</Text>
+            </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.value}>{rowData.poster_id}</Text>
+            </View>
+
+            <View style={styles.infoColumn}>
+                <Text style={styles.value}>{rowData.requests.first_name} {rowData.requests.first_name}</Text>
+                <Text style={styles.value}>{rowData.requests.email}</Text>
+            </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.value}>{rowData.poster_id}</Text>
+            </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.value}>{rowData.poster_id}</Text>
+            </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.value}>{rowData.poster_id}</Text>
+            </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.value}>{rowData.poster_id}</Text>
+            </View>
+        </View>
     )
 }
