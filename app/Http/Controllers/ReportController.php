@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Posters;
 use App\Models\Transactions;
+use Illuminate\Database\Eloquent\Builder;
+// use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -49,9 +51,16 @@ class ReportController extends Controller
 
 
         Log::info("Retrieve data for $startDate, $endDate, $payment_type");
-        $reportQuery = Transactions::whereDate('transaction_date', '>', $startDate)->with(['posters', 'posters.requests'])->get();
+        // $reportQuery = Transactions::with(['posters', 'posters.requests'])->whereDate('transaction_date', '>', $startDate == -1? '01/01/0001': $startDate);
+        
+        $posters = Posters::with(['transactions','jobs', 'requests'])->whereHas('transactions', function (Builder $dateQuery) use ($startDate) {
+            $dateQuery->where('transaction_date', '>', $startDate == -1? '01/01/0001': $startDate);
+        });
 
-            log::info($reportQuery->toJson() );
+        return $this->successResponse($posters->get());
+
+        
+            // log::info($reportQuery->toJson() );
     
         
         // $reportQuery->load(['posters']);
@@ -60,19 +69,19 @@ class ReportController extends Controller
         {
             case "SDF":
                 log::info("SDF only");
-                $reportQuery = $reportQuery->where('posters.requests.applied_for_discount', 1);
+                $reportQuery = $reportQuery->where('applied_for_discount', 1);
                 break;
             case "CASH":
-                $reportQuery = $reportQuery->where('payment_method', 'cash');
+                $reportQuery = $reportQuery->where('posters.requests.payment_method', 'cash');
                 break;
             case "All":
                 break;
             case "SPEED":
-                $reportQuery = $reportQuery->where('payment_method', 'speed_code');
+                $reportQuery = $reportQuery->where('posters.requests.payment_method', 'speed_code');
                 break;
             default:                
         }
         // $reportData = Transactions::whereDate('transaction_date', '>', $startDate)->get();
-        return $this->successResponse($reportQuery);
+        return $this->successResponse($reportQuery->get());
     }
 }

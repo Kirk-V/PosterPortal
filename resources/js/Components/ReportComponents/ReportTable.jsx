@@ -1,12 +1,17 @@
-import {React, useState, useEffect} from 'react'
+import {React, useState, useEffect, useRef } from 'react'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import ReportTableHead from './ReportTableHead';
 import ReportRow from './ReportRow';
+import ReportTableBottomRow from './ReportTableBottomRow';
 
 export default function ReportTable({tableOptions, handleReconciled}) {
     // const [tableSettings, setTableSettings] = useState(tableOptions)
     const [hasData, setHasData] = useState(false);
     const [rowData, setRowData] = useState(null);
+    const [totalValues, setTotalValues] = useState(null);
 
     
 
@@ -28,12 +33,14 @@ export default function ReportTable({tableOptions, handleReconciled}) {
             return response.json();
         })
         .then((response) => {
-            console.log(JSON.stringify(response));
+            // console.log(JSON.stringify(response));
             if(response.status == "Success")
             {
                 console.log("SETTING DATA");
                 setHasData(true);
                 setRowData(response.data);
+                // console.log("ROW DATA " + JSON.stringify(rowData));
+                setTotalValues(findTotals(response.data));
             }
         },(error) => {
             console.log(error);
@@ -41,22 +48,50 @@ export default function ReportTable({tableOptions, handleReconciled}) {
         );
     }, [tableOptions])
 
+    const findTotals = (allRows) => 
+    {
+        let receivedTotal= 0, grantPayment= 0,SDFDiscount= 0, cashPayment = 0, subtotal=0;
+        allRows.forEach((row) => {
+            console.log(JSON.stringify(row));
+            subtotal += parseFloat(row.transactions.total);
+            receivedTotal += parseFloat(row.transactions.total_received);
+            grantPayment += row.requests.payment_method == 'speed_code' ? parseFloat(row.transactions.total): 0;
+            cashPayment += row.requests.payment_method == 'cash' ? parseFloat(row.transactions.total): 0;
+            SDFDiscount += parseFloat(row.discount);            
+        });
+        let totals = {
+            total: subtotal,
+            cash: cashPayment,
+            grant: grantPayment,
+            SDF: SDFDiscount,
+            received: receivedTotal
+        };
+        console.log(JSON.stringify(totals));
+        return totals;
+    }
+
 
     return (
         <>
-            <div>ReportTable</div>
+        <div className="border mt-4 p-2 bg-opacity-50">
+            <Row className="justify-content-end mt-3">
+                <Col xs={1}>
+                    <Button>Print</Button>
+                </Col>
+            </Row>
             <Table
                 striped={true}>
                 <ReportTableHead></ReportTableHead>
                 <tbody>
-                {hasData? rowData.map((row)=> {
-                    console.log(`row being added: ${JSON.stringify(row)}`);
+                {hasData ? rowData?.map((row)=> {
+                    // console.log(`row being added: ${JSON.stringify(row)}`);
                     return <ReportRow key={row.poster_id} data={row}/>
                 }): null}
+                <ReportTableBottomRow totals={totalValues}></ReportTableBottomRow>
                 </tbody>
                 
-            </Table>
-            
+            </Table>        
+            </div>    
         </>
         
     )

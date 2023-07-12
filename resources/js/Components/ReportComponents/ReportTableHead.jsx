@@ -10,6 +10,7 @@ export default function ReportTableHead() {
           <th>Approver</th>
           <th>Grant Payment</th>
           <th>Cash Payment</th>
+          <th>Total</th>
           <th>SDF Discount</th>
           <th>Received</th>
         </tr>
