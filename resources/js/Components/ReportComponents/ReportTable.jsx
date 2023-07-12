@@ -12,6 +12,7 @@ export default function ReportTable({tableOptions, handleReconciled}) {
     const [hasData, setHasData] = useState(false);
     const [rowData, setRowData] = useState(null);
     const [totalValues, setTotalValues] = useState(null);
+    const [showPDF, setShowPDF] = useState(false);
 
     
 
@@ -70,13 +71,18 @@ export default function ReportTable({tableOptions, handleReconciled}) {
         return totals;
     }
 
+    const makePrintPDF = () => 
+    {
+        setShowPDF(true);
+    }
+
 
     return (
         <>
         <div className="border mt-4 p-2 bg-opacity-50">
             <Row className="justify-content-end mt-3">
                 <Col xs={1}>
-                    <Button>Print</Button>
+                    <Button onClick={makePrintPDF}>Print</Button>
                 </Col>
             </Row>
             <Table
@@ -91,7 +97,8 @@ export default function ReportTable({tableOptions, handleReconciled}) {
                 </tbody>
                 
             </Table>        
-            </div>    
+        </div>
+        {showPDF? <makePrintPDF reportData={rowData}/>: null}
         </>
         
     )
