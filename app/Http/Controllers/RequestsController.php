@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\PosterRejectedNotice;
 use App\Models\Requests;
 use App\Models\Posters;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -73,6 +74,10 @@ class RequestsController extends Controller
      */
     public function rejectRequest($requestId){
         $request = Requests::find($requestId);
+        $posterId = $request->poster_id;
+
+        return $this->rejectPoster($posterId);
+
         if($request != null)
         {
             log::info("Rejecting Poster ".$request->posters->poster_id);
@@ -93,6 +98,24 @@ class RequestsController extends Controller
         {
             return self::errorResponse("No request found", 404);
         }
+    }
+
+
+    /**
+     * Summary of rejectPoster
+     * @param mixed $requestId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rejectPoster($posterId): JsonResponse{
+        $poster = Posters::with('requests','transactions')->find($posterId);
+        $transaction = $poster->transactions();
+        $request = $poster->requests();
+        if($transaction)
+        {
+            log::info("poster has transaction");
+        }
+        return self::successResponse("false");
+
     }
 
 

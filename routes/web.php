@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Http\Controllers\Approvals;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,8 @@ Route::controller(ApplicationController::class)->group(function () {
 Route::controller(Approvals::class)->group(function () {
     Route::get('/approve', 'approvalView');
     Route::post('/approveSpeedCode&id={id}', 'approveSpeedCode');
+    Log::info("test");
+    Route::post('/rejectSpeedCode&id={id}', 'rejectSpeedCode');
 });
 
 Route::controller(RequestsController::class)->group(function () {
