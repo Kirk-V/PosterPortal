@@ -37,7 +37,7 @@ class RequestsFactory extends Factory
             // 'quantity' => fake()->randomDigitNotZero(),
         ];
 
-        if($returnArray["payment_method"] == 'speedcode')
+        if($returnArray["payment_method"] == 'speed_code')
         {
             $returnArray['approver_type'] = fake()->randomElement(['dosa', 'administrator', 'grant holder']);
             $returnArray['grant_holder_name'] = fake()->name();
@@ -45,11 +45,14 @@ class RequestsFactory extends Factory
             if($returnArray['approver_type'] == 'dosa')
             {
                 $returnArray['approver_name'] = fake()->name();
+                
             }
             else
             {
                 $returnArray['approver_name'] = $returnArray['grant_holder_name'];
             }
+            $returnArray['approver_email'] = 'kvande85@uwo.ca';
+            $returnArray['grant_holder_name'] = "Kirk";
         }
         else
         {

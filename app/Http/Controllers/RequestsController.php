@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PosterRejectedNotice;
+use App\Mail\PosterRejectionNoticeApprover;
 use App\Models\Requests;
 use App\Models\Posters;
+use App\Models\Transactions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -102,20 +104,53 @@ class RequestsController extends Controller
 
 
     /**
-     * Summary of rejectPoster
+     * Summary of rejectPoster:
+     * This function effectively voids out a poster changing the state to rejected. It will also
+     * update the Total in the related transaction to 0. It will also update the SDF discount to
+     * 0 on Poster. When a poster is rejected an email is sent to all parties involved (requisitioner,
+     * ssts, approver) where applicable. 
      * @param mixed $requestId
      * @return \Illuminate\Http\JsonResponse
      */
     public function rejectPoster($posterId): JsonResponse{
-        $poster = Posters::with('requests','transactions')->find($posterId);
-        $transaction = $poster->transactions();
-        $request = $poster->requests();
-        if($transaction)
+        try{
+            DB::beginTransaction();//This allows failed DB transaction to be undone automatically if error thrown
+            $poster = Posters::with('requests','transactions')->find($posterId);
+            $transaction = $poster->transactions;
+            $request = $poster->requests;
+            if($transaction)
+            {
+                $transaction->total = 0;
+                $transaction->save();
+                log::info("poster has transaction");
+            }
+            //Make changed to poster
+            $poster->state = 'rejected';
+            $poster->discount = 0;
+            $poster->save();
+            DB::commit();
+        }
+        catch(\Exception $e)
         {
-            log::info("poster has transaction");
+            log::info("Error $e");
+            DB::rollBack();
+            self::errorResponse("Could not retrieve and/or change necessary data. Please contact Kirk to manually reject poster", 500);
+        }
+        try{
+            //If we have a poster that is paid for via speed code we must also notify the approver
+            Mail::to($request->email)->send(new PosterRejectedNotice($request->poster_id));
+            if($request->payment_method == 'speed_code')
+            {
+                log::info("sendingn email to grantholde");
+                Mail::to($request->approver_email)->send(new PosterRejectionNoticeApprover($request->poster_id));
+            }
+        }
+        catch(\Exception $e)
+        {
+            log::info("Couldnt send all requests $e");
+            self::successResponse(["warning"=>"Could not send all rejection notice emails, please notify all parties manually"], "success");
         }
         return self::successResponse("false");
-
     }
 
 
