@@ -9,7 +9,9 @@ use App\Http\Controllers\PosterController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Console\Application;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,10 @@ Route::controller(JobsController::class)->group(function (){
     Route::post('/jobs/makeTransactionAndUpdate', 'makeTransactionAndUpdate');
 });
 
+Route::controller(ReportController::class)->group(function () {
+    Route::get('/reportData', 'getData');
+    
+});
 
 Route::controller(RequestsController::class)->group(function (){
     Route::patch('/requests/reject&id={id}', 'rejectRequest');

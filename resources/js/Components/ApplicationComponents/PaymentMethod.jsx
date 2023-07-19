@@ -43,7 +43,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
     const CashSection = (
         <Row >
             <Col>
-            Cash payments can be made at the time of pick-up.
+                <small>Cash payments (Pre-payment is not required).</small>
+                <p><small>Payment is completed when the poster is picked up</small></p>
             </Col>
         </Row>
     )
@@ -147,9 +148,8 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         overlay={renderAdministratorTooltip}
                     >
                         <InfoCircle size={14} />
-                    </OverlayTrigger> with instructions
-                    to approve the payment and provide a speed code. The transaction must be approved in order for your poster to be printed.
-
+                    </OverlayTrigger> requesting a Speedcode
+                    <p>Posters are place "On Hold" until we receive a speedcode from the individual with account signing authority</p>
                 </p>
             </Row>
             <Row>
@@ -192,7 +192,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
         <>
             <Row>
                 <h1>Payment Method</h1>
-                <small>*Payment cannot be changed after submission</small>
+                <small>Payment method cannot be changed after the poster has been printed.</small>
             </Row>
             <Row className="mt-2 mb-2">
                 <Col sm="3">
@@ -212,7 +212,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                 {(formData?.apply_for_discount ?? 0) == 0? SpeedCodeButton: console.log("noshow")}
                 
             </Row>
-            {PaymentMethod == "speed_code"? SpeedCodeSection : CashSection}
+            {PaymentMethod == "speed_code"? SpeedCodeSection : PaymentMethod == "cash"? CashSection: null}
         </>
     )
 }

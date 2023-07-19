@@ -134,11 +134,25 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     className="mb-3"
                     controlId="requestFormGrantFirstName"
                 >
-                    <Form.Label>Grant Holder Email</Form.Label>
+                    <Form.Label>Approver Email</Form.Label>
                     <Form.Control
-                        name="grant_holder_email"
+                        name="approver_email"
                         type="text"
-                        defaultValue={formD.first_name}
+                        defaultValue={formD.approver_email}
+                        required
+                    />
+                </Form.Group>
+            </Col>
+            <Col>
+                <Form.Group
+                    className="mb-3"
+                    controlId="requestFormGrantFirstName"
+                >
+                    <Form.Label>Approver Type</Form.Label>
+                    <Form.Control
+                        name="approver_type"
+                        type="text"
+                        defaultValue={formD.approver_type}
                         required
                     />
                 </Form.Group>

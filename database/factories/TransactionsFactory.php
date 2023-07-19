@@ -25,6 +25,7 @@ class TransactionsFactory extends Factory
                 'transaction_date' => fake()->date(),
                 'total_received' => fake()->randomFloat(),
                 'reconciled' => fake()->boolean(),
+                'total' => fake()->randomFloat(2,2, 600)
         ];
     }
 }

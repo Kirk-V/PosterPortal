@@ -196,9 +196,9 @@ function PosterApplication({ auth, data, departments }) {
         <>
         {ErrorWithSubmission ?? false ? null: ErrorWithSubmission} 
         <Row>
-            <p>For general poster printing information please visit our <a href="https://ssts.uwo.ca/services/postergraphics/index.html" target="_blank">Poster Printing and Graphics page</a></p>
-            <p>If you have any questions or concerns please review our <a href="https://ssts.uwo.ca/services/postergraphics/index.html" target="_blank">FAQs page</a></p>
-            <p><strong>This printing service is for Social Science Only</strong>. If you wish to cancel an application after submitting please notify SSTS by email <a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
+            <p>This printing service is available to Social Science faculty, staff, graduate students, associated members and affiliates. </p>
+            <p>Need more information? Please visit our <a href="https://ssts.uwo.ca/services/posters/poster_printing_faqs.html" target="_blank">Poster Printing FAQ's page</a></p>
+            <p>If you wish to cancel an application or require further information, please notify SSTS by email <a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
         </Row>
         </>
     )

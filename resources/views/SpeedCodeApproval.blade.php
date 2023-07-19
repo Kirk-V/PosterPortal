@@ -108,8 +108,9 @@
                 <button class="btn btn-success" form="acceptForm" type="submit">Approve</button>
             </div>
             <div class="col-3 mt-3 ms-auto">
-                <form  class="col-3" action="rejectSpeedCode&id={{$poster->poster_id}}">
-                    <button type="submit" class="btn btn-danger" onClick=confirmReject(e)>Reject</button>
+                <form  class="col-3" method="post" action="rejectSpeedCode&id={{$poster->poster_id}}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger" onClick=confirmReject()>Reject</button>
                 </form>
             </div>
         </div>

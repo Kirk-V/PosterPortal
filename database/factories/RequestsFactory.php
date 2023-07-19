@@ -30,14 +30,14 @@ class RequestsFactory extends Factory
             'last_name' => fake()->lastName(),
             'email' => fake()->email(),
             'department' => fake()->randomElement(['Anthropology', 'Brain and Mind', 'Dan Management', 'Deans Office', 'Economics', 'Geography', 'History', 'Indigenous Studies', 'Nest', 'Political Science', 'Psychology', 'Sociology', 'SSTS', 'Other']),
-            'payment_method' => fake()->randomElement(['cash', 'speedcode']),
+            'payment_method' => fake()->randomElement(['cash', 'speed_code']),
             'applied_for_discount' => fake()->boolean(),
             'user_logged_in' => fake()->userName(),
             // 'position' => fake()->randomElement(['graduate', 'faculty', 'undergraduate', 'staff']),
             // 'quantity' => fake()->randomDigitNotZero(),
         ];
 
-        if($returnArray["payment_method"] == 'speedcode')
+        if($returnArray["payment_method"] == 'speed_code')
         {
             $returnArray['approver_type'] = fake()->randomElement(['dosa', 'administrator', 'grant holder']);
             $returnArray['grant_holder_name'] = fake()->name();
@@ -45,11 +45,14 @@ class RequestsFactory extends Factory
             if($returnArray['approver_type'] == 'dosa')
             {
                 $returnArray['approver_name'] = fake()->name();
+                
             }
             else
             {
                 $returnArray['approver_name'] = $returnArray['grant_holder_name'];
             }
+            $returnArray['approver_email'] = 'kvande85@uwo.ca';
+            $returnArray['grant_holder_name'] = "Kirk";
         }
         else
         {

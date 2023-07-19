@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Http\Controllers\Approvals;
 use Illuminate\Support\Facades\Route;
@@ -9,6 +10,7 @@ use App\Http\Controllers\JobsController;
 use App\Http\Controllers\PosterController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequestsController;
 
 /*
@@ -38,6 +40,11 @@ Route::controller(JobsController::class)->group(function () {
     Route::get('/jobs&page={page}', 'getJobsData');
 });
 
+Route::controller(ReportController::class)->group(function () {
+    Route::get('/reports', 'showReportView');
+    
+});
+
 
 Route::controller(ApplicationController::class)->group(function () {
     Route::get('/application', 'applicationForm');
@@ -48,6 +55,8 @@ Route::controller(ApplicationController::class)->group(function () {
 Route::controller(Approvals::class)->group(function () {
     Route::get('/approve', 'approvalView');
     Route::post('/approveSpeedCode&id={id}', 'approveSpeedCode');
+    Log::info("test");
+    Route::post('/rejectSpeedCode&id={id}', 'rejectSpeedCode');
 });
 
 Route::controller(RequestsController::class)->group(function () {
