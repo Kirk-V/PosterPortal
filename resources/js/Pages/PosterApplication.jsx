@@ -171,6 +171,7 @@ function PosterApplication({ auth, data, departments }) {
                 }
                 else{
                     console.log("failed to submit application");
+                    alert(response.message);
                 }
             });
     }
