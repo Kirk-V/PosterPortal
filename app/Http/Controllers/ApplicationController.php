@@ -91,58 +91,61 @@ class ApplicationController extends Controller
                 ->limit(1)
                 ->get()
                 ->first();
-            $email = $user->getAttribute("mail")[0];
+            $email = $user->getAttribute("mail");
+            if(is_null($email)) return "User must have email associated with username";
+            $email = $email[0];
             $userName = $user->getAttribute("cn")[0];
             //Now check the appropriate groups to see if user is eligible to submit a poster
             $userGroups = $user->groups()->get();
-            $rString = "";
 
             //Eligible groups
             $External = Settings::where('setting', 'external')->get()->first()->value;
             $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
 
             // Check the necessary groups for user existance
+            $userCanSubmit = false;
             //First we check for SSC exitance
             if($this->userInAccessGroup($user, 'normal'))
             {
                 log::info("user  is normal");
+                $userCanSubmit = true;
                 return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
             }
 
             //Check external
             if ($External == 1) {
-                $rString .= "We are currently Accepting new External applications<br>";
+
                 //check if user is an external user:
                 if($this->userInAccessGroup($user, 'external'))
                 {
-                    $rString .= "User is a valid external user";
+                    $userCanSubmit = true;
                     return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
                 }
             }
             else
             {
-                $rString .= "<br>We are currently NOT Accepting new External applications<br>";
+                return "<br>We are not currently accepting printing jobs outside of the Faculty of Social Science<br>";
             }
             //check undergrad
             if ($uGrad == 1) {
                 //Currently Accepting Ugrad Applications.
-                $rString .= "<br>We are currently Accepting new UGrad applications<br>";
+
                 //check if user is an external user:
                 if($this->userInAccessGroup($user, 'undergrad'))
                 {
-                    $rString .= "User is a valid undergrad user";
+                    $userCanSubmit = true;
                 }
             }
             else
             {
-                $rString .= "<br>We are currently NOT Accepting new UGrad applications<br>";
+                return "<br>We are currently NOT Accepting new UGrad applications<br>";
             }
             // foreach($userGroups as $g)
             // {
             //     // $rString .= "<br>".$g->getAttribute('cn')[0];
             //     $rString .= "<br>".$g;
             // }
-            return $rString;
+            return "<br>You must be a social science student or UWO faculty/Staff/Graduate student to use this service<br>";
             // if(in_array($request->grant_holder_email, array($email, $userName)))
             // {
             //     //User can access
@@ -154,7 +157,7 @@ class ApplicationController extends Controller
             // }
         } catch (Exception $e) {
             //Should return a page indicating that user does not have access to application process
-            return "no user found";
+            return "no user found $e";
         }
         // return $rstring;
 
@@ -318,7 +321,7 @@ class ApplicationController extends Controller
                 });
                 log::info($request->apply_for_discount. "saved");
                 //Send Email notification Here
-                // try{
+                try{
                     $email = $requestModel->email;
                     Mail::to($email)->send(new ApplicationConfirmation($poster->poster_id));
                     if($requestModel->payment_method == 'speed_code')
@@ -327,11 +330,11 @@ class ApplicationController extends Controller
                         $approverEmail = $requestModel->approver_email;
                         Mail::to($approverEmail)->send(new ApprovalForSpeedCode($poster->poster_id));
                     }
-                // }
-                // catch(Exception $e)
-                // {
+                }
+                catch(Exception $e)
+                {
                     log::error("Failed to send email notification that application has been recieved $e");
-                // }
+                }
                 return $this->successResponse(null, "success");
             }
             catch(Exception $e)
