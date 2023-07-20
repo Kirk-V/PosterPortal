@@ -63,6 +63,25 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
         </Form.Group>
   )
 
+  const ExternalReqDepartment = (
+    <Form.Group as={Col} sm="6" controlId="externalReqDept">
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Non SSC Department"
+            className="mb-3"
+          >
+            <Form.Control
+              required
+              type="text"
+              name="department"
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? false: true: false }
+              onChange={(e) => handleControlUpdate(e)}
+            />
+          </FloatingLabel>
+        </Form.Group>
+  )
+
   const handleChange = (event) => {
     console.log(event.target.value);
   }
@@ -149,7 +168,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             <Form.Select
               aria-label="Department Select"
               required
-              name="department"
+              name={formData?.department == "Non Social Science Department"? "Ext": "department"}
               isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? true: false: false}
               isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? false: true: false }
               onChange={handleControlUpdate}
@@ -161,6 +180,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             </Form.Select>
           </FloatingLabel>
         </Form.Group>
+        {formData?.department in departments? null: ExternalReqDepartment}
       </Row>
     </>
   )

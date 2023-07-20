@@ -22,8 +22,8 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                 <h1>Poster Details</h1>
             </Row>
             <Row>
-                <small>our poster paper is 44 inches (111.7 cm) wide. One poster dimension (width or height) <strong style={{'textDecoration': 'underline'}}>MUST</strong> be 44 inches (11.7 cm) or less.</small>
-                <small>We can rotate the poster image to accommodate printing. Maximim poster size is 44 X 100 inches or 111.7 X 254 centimeters.</small>
+                <small>Our poster paper is 44 inches (111.7 cm) wide. One poster dimension (width or height) <strong style={{'textDecoration': 'underline'}}>MUST</strong> be 44 inches (111.7 cm) or less.</small>
+                <small>We can rotate the poster image to accommodate printing. Maximum poster size is 44 X 100 inches or 111.7 X 254 centimeters.</small>
             </Row>
             <Row>
                 <Form.Group as={Col} sm="2" controlId="validationCustomUsername">
@@ -113,7 +113,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                 </Col>
             </Row>
             <Row>
-                <small>An email containing the total cost will be sent when the poster hsa been placed in the queue for printing.</small>
+                <small>An email containing the total cost will be sent when the poster has been placed in the queue for printing.</small>
             </Row>
         </>
 

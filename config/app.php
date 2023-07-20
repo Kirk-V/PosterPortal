@@ -68,7 +68,7 @@ return [
     | in the request.
     |
     */
-    'departments' =>  ["Anthropology","Brain and Mind","DAN Management","Dean's Office","Economics","Geography","History","Indigenous Studies","NEST","Politcal Science","Psychology","Sociology","SSTS", "Other"],
+    'departments' =>  ["Anthropology","Brain and Mind","DAN Management","Dean's Office","Economics","Geography","History","Indigenous Studies","NEST","Politcal Science","Psychology","Sociology","SSTS", "Non Social Science Department"],
 
     /*
     |--------------------------------------------------------------------------

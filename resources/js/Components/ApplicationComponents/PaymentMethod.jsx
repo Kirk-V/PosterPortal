@@ -136,7 +136,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
         <>
             <Row>
                 <p>
-                    An automated email will be sent to the Grant Holder, DoSA Designate<OverlayTrigger
+                    An automated email will be sent to the Grant Holder or DoSA Designate<OverlayTrigger
                         placement="right"
                         delay={{ show: 250, hide: 400 }}
                         overlay={renderDosaTooltip}

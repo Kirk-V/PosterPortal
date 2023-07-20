@@ -236,7 +236,7 @@ class ApplicationController extends Controller
                 'units' => ['required', 'in:cm,inches'],
                 'last_name' => ['required','string', 'max:250'],
                 'email' => ['required', 'email','string', 'max:250'],
-                'department' => ['required', Rule::in(config('app.departments'))],
+                'department' => ['required'],
                 'quantity' => ['required', 'integer'],
                 'applied_for_discount' => ['integer','between:0:1' ],
                 'course_number' => [Rule::requiredIf($request->applied_for_discount == '1'), Rule::prohibitedIf($request->applied_for_discount == '0'), 'size:4', new CourseExists],
