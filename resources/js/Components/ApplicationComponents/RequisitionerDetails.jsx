@@ -42,7 +42,8 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
   );
 
   const CourseInfo = (
-    <Form.Group as={Col} sm="6" controlId="validationCustom01">
+    <Row>
+      <Form.Group as={Col} sm="6" controlId="validationCustom01">
           <FloatingLabel
             controlId="floatingInput"
             label="Course Number"
@@ -61,6 +62,30 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
           </FloatingLabel>
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
+        <Form.Group as={Col} sm="6" controlId="validationCustom03">
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Course Department"
+            className="mb-3"
+          >
+            <Form.Select
+              aria-label="Department Select"
+              name="course_department"
+              required
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('course_department')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('course_department')?? false ? false: true: false }
+              onChange={handleControlUpdate}
+              defaultValue="">
+              <option value="" disabled hidden></option>
+              {departments.map((departmentName) => (
+                <option key={departmentName} value={departmentName}>{departmentName}</option>
+              ))}
+            </Form.Select>
+          </FloatingLabel>
+        </Form.Group>
+    </Row>
+    
+        
   )
 
   const ExternalReqDepartment = (
@@ -73,9 +98,9 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             <Form.Control
               required
               type="text"
-              name="department"
-              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? true: false: false}
-              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? false: true: false }
+              name="external_department"
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('external_department')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('external_department')?? false ? false: true: false }
               onChange={(e) => handleControlUpdate(e)}
             />
           </FloatingLabel>
@@ -155,10 +180,10 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
         </Form.Group>
       </Row>
 
-          {formSettings?.undergrad =="1" ? UnderGradCheckBox: null}
+          
 
       <Row>
-        {ApplyingForDiscount? CourseInfo :null}
+        
       <Form.Group as={Col} sm="6" controlId="validationCustom03">
           <FloatingLabel
             controlId="floatingInput"
@@ -168,7 +193,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             <Form.Select
               aria-label="Department Select"
               required
-              name={formData?.department == "Non Social Science Department"? "Ext": "department"}
+              name="department"
               isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? true: false: false}
               isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? false: true: false }
               onChange={handleControlUpdate}
@@ -180,8 +205,10 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             </Form.Select>
           </FloatingLabel>
         </Form.Group>
-        {formData?.department in departments? null: ExternalReqDepartment}
+        {formData?.department == "Non Social Science Department"? ExternalReqDepartment :null}
       </Row>
+      {formSettings?.undergrad =="1" ? UnderGradCheckBox: null}
+      {ApplyingForDiscount? CourseInfo :null}
     </>
   )
 }

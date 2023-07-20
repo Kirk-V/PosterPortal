@@ -9,6 +9,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { InfoCircle } from 'react-bootstrap-icons';
+import DepartmentsDropDown from '../DepartmentsDropDown';
 
 export default function PaymentMethod({serverValidationAttempted, validationFields, formData, handleControlUpdate, departmentList}) {
     const [PaymentMethod, setPaymentMethod] = useState(null);
@@ -89,6 +90,26 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
         </Row>
     )
 
+    const ApproverDepartment = (
+            <Form.Group as={Col} sm="6" controlId="approver_department">
+                <FloatingLabel
+                    controlId="floatingInput"
+                    label="Approver Department"
+                    className="mb-3"
+                >
+                    <Form.Control
+                        required
+                        type="text"
+                        name="approver_department"
+                        pattern="([A-Za-z \-]+){2,}"
+                        onChange={(e) => handleControlUpdate(e)}
+                        isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_department')??false  ? true: false: false}
+                isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('approver_department') ?? false ? true: false: false }
+                    />
+                </FloatingLabel>
+            </Form.Group>
+    )
+
     const ApproverSection = (
         <>
         <Row>
@@ -148,9 +169,9 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         overlay={renderAdministratorTooltip}
                     >
                         <InfoCircle size={14} />
-                    </OverlayTrigger> requesting a Speedcode
+                    </OverlayTrigger> requesting a Speedcode</p>
                     <p>Posters are place "On Hold" until we receive a speedcode from the individual with account signing authority</p>
-                </p>
+                
             </Row>
             <Row>
                 <Form.Group
@@ -181,10 +202,13 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         Looks good!
                     </Form.Control.Feedback>
                 </Form.Group>
+                {ApproverDepartment}
             </Row>
             {ApproverSection}
         </>
     )
+
+
 
 
 
