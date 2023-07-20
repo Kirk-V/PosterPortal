@@ -287,6 +287,7 @@ class ApplicationController extends Controller
                     'approver_email' => $request->approver_email ?? null,
                     'applied_for_discount'=> $request->apply_for_discount ?? null,
                     'user_logged_in' =>  $user->cn[0],
+                    'course_department' => $request->course_department ?? null
                 ]);
                 log::info($request->apply_for_discount. "<<<");
                 if($requestModel->applied_for_discount == 1)
@@ -294,8 +295,9 @@ class ApplicationController extends Controller
                     //Undergrad discount request, check course and dept
                     $yearString = date("Y")."/".date("Y")+1; //The course must be this year
                     try{
+                        log::info("looking for course $yearString ".$requestModel->course_department);
                         $course = Courses::where('year', $yearString)
-                            ->where('department', $requestModel->department)
+                            ->where('department', $requestModel->course_department)
                             ->where('number', $request->course_number)->firstOrFail();
                     }
                     catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e)
