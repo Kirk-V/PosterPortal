@@ -98,9 +98,9 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             <Form.Control
               required
               type="text"
-              name="department"
-              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? true: false: false}
-              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? false: true: false }
+              name="external_department"
+              isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('external_department')?? false ? true: false: false}
+              isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('external_department')?? false ? false: true: false }
               onChange={(e) => handleControlUpdate(e)}
             />
           </FloatingLabel>
@@ -193,7 +193,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             <Form.Select
               aria-label="Department Select"
               required
-              name={formData?.department in departments?  "department" : "Ext"}
+              name="department"
               isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? true: false: false}
               isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('department')?? false ? false: true: false }
               onChange={handleControlUpdate}
@@ -205,7 +205,7 @@ export default function RequisitionerDetails({allowUndergrad = true, serverValid
             </Form.Select>
           </FloatingLabel>
         </Form.Group>
-        {formData?.Ext == "Non Social Science Department"? ExternalReqDepartment :null}
+        {formData?.department == "Non Social Science Department"? ExternalReqDepartment :null}
       </Row>
       {formSettings?.undergrad =="1" ? UnderGradCheckBox: null}
       {ApplyingForDiscount? CourseInfo :null}

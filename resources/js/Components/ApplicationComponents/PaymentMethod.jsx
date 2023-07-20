@@ -169,9 +169,9 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         overlay={renderAdministratorTooltip}
                     >
                         <InfoCircle size={14} />
-                    </OverlayTrigger> requesting a Speedcode
+                    </OverlayTrigger> requesting a Speedcode</p>
                     <p>Posters are place "On Hold" until we receive a speedcode from the individual with account signing authority</p>
-                </p>
+                
             </Row>
             <Row>
                 <Form.Group

@@ -236,7 +236,8 @@ class ApplicationController extends Controller
                 'units' => ['required', 'in:cm,inches'],
                 'last_name' => ['required','string', 'max:250'],
                 'email' => ['required', 'email','string', 'max:250'],
-                'department' => ['required'],
+                'approver_department' => ['string', 'max:250'],
+                'department' => ['required', Rule::in(config('app.departments'))],
                 'quantity' => ['required', 'integer'],
                 'applied_for_discount' => ['integer','between:0:1' ],
                 'course_number' => [Rule::requiredIf($request->applied_for_discount == '1'), Rule::prohibitedIf($request->applied_for_discount == '0'), 'size:4', new CourseExists],
@@ -287,7 +288,9 @@ class ApplicationController extends Controller
                     'approver_email' => $request->approver_email ?? null,
                     'applied_for_discount'=> $request->apply_for_discount ?? null,
                     'user_logged_in' =>  $user->cn[0],
-                    'course_department' => $request->course_department ?? null
+                    'course_department' => $request->course_department ?? null,
+                    'approver_department' => $request->approver_department ?? null,
+                    'external_department' => $request->external_department ?? null
                 ]);
                 log::info($request->apply_for_discount. "<<<");
                 if($requestModel->applied_for_discount == 1)
