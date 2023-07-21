@@ -8,6 +8,7 @@ import PaymentMethod from '@/Components/ApplicationComponents/PaymentMethod';
 import PosterDetails from '@/Components/ApplicationComponents/PosterDetails';
 import PosterFile from '@/Components/ApplicationComponents/PosterFile';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 //Validation:
 // After submit, store data in state, set validated state = true.
@@ -23,6 +24,7 @@ function PosterApplication({ auth, data, departments }) {
     const [formSettings, setFormSettings] = useState(null);
     const [formDidSubmit, setFormDidSubmit] = useState(false);
     const [formSubmitError, setFormSubmitError] = useState(null);
+    const [submissionPending, setSubmissionPending] = useState(false);
     const requests = data;
 
     //Get the settings data with a call to API
@@ -34,29 +36,28 @@ function PosterApplication({ auth, data, departments }) {
             },
         }
         fetch(`api/settings/findFormSettings`, options)
-        .then( (res) => {
-            if (!res.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return res.json();
-        })
-        .then((response) => {
-            console.log("req data:");
-            console.log(`okay, Setting Data is: ${JSON.stringify(response)}`);
-            if(response.status == "Success")
-            {
-                console.log("settings: "+ JSON.stringify(response.data));
-                setFormSettings(response.data);
-            }
-            else {
-                console.log("failed to retrieve settings, unsuccessful status");
-            }
-        })
-        .catch((error) => {
-            console.log(error);
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return res.json();
+            })
+            .then((response) => {
+                console.log("req data:");
+                console.log(`okay, Setting Data is: ${JSON.stringify(response)}`);
+                if (response.status == "Success") {
+                    console.log("settings: " + JSON.stringify(response.data));
+                    setFormSettings(response.data);
+                }
+                else {
+                    console.log("failed to retrieve settings, unsuccessful status");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
 
-            setFormSubmitError(response.message);
-        });    
+                setFormSubmitError(response.message);
+            });
     }, []);
 
     // console.log(fieldValidation?.first_name);
@@ -65,36 +66,33 @@ function PosterApplication({ auth, data, departments }) {
 
         console.log("units set to " + units);
         console.log("quantity set to " + quantity);
-        if(units == 'cm')
-        {
+        if (units == 'cm') {
             //convert to inches
             width = convertCmToInch(width);
             height = convertCmToInch(height);
         }
-        let footHeight = height/12;
-        let footWidth = width/12;
+        let footHeight = height / 12;
+        let footWidth = width / 12;
         let costPer = cost * (footHeight * footWidth);
         let total = costPer * quantity;
         return [costPer.toFixed(2), total.toFixed(2)];
     }
 
 
-    const convertCmToInch = (val) =>
-    {
-        return 0.39370*val;
+    const convertCmToInch = (val) => {
+        return 0.39370 * val;
     }
 
 
     const handleFieldUpdate = (event) => {
         //copy fieldData
         console.log("update field event");
-        let newData = {...fieldData};
+        let newData = { ...fieldData };
         var name = event.target.name;
         var value = event.target.value;
         console.log(`updating ${name} to ${value}`);
         newData[name] = value;
-        if(['width', 'height', 'quantity', 'units'].includes(name))
-        {
+        if (['width', 'height', 'quantity', 'units'].includes(name)) {
             let width = newData?.width ?? 0;
             let height = newData?.height ?? 0;
             let quantity = newData?.quantity ?? 0;
@@ -105,13 +103,20 @@ function PosterApplication({ auth, data, departments }) {
         }
 
         setFieldData(newData);
-        
+
     }
     console.log(JSON.stringify(fieldData));
 
-    const handleSubmit = (event) => {
 
+
+ 
+
+    const handleSubmit = (event) => {
+        setSubmissionPending(true);
         console.log("Form Submitted");
+        //We have to pause any other submissions here. 
+        
+        
         //Get the form data into the json fieldValidation state var
         event.preventDefault();
         const form = event.currentTarget;
@@ -122,19 +127,20 @@ function PosterApplication({ auth, data, departments }) {
             // console.log(`invalid form data: ${data['first_name']}`);
             setClientValidated(true);
         }
-        else{
+        else {
             //Validated by client browser, send to api for further evaluation.
             //Here we do not apply client validation, so we set client validated to false
             setClientValidated(false);
-            console.log("Valid data entered, sending for backend validation"+JSON.stringify(data));
+            console.log("Valid data entered, sending for backend validation" + JSON.stringify(data));
             //Call validation api
             submitRequest();
             //set the validation object which should update the front end fields
             // setFieldValidation({'first_name': false, 'last_name': true});
-            
+
         }
 
         event.stopPropagation();
+        setSubmissionPending(false);
     }
 
     //Send data to API for validation and to make new poster request.
@@ -144,8 +150,7 @@ function PosterApplication({ auth, data, departments }) {
         // it may not have changed and may not have a value. Back end expects a position value
         // so default it to facstaffgrad
         console.log(JSON.stringify(fieldData));
-        if(!('apply_for_discount' in fieldData))
-        {
+        if (!('apply_for_discount' in fieldData)) {
             fieldData['apply_for_discount'] = 0;
         }
         let options = {
@@ -156,20 +161,19 @@ function PosterApplication({ auth, data, departments }) {
                 // depending on the request body
                 "Content-Type": 'application/json',
                 'Accept': 'application/json'
-              },
-            }
+            },
+        }
         fetch('api/application/NewApplication', options)
             .then(response => response.json())
             .then(response => {
                 console.log(JSON.stringify(response));
                 setFieldValidation(response.errors);
                 setServerValidated(true);
-                if(response.status == "Success")
-                {
+                if (response.status == "Success") {
                     console.log("successss");
                     setFormDidSubmit(true);
                 }
-                else{
+                else {
                     console.log("failed to submit application");
                     alert(response.message);
                 }
@@ -178,46 +182,61 @@ function PosterApplication({ auth, data, departments }) {
 
     const SubmitSection = (
         <>
-        <Row>
-            <p>Thank-you we have recieved your request. Please check your inbox for confirmation.</p>
-        </Row>
+            <Row>
+                <p>Thank-you we have recieved your request. Please check your inbox for confirmation.</p>
+            </Row>
         </>
     )
 
     const ErrorWithSubmission = (
         <>
-        <Row className="warning">
-            <p>Error submitting poster, please try again. If the problem persists please contact SSTS at<a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
-        </Row>
+            <Row className="warning">
+                <p>Error submitting poster, please try again. If the problem persists please contact SSTS at<a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
+            </Row>
         </>
     )
 
     const HeaderSection = (
         <>
-        {ErrorWithSubmission ?? false ? null: ErrorWithSubmission} 
-        <Row>
-            <p>This printing service is available to Social Science faculty, staff, graduate students, associated members and affiliates. </p>
-            <p>Need more information? Please visit our <a href="https://ssts.uwo.ca/services/posters/poster_printing_faqs.html" target="_blank">Poster Printing FAQ's page</a></p>
-            <p>If you wish to cancel an application or require further information, please notify SSTS by email <a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
-        </Row>
+            {ErrorWithSubmission ?? false ? null : ErrorWithSubmission}
+            <Row>
+                <p>This printing service is available to Social Science faculty, staff, graduate students, associated members and affiliates. </p>
+                <p>Need more information? Please visit our <a href="https://ssts.uwo.ca/services/posters/poster_printing_faqs.html" target="_blank">Poster Printing FAQ's page</a></p>
+                <p>If you wish to cancel an application or require further information, please notify SSTS by email <a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
+            </Row>
+        </>
+    )
+
+    const ButtonSpinner = (
+        <>
+            <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+            />
         </>
     )
 
 
 
     const FormSection = (
-        <Form noValidate validated={clientValidated} onSubmit={handleSubmit}>
-            <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
-            <PaymentMethod  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
-            <PosterDetails  formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
-            <PosterFile formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings}/>
-            <Button type="submit">Submit</Button>
+        <Form noValidate validated={clientValidated} onSubmit={handleSubmit} disabled={submissionPending}>
+            <RequisitionerDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings} />
+            <PaymentMethod formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings} />
+            <PosterDetails formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings} />
+            <PosterFile formData={fieldData} serverValidationAttempted={serverValidated} validationFields={fieldValidation} handleControlUpdate={handleFieldUpdate} departmentList={departments} formSettings={formSettings} />
+            <Button type="submit" disabled={submissionPending}>
+                {submissionPending? ButtonSpinner : null}
+                    Submit
+            </Button>
         </Form>
     )
     return (
         <>
-        {formDidSubmit ? SubmitSection : HeaderSection}
-        {formDidSubmit ? null : FormSection}
+            {formDidSubmit ? SubmitSection : HeaderSection}
+            {formDidSubmit ? null : FormSection}
         </>
     );
 }

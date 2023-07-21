@@ -83,7 +83,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                         pattern="([A-Za-z \-]+){2,}"
                         onChange={(e) => handleControlUpdate(e)}
                         isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('grant_holder_name')??false  ? true: false: false}
-                isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('grant_holder_name') ?? false ? true: false: false }
+                        isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('grant_holder_name') ?? false ? true: false: false }
                     />
                 </FloatingLabel>
             </Form.Group>
@@ -148,7 +148,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                 </FloatingLabel>
             </Form.Group>
         </Row>
-        {formData?.approver_type != "grant_holder" ? DosaGrantHolderSection: null}
+        {formData?.approver_type == "dosa" ? DosaGrantHolderSection: null}
         </>
 
     )
