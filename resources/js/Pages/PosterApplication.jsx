@@ -140,7 +140,10 @@ function PosterApplication({ auth, data, departments }) {
         }
 
         event.stopPropagation();
-        setSubmissionPending(false);
+        setTimeout(() => {
+            setSubmissionPending(false);
+        }, 3000);
+
     }
 
     //Send data to API for validation and to make new poster request.
