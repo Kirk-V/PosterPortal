@@ -112,7 +112,6 @@ function PosterApplication({ auth, data, departments }) {
  
 
     const handleSubmit = (event) => {
-        setSubmissionPending(true);
         console.log("Form Submitted");
         //We have to pause any other submissions here. 
         
@@ -129,7 +128,10 @@ function PosterApplication({ auth, data, departments }) {
         }
         else {
             //Validated by client browser, send to api for further evaluation.
+            setSubmissionPending(true);
+            
             //Here we do not apply client validation, so we set client validated to false
+            
             setClientValidated(false);
             console.log("Valid data entered, sending for backend validation" + JSON.stringify(data));
             //Call validation api
@@ -141,8 +143,8 @@ function PosterApplication({ auth, data, departments }) {
 
         event.stopPropagation();
         setTimeout(() => {
-            setSubmissionPending(false);
-        }, 3000);
+            
+        }, 1000);
 
     }
 
@@ -175,10 +177,12 @@ function PosterApplication({ auth, data, departments }) {
                 if (response.status == "Success") {
                     console.log("successss");
                     setFormDidSubmit(true);
+                    setSubmissionPending(false);
                 }
                 else {
                     console.log("failed to submit application");
                     alert(response.message);
+                    setSubmissionPending(false);
                 }
             });
     }
