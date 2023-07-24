@@ -65,7 +65,7 @@ class JobsController extends Controller
 
     public function getJobsData($page, $entriesPerPage = 50)
     {
-        $jobs = DB::table('Posters')
+        $jobs = DB::table('Posters')->where('state', 'accepted')
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
             ->leftJoin('Transactions', 'Posters.poster_id', 'Transactions.poster_id')
@@ -112,7 +112,7 @@ class JobsController extends Controller
         log::info("Pick up Email being sent to $req_email for poster: $poster_id with cost: $req_cost");
         
         
-        Mail::to("kvande85@uwo.ca")->send(new PickUpNotice($req_name, $req_cost));
+        Mail::to($req_email)->send(new PickUpNotice($req_name, $req_cost));
         return self::successResponse("none");
     }
 

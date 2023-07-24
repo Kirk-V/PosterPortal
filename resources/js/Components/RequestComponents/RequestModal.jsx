@@ -219,7 +219,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
             centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    <h2>Poster #{requestData?.requests?.request_id}</h2>
+                    <h2>Poster #{formData?.poster_id}</h2>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
