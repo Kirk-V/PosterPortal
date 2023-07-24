@@ -70,6 +70,7 @@ return [
     */
     'departments' =>  ["Anthropology","Brain and Mind","DAN Management","Dean's Office","Economics","Geography","History","Indigenous Studies","NEST","Politcal Science","Psychology","Sociology","SSTS", "Other (Non Social Science Department)"],
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

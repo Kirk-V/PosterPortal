@@ -2,24 +2,40 @@
 
 namespace App\Mail;
 
+use App\Models\Posters;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class SSTSNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public Posters $poster;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(public int $poster_id)
     {
         //
+        //retrieve the poster data
+        try{
+            $this->poster = Posters::findOrFail($poster_id);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            Log::info("Attempted to send notification to SSTS that a speedcode has been approved but could not find poster model $e");
+            Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Sending speed code approval notification, could not find poster $poster_id in database $e"));
+        }
     }
+
 
     /**
      * Get the message envelope.
@@ -27,7 +43,7 @@ class SSTSNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'S S T S Notification',
+            subject: 'New Poster Application Notification - Poster # '.$this->poster_id,
         );
     }
 
@@ -37,7 +53,7 @@ class SSTSNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mail.SSTSNewApplicationNotice',
         );
     }
 

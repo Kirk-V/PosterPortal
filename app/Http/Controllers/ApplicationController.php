@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ApplicationConfirmation;
+// use App\Mail\SSTSNotification;
 use App\Mail\ApprovalForSpeedCode;
+use App\Mail\SSTSNotification;
 use App\Models\Posters;
 use App\Models\Courses;
 use App\Models\Requests;
@@ -329,6 +331,7 @@ class ApplicationController extends Controller
                 try{
                     $email = $requestModel->email;
                     Mail::to($email)->send(new ApplicationConfirmation($poster->poster_id));
+                    Mail::to("kvande85@uwo.ca")->send(new SSTSNotification($poster->poster_id));
                     if($requestModel->payment_method == 'speed_code')
                     {
                         //Also need to send approver an email.
