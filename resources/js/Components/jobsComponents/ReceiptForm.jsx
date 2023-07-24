@@ -17,6 +17,15 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
     console.log(`techasdfasdfasdfasd`);
     console.log(`tech: ${jobsData.technician}`);
 
+    //add default date
+    // if(!('transaction_date' in jobsData))
+    // {
+    //     console.log("no date set");
+    //     let newData = {...jobsData}
+    //     newData['transaction_date'] = new Date().toISOString().split('T')[0];
+    //     dataUpdateHandler(newData);
+    // }
+
     const handleControlChange = (event) => {
         const value = event.target.value;
         const name = event.target.name;
