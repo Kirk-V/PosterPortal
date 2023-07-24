@@ -45,7 +45,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
         <Row >
             <Col>
                 <small>Cash payments (Pre-payment is not required).</small>
-                <p><small>Payment is completed when the poster is picked up</small></p>
+                <p><small>Payment is completed when the poster is picked up.</small></p>
             </Col>
         </Row>
     )
@@ -157,20 +157,20 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
         <>
             <Row>
                 <p>
-                    An automated email will be sent to the Grant Holder or DoSA Designate<OverlayTrigger
+                    An automated email requesting a Speedcode will be sent to the specified Grant Holder or DoSA Designate<OverlayTrigger
                         placement="right"
                         delay={{ show: 250, hide: 400 }}
                         overlay={renderDosaTooltip}
                     >
-                        <InfoCircle className="ms-0" size={14} />
-                    </OverlayTrigger>, or Administrator<OverlayTrigger
+                        <sup><InfoCircle color="red" size={12} /></sup>
+                    </OverlayTrigger>, or Department account Administrator<OverlayTrigger
                         placement="right"
                         delay={{ show: 250, hide: 400 }}
                         overlay={renderAdministratorTooltip}
                     >
-                        <InfoCircle size={14} />
-                    </OverlayTrigger> requesting a Speedcode</p>
-                    <p>Posters are place "On Hold" until we receive a speedcode from the individual with account signing authority</p>
+                        <sup><InfoCircle color="red" size={12} /></sup>
+                    </OverlayTrigger> to approve the printing expense.</p>
+                    <p>Posters are placed "On Hold" until we receive a speedcode from the individual with account signing authority.</p>
                 
             </Row>
             <Row>
@@ -195,7 +195,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                             <option value="" disabled hidden></option>
                             <option value="grant_holder">Research Grant Holder</option>
                             <option value="dosa">DoSA Designate</option>
-                            <option value="administrator">Administrator</option>
+                            <option value="administrator">Department account Administrator</option>
                         </Form.Select>
                     </FloatingLabel>
                     <Form.Control.Feedback>
