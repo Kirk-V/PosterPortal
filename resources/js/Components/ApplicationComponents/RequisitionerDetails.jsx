@@ -29,7 +29,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
       <Form.Group as={Col} md="12" controlId="validationCustomUsername">
 
         <InputGroup className="mb-3">
-          <strong> Undergraduate Student -</strong> Paying by Cash?
+          <div><strong className='fs-5'> Undergraduate Student -</strong> Paying by Cash?
           <Form.Check
             className="ms-2 me-1 form-check-inline"
             type="checkbox"
@@ -41,7 +41,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
             onChange={(e) => { handleControlUpdate(e), ToggleApplyForDiscount() }}
           />
           (Note: discount does not apply to Speedcode payments).
-
+          </div>
         </InputGroup>
 
       </Form.Group>
