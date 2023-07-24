@@ -101,7 +101,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
     <Form.Group as={Col} sm="6" controlId="externalReqDept">
       <FloatingLabel
         controlId="floatingInput"
-        label="Non SSC Department"
+        label="Your Department"
         className="mb-3"
       >
         <Form.Control
@@ -170,7 +170,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
 
       </Row>
       <Row>
-        <Form.Group as={Col} sm="8" controlId="validationCustomUsername">
+        <Form.Group as={Col} sm="6" controlId="validationCustomUsername">
           <FloatingLabel
             controlId="floatingInput"
             label="Email"
@@ -214,7 +214,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
             </Form.Select>
           </FloatingLabel>
         </Form.Group>
-        {formData?.department == "Non Social Science Department" ? ExternalReqDepartment : null}
+        {formData?.department == "Other (Non Social Science Department)" ? ExternalReqDepartment : null}
       </Row>
       {formSettings?.undergrad == "1" ? UnderGradCheckBox : null}
       {ApplyingForDiscount ? CourseInfo : null}

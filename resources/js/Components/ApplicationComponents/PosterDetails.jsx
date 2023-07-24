@@ -67,7 +67,6 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                         <Form.Select
                             required
                             name="units"
-                            defaultValue=""
                             onChange={(e) => handleControlUpdate(e)}
                             isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('units') ??false ? true: false: false}
                             isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('units') ??false ? false: true: false }>
@@ -91,6 +90,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             aria-label="Quantity"
                             name="quantity"
                             type="number"
+                            defaultValue={formData?.quantity}
                             aria-describedby="basic-addon1"
                             onChange={(e) => {handleControlUpdate(e)}}
                             isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('quantity') ??false ? true: false: false}

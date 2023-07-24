@@ -18,7 +18,7 @@ import Spinner from 'react-bootstrap/Spinner';
 function PosterApplication({ auth, data, departments }) {
     const [validated, setValidated] = useState(false);
     const [fieldValidation, setFieldValidation] = useState(null);
-    const [fieldData, setFieldData] = useState(null);
+    const [fieldData, setFieldData] = useState({quantity: 1, payment_method:"cash"});
     const [clientValidated, setClientValidated] = useState(false)
     const [serverValidated, setServerValidated] = useState(false);
     const [formSettings, setFormSettings] = useState(null);
