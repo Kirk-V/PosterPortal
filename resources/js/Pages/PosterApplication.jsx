@@ -61,7 +61,7 @@ function PosterApplication({ auth, data, departments }) {
     }, []);
 
     // console.log(fieldValidation?.first_name);
-    const calcCostPer = (width, height, units, quantity) => {
+    const calcCostPer = (width, height, units, quantity, paymentMethod) => {
         let cost = formSettings?.cost ?? 0;
 
         console.log("units set to " + units);
@@ -75,6 +75,13 @@ function PosterApplication({ auth, data, departments }) {
         let footWidth = width / 12;
         let costPer = cost * (footHeight * footWidth);
         let total = costPer * quantity;
+
+        if(paymentMethod == 'cash')
+        {
+            //We need to round down values
+            costPer = Math.floor(costPer);
+            total = Math.floor(total);
+        }
         return [costPer.toFixed(2), total.toFixed(2)];
     }
 
@@ -92,14 +99,15 @@ function PosterApplication({ auth, data, departments }) {
         var value = event.target.value;
         console.log(`updating ${name} to ${value}`);
         newData[name] = value;
-        if (['width', 'height', 'quantity', 'units'].includes(name)) {
+        if (['width', 'height', 'quantity', 'units', 'payment_method'].includes(name)) {
             let width = newData?.width ?? 0;
             let height = newData?.height ?? 0;
             let quantity = newData?.quantity ?? 0;
             let units = newData?.units ?? 'cms';
+            let payment_method = newData?.payment_method ?? 'cash';
             console.log("sending for cost update");
-            newData['cost'] = calcCostPer(width, height, units, quantity)[0];
-            newData['total'] = calcCostPer(width, height, units, quantity)[1];
+            newData['cost'] = calcCostPer(width, height, units, quantity, payment_method)[0];
+            newData['total'] = calcCostPer(width, height, units, quantity, payment_method)[1];
         }
 
         setFieldData(newData);
