@@ -67,7 +67,7 @@ class PosterController extends Controller
         }
         catch(Exception $e)
         {
-            Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Finding poster when attempting to send notice. $e"));
+            Mail::to($request->email)->send(new SSTSErrorNotification("Error Finding poster when attempting to send notice. $e"));
             return response(["success" => false]);
         }
         

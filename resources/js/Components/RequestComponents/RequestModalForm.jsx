@@ -108,11 +108,34 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     const handleApplyDiscount = (event) => {
         let data = {...formD};
         console.log("adding in discount " +settings.discount);
-        data['discount'] = settings.discount;
+        data['discount'] = settings.discount * data.quantity;
         data['discount_eligible'] = 1;
         data.cost = calculateCost(data);
         data.total = calculateCost(data);
         onUpdate(data);
+    }
+
+    const handleRemoveDiscount = (event) => {
+        console.log("removing discount");
+        let data = {...formD};
+        data['discount'] = 0;
+        data['discount_eligible'] = 0;
+        data.cost = calculateCost(data);
+        data.total = calculateCost(data);
+        onUpdate(data);
+    }
+
+    const handleDiscountAppliedChange = (event) => {
+        let discountApplied = event.target.value;
+        if(discountApplied == 1)
+        {
+            console.log("discount has been applied for");
+            handleControlChange(event);
+        }
+        else{
+            handleRemoveDiscount(event);
+            handleControlChange(event);
+        }
     }
 
 
@@ -300,7 +323,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         <Form.Select
                             name="applied_for_discount"
                             defaultValue={formD.applied_for_discount}
-                            onChange={(e) => handleControlChange(e)}
+                            onChange={(e) => handleDiscountAppliedChange(e)}
                             required
                         >
                             <option value={1}>Yes</option>

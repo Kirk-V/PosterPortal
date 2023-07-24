@@ -166,7 +166,7 @@ function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
     }
 
     const InQueueState = (
-        <Button variant="info" onClick={() => updateState('printed')}>Print Poster</Button>
+        <Button variant="info" onClick={() => updateState('printed')}>Poster Printed</Button>
     );
 
     const InPrintedState = (
@@ -284,9 +284,7 @@ function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
                     >
                         Close
                     </Button>
-                    <Col xs={2}>
-                <Button variant="info" onClick={()=>showErrorHandle("test", "no")}>error toast test</Button>
-            </Col>
+                    
                 </Modal.Footer>
             </Modal>           
         </>
