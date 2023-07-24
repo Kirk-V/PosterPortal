@@ -47,7 +47,7 @@ export default function JobsTable({showErrorHandle}) {
                 return Promise.reject(res);
             })
             .then((response) => {
-                console.log(`okay body response: ${JSON.stringify(response)}`);
+                // console.log(`okay body response: ${JSON.stringify(response)}`);
                 setBodyData(response);
                 setBodyDataLoaded(true);
             },
