@@ -9,6 +9,7 @@
     <p>An email will also be sent to {{$poster->requests->approver_name }}: {{$poster->requests->approver_email }} for a speed code and authorization to charge the grant.</p>
 @endif
 <p>This is an automated notification that {{$poster->requests->first_name}} {{$poster->requests->last_name}} ({{$poster->requests->email}}) has requested the printing of the Poster(s) following details:</p>
+<p>Poster #: {{$poster->poster_id}}</p>
 <p>Dimensions: {{$poster->width}} x {{$poster->height}} ({{$poster->units}})</p>
 <p>Cost Per Poster: ${{$poster->cost}}</p>
 <p>Quantity: {{$poster->quantity}}</p>

@@ -1,0 +1,2 @@
+<p>This is an automated notification that {{$poster->requests->first_name}} {{$poster->requests->last_name}} ({{$poster->requests->email}}) has requested the printing of a poster.
+    Please log in to <a href="{{url('/requests')}}"> to view the application.</p>
