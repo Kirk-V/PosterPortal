@@ -170,7 +170,7 @@ function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
 
     const InPrintedState = (
         <>
-            <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+            <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Receipt</Button>
             <Button variant="info" onClick={() => sendPickUpNotice()}>Send Pick-up Notice</Button>
         </>
     )
@@ -178,7 +178,7 @@ function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
     const InPendingPickUpState = (
         <>
         <Button variant="info" onClick={handlePickedUp}>Picked Up</Button>
-        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Receipt</Button>
         <Button variant="info" onClick={() => sendPickUpNotice()}>Resend Pick-up Notice</Button>
         </>
     )
@@ -192,7 +192,7 @@ function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
     )
 
     const InPickedUpState = (
-        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Transaction</Button>
+        <Button variant="info" onClick={handleShowingMakeTransactionChange}>Create Receipt</Button>
     )
 
     const PrintedState = (
