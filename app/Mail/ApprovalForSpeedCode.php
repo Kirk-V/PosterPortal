@@ -31,7 +31,7 @@ class ApprovalForSpeedCode extends Mailable
         catch(ModelNotFoundException $e)
         {
             Log::info("Could not find poster model $e");
-            Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Sending Approval request email, could not find poster $poster_id in database $e"));
+            Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new SSTSErrorNotification("Error Sending Approval request email, could not find poster $poster_id in database $e"));
         }
     }
     /**

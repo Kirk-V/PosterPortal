@@ -32,7 +32,7 @@ class SSTSNotification extends Mailable
         catch(ModelNotFoundException $e)
         {
             Log::info("Attempted to send notification to SSTS that a speedcode has been approved but could not find poster model $e");
-            Mail::to("kvande85@uwo.ca")->send(new SSTSErrorNotification("Error Sending speed code approval notification, could not find poster $poster_id in database $e"));
+            Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new SSTSErrorNotification("Error Sending speed code approval notification, could not find poster $poster_id in database $e"));
         }
     }
 

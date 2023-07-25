@@ -156,7 +156,7 @@ class JobsController extends Controller
         log::info("Email to $toAddress request for $poster_id");
         // log::info($request->getContent());
         file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent());
-        Mail::to("kvande85@uwo.ca")->send(new PDFMail($poster_id, $recipientType));
+        Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new PDFMail($poster_id, $recipientType));
         $poster->jobs->save();
         return self::successResponse("none");
     }
