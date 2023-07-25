@@ -14,11 +14,8 @@
 <p>Cost Per Poster: ${{$poster->cost}}</p>
 <p>Quantity: {{$poster->quantity}}</p>
 <p>Total: ${{ number_format((float)($poster->cost * $poster->quantity), 2, '.', '' )}}</p>
-@if(strTolower($poster->requests->payment_method) == "speed_code")
-    <p>Payment Method: Speed Code</p>
-@else
-    <p>Payment Method: Speed Code</p>
-@endif
+<p>Payment Method: {{$poster->requests->payment_method}}</p>
+
 
 Please note that the above cost is subject to change if the Requisitioner increases/decreases the poster dimensions.
 
