@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import CourseSelect from "@/Components/RequestComponents/CourseSelect";
 import { useEffect } from "react";
 
-export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept}) {
+export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept }) {
     const [formData, setformData] = useState(formD);
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
@@ -19,7 +19,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
     // can become its own component.
 
-    console.log("Re-render form data: "+JSON.stringify(formD));
+    console.log("Re-render form data: " + JSON.stringify(formD));
 
     function handleOpenFile() {
         console.log("file opening");
@@ -40,7 +40,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let discount = data.discount;
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + (costPer - discount) * quantity);
-        return ((costPer * quantity)- discount).toFixed(2);
+        return ((costPer * quantity) - discount).toFixed(2);
     };
 
     const calculateCost = (data) => {
@@ -53,7 +53,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         console.log(`using width: ${inchWidth}`);
         console.log(`using height: ${inchHeight}`);
         var total = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
-        console.log("cost:"+ total);
+        console.log("cost:" + total);
         return total;
     }
 
@@ -95,8 +95,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         if (form.checkValidity() === false) {
             console.log("form not valid!");
         }
-        else
-        {
+        else {
             console.log("form valid!");
             onHandleAccept();
         }
@@ -106,8 +105,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     };
 
     const handleApplyDiscount = (event) => {
-        let data = {...formD};
-        console.log("adding in discount " +settings.discount);
+        let data = { ...formD };
+        console.log("adding in discount " + settings.discount);
         data['discount'] = settings.discount * data.quantity;
         data['discount_eligible'] = 1;
         data.cost = calculateCost(data);
@@ -117,7 +116,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
 
     const handleRemoveDiscount = (event) => {
         console.log("removing discount");
-        let data = {...formD};
+        let data = { ...formD };
         data['discount'] = 0;
         data['discount_eligible'] = 0;
         data.cost = calculateCost(data);
@@ -127,12 +126,11 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
 
     const handleDiscountAppliedChange = (event) => {
         let discountApplied = event.target.value;
-        if(discountApplied == 1)
-        {
+        if (discountApplied == 1) {
             console.log("discount has been applied for");
             handleControlChange(event);
         }
-        else{
+        else {
             handleRemoveDiscount(event);
             handleControlChange(event);
         }
@@ -141,13 +139,38 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
 
     var GrantHolderInfo = (
         <>
+            <Col xs={2}>
+                <Form.Group
+                    className="mb-3"
+                    controlId="requestFormGrantFirstName"
+                >
+                    <Form.Label>Approver Type</Form.Label>
+                    <Form.Control
+                        name="approver_type"
+                        type="text"
+                        defaultValue={formD.approver_type}
+                        required
+                    />
+                </Form.Group>
+            </Col>
             <Col>
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Grant Holder</Form.Label>
+                    <Form.Label>Approver Name</Form.Label>
                     <Form.Control
                         name="grant_holder_name"
                         type="text"
-                        defaultValue={formD.first_name}
+                        defaultValue={formD.approver_name}
+                        required
+                    />
+                </Form.Group>
+            </Col>
+            <Col>
+                <Form.Group className="mb-3" controlId="requestFormFirstName">
+                    <Form.Label>Grant Holder Name</Form.Label>
+                    <Form.Control
+                        name="grant_holder_name"
+                        type="text"
+                        defaultValue={formD.grant_holder_name}
                         required
                     />
                 </Form.Group>
@@ -166,20 +189,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     />
                 </Form.Group>
             </Col>
-            <Col>
-                <Form.Group
-                    className="mb-3"
-                    controlId="requestFormGrantFirstName"
-                >
-                    <Form.Label>Approver Type</Form.Label>
-                    <Form.Control
-                        name="approver_type"
-                        type="text"
-                        defaultValue={formD.approver_type}
-                        required
-                    />
-                </Form.Group>
-            </Col>
+
             <Row>
                 <Col xs={5}>
                     <Alert
@@ -232,18 +242,18 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
             </Col>
             <Col xs={3}>
                 <Form.Group
-                        className="mb-3"
-                        controlId="requestFormFirstName"
-                    >
-                        <Form.Label>Remaining SDF Balance</Form.Label>
-                        <Form.Control
-                            name="sdf_balance"
-                            type="number"
-                            className="border-0"
-                            readOnly
-                            required
-                        />
-                    </Form.Group>
+                    className="mb-3"
+                    controlId="requestFormFirstName"
+                >
+                    <Form.Label>Remaining SDF Balance</Form.Label>
+                    <Form.Control
+                        name="sdf_balance"
+                        type="number"
+                        className="border-0"
+                        readOnly
+                        required
+                    />
+                </Form.Group>
             </Col>
             <Col xs={3} className="align-self-center">
                 <Button variant="primary" onClick={handleApplyDiscount}>Apply discount</Button>{' '}
@@ -342,7 +352,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
             </Row>
 
             <Row className="mb-3">
-                <Col xs={3}>
+                <Col xs={2}>
                     <Form.Group
                         className="mb-3"
                         controlId="requestFormLastName"
@@ -373,7 +383,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     <InputGroup className="mb-3">
                         <Form.Control
                             name="file_location"
-                            defaultValue={formD.file_location?? 'email'}
+                            defaultValue={formD.file_location ?? 'email'}
                             aria-describedby="basic-addon2"
                         />
                         <Button
@@ -388,7 +398,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                 <Col xs={5}>
                     <Form.Label>Dimensions</Form.Label>
                     <InputGroup className="mb-3">
-                        <Form.Control 
+                        <Form.Control
                             as="input"
                             onChange={(e) => handleControlChange(e)}
                             type="number"
@@ -490,10 +500,10 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <InputGroup.Text id="basic-addon2">
                                 $
                             </InputGroup.Text>
-                            <Form.Control 
-                                name="total" 
+                            <Form.Control
+                                name="total"
                                 type="number"
-                                value= {parseFloat(formD.total).toFixed(2)}
+                                value={parseFloat(formD.total).toFixed(2)}
                                 // value={calculateTotal()} 
                                 onChange={(e) => handleControlChange(e)}
                                 readOnly />
@@ -512,7 +522,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         onChange={(e) => handleControlChange(e)}>
                         <option value="Rick">Rick</option>
                         <option value="Steve">Steve</option>
-                    </Form.Select>           
+                    </Form.Select>
                 </Col>
             </Row>
         </Form>
