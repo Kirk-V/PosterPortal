@@ -122,7 +122,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         data['discount'] = settings.discount * data.quantity;
         data['discount_eligible'] = 1;
         data.cost = calculateCost(data);
-        data.total = calculateCost(data);
+        data.total = calculateTotal(data);
         onUpdate(data);
     }
 
@@ -132,7 +132,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         data['discount'] = 0;
         data['discount_eligible'] = 0;
         data.cost = calculateCost(data);
-        data.total = calculateCost(data);
+        data.total = calculateTotal(data);
         onUpdate(data);
     }
 
@@ -144,7 +144,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         }
         else {
             handleRemoveDiscount(event);
-            handleControlChange(event);
+            // handleControlChange(event);
         }
     }
 
