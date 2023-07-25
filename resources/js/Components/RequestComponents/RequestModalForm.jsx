@@ -19,7 +19,6 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
     // can become its own component.
 
-    console.log("Re-render form data: " + JSON.stringify(formD));
 
     function handleOpenFile() {
         console.log("file opening");
@@ -33,7 +32,6 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         //update any changed data and create job
     }
 
-
     const calculateTotal = (data) => {
         let costPer = data.cost;
         let quantity = data.quantity;
@@ -43,6 +41,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         return ((costPer * quantity) - discount).toFixed(2);
     };
 
+
     const calculateCost = (data) => {
         console.log(JSON.stringify(settings));
         let pricePerFoot = settings.cost;
@@ -50,11 +49,21 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         console.log("cost being calculated");
         let inchWidth = data.units == "centimeters" ? 0.3937007874 * data.width : data.width;
         let inchHeight = data.units == "centimeters" ? 0.3937007874 * data.height : data.height;
-        console.log(`using width: ${inchWidth}`);
-        console.log(`using height: ${inchHeight}`);
         var total = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
+        if(data.payment_method == 'cash')
+        {
+            //round down
+            total = Math.round(total);
+        }
         console.log("cost:" + total);
         return total;
+    }
+
+    const calcualteDiscount = (data) => {
+        if(data.discount_eligible)
+        {
+            return data.quantity * settings.discount;
+        }
     }
 
     const handleControlChange = (event) => {
@@ -64,17 +73,20 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         console.log(`${name} being updated`);
         data[`${name}`] = value;
         if (["width", "height", "units", "discount"].includes(name)) {
-            data.cost = calculateCost(data);
-            data.total = calculateTotal(data);
+            data.cost = calculateCost(data); //The cost per poster
+            data.total = calculateTotal(data); //The total cost
             console.log(`cost now: ${data.cost}`);
         }
-        else if (["quantity", "discount", "cost"].includes(name)) {
+        else if (["quantity",  "cost"].includes(name)) {
+            data.discount = calcualteDiscount(data);
             data.total = calculateTotal(data);
             console.log(`total now: ${data.total}`);
         }
         // setformD(data);
         onUpdate(data);
     }
+
+
 
     const handleCourseChange = (event) => {
         const value = event.target.value;
