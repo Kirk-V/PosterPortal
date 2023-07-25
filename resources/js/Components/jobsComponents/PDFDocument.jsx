@@ -184,7 +184,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
         <View style={styles.headerRow}>
             <Image src={"SSC_Stacked_PurpleGrey.png"} style={styles.headerImage}/>
             <View style={styles.headerColumn}>
-                <Text style={styles.headerTextLine}>SocialScience Technology Services</Text>
+                <Text style={styles.headerTextLine}>Social Science Technology Services</Text>
                 <Text style={styles.headerTextLine}>Poster Printing</Text>
                 <Text style={styles.headerTextLine}>Social Sciences Centre 1226</Text>
                 <Text style={styles.headerTextLine}>ssts-posters@uwo.ca</Text>

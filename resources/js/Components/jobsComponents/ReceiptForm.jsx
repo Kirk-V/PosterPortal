@@ -13,17 +13,21 @@ import PDF from "./PDFDocument";
 export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, handleShowReceipt }) {
     const [totalCost, setTotalCost] = useState(0)
     const [validated, setValidated] = useState(false);
-    console.log(`OPened module with data: ${JSON.stringify(jobsData)}`);
-    console.log(`techasdfasdfasdfasd`);
-    console.log(`tech: ${jobsData.technician}`);
+    const [transactionDate, setTransactionDate] = useState(jobsData.transaction_date);
 
-    //add default date
-    // if(!('transaction_date' in jobsData))
-    // {
-    //     console.log("no date set");
-    //     let newData = {...jobsData}
-    //     newData['transaction_date'] = new Date().toISOString().split('T')[0];
-    //     dataUpdateHandler(newData);
+
+    if(transactionDate == null){
+        
+        let data = { ...jobsData }; //Deep copy so that setformD will trigger rerender
+        data[`transaction_date`] = new Date().toISOString().split('T')[0];
+        setTransactionDate(data['transaction_date']);
+        dataUpdateHandler(data);
+    }
+    // const setDefaultTransactionDate = () => {
+    //     console.log("setting transaction date");
+    //     let data = { ...jobsData }; //Deep copy so that setformD will trigger rerender
+    //     data[`transaction_date`] = new Date().toISOString().split('T')[0];
+        
     // }
 
     const handleControlChange = (event) => {
@@ -216,7 +220,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             onChange={(e) => handleControlChange(e)}
                             type="date"
                             name="transaction_date"
-                            defaultValue={jobsData.transaction_date ?? new Date().toISOString().split('T')[0]}
+                            value={transactionDate}
                             placeholder="DateRange"
                             aria-label="Disabled input example"
                             required
@@ -316,11 +320,11 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             defaultValue={jobsData.payment_method}
                             onChange={(e) => handleControlChange(e)}>
                             <option value="cash">Cash</option>
-                            <option value="speedcode">Speed Code</option>
+                            <option value="speed_code">Speed Code</option>
                         </Form.Select>
                     </Col>
                 </Row>
-                {jobsData.payment_method == "speedcode" ? GrantHolderInfo : null}
+                {jobsData.payment_method == "speed_code" ? GrantHolderInfo : null}
                 <Row>
                     <Col xs={12} className="mt-2">
                         <h4>Details</h4>
