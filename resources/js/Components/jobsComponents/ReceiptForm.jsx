@@ -163,7 +163,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 </Col>
             </Row>
             <Row className="mt-2">
-                <Col xs={6}>
+                <Col xs={4}>
                     <Form.Label className="mb-0">
                         Speed Code and Account
                     </Form.Label>
@@ -174,14 +174,25 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         onChange={(e) => handleControlChange(e)}
                     />
                 </Col>
-                <Col xs={6}>
+                <Col xs={4}>
                     <Form.Label className="mb-0">
                         Grant Holder
                     </Form.Label>
                     <Form.Control
                         type="Text"
-                        name="grant_holder"
-                        defaultValue={jobsData.grant_holder}
+                        name="grant_holder_name"
+                        defaultValue={jobsData.grant_holder_name}
+                        onChange={(e) => handleControlChange(e)}
+                    />
+                </Col>
+                <Col xs={4}>
+                    <Form.Label className="mb-0">
+                        Approver
+                    </Form.Label>
+                    <Form.Control
+                        type="Text"
+                        name="approver_name"
+                        defaultValue={jobsData.approver_name}
                         onChange={(e) => handleControlChange(e)}
                     />
                 </Col>
