@@ -10,25 +10,30 @@ use App\Models\Requests;
 
 class Approvals extends Controller
 {
-    //
+
+    /**
+     * Summary of approvalView
+     *  This returns a view to an approver after checking that they are eligible to approve
+     *  and provide a speedcode.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string
+     */
     public function approvalView(Request $request)
     {
         //check that user can access data
         $poster_id = $request->query('id');
-        ///get the requisitioner email to send the notification
+        //get the requisitioner email to send the notification
         $poster = Posters::find($poster_id);
         $request = $poster->requests;
-        $rString = "user ";
         try
         {
+            // Extract the logged in username from server and use it 
+            // to find the CN and email of the logged in user. This is compared
+            // with the request approver email. If it matches, the user can
+            // approve. Else the user is not eligible. 
             $user = User::whereStartsWith('cn', $_SERVER['LOGON_USER'])
                 ->limit(1)
                 ->get()->first();
-            // $rString = $user->getAttribute("cn")[0];
-            // if($user->groups()->exists('uwo-u-staff'))
-            // {
-            //     $rString .= " User is in uwo-u-staff";
-            // }
             $email = $user->getAttribute("mail")[0];
             $userName = $user->getAttribute("cn")[0];
             if(in_array($request->approver_email, array($email, $userName)))
