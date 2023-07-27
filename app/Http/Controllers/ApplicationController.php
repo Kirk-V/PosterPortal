@@ -85,7 +85,11 @@ class ApplicationController extends Controller
         // This can also give us some information on the user
         if(Gate::allows('applicant'))
         {
-            log::info("user is normal");
+            return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
+        }
+        else
+        {
+            return "User is not eligible for services";
         }
 
 
@@ -93,74 +97,75 @@ class ApplicationController extends Controller
         // return Inertia::render('PosterApplication', [
         //     'departments'=> config('app.departments')]);
         try {
-            $user = User::where('cn', $_SERVER['LOGON_USER'])
-                ->limit(1)
-                ->get()
-                ->first();
-            $email = $user->getAttribute("mail");
-            if(is_null($email)) return "User must have email associated with username";
-            $email = $email[0];
-            $userName = $user->getAttribute("cn")[0];
-            //Now check the appropriate groups to see if user is eligible to submit a poster
-            $userGroups = $user->groups()->get();
+            
+            // $user = User::where('cn', $_SERVER['LOGON_USER'])
+            //     ->limit(1)
+            //     ->get()
+            //     ->first();
+            // $email = $user->getAttribute("mail");
+            // if(is_null($email)) return "User must have email associated with username";
+            // $email = $email[0];
+            // $userName = $user->getAttribute("cn")[0];
+            // //Now check the appropriate groups to see if user is eligible to submit a poster
+            // $userGroups = $user->groups()->get();
 
-            //Eligible groups
-            $External = Settings::where('setting', 'external')->get()->first()->value;
-            $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+            // //Eligible groups
+            // $External = Settings::where('setting', 'external')->get()->first()->value;
+            // $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
 
-            // Check the necessary groups for user existance
-            $userCanSubmit = false;
-            //First we check for SSC exitance
-            if($this->userInAccessGroup($user, 'normal'))
-            {
-                log::info("user  is normal");
-                $userCanSubmit = true;
-                return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
-            }
-
-            //Check external
-            if ($External == 1) {
-
-                //check if user is an external user:
-                if($this->userInAccessGroup($user, 'external'))
-                {
-                    $userCanSubmit = true;
-                    return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
-                }
-            }
-            else
-            {
-                return "<br>We are not currently accepting printing jobs outside of the Faculty of Social Science<br>";
-            }
-            //check undergrad
-            if ($uGrad == 1) {
-                //Currently Accepting Ugrad Applications.
-
-                //check if user is an external user:
-                if($this->userInAccessGroup($user, 'undergrad'))
-                {
-                    $userCanSubmit = true;
-                }
-            }
-            else
-            {
-                return "<br>We are currently NOT Accepting new UGrad applications<br>";
-            }
-            // foreach($userGroups as $g)
+            // // Check the necessary groups for user existance
+            // $userCanSubmit = false;
+            // //First we check for SSC exitance
+            // if($this->userInAccessGroup($user, 'normal'))
             // {
-            //     // $rString .= "<br>".$g->getAttribute('cn')[0];
-            //     $rString .= "<br>".$g;
+            //     log::info("user  is normal");
+            //     $userCanSubmit = true;
+            //     return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
             // }
-            return "<br>You must be a social science student or UWO faculty/Staff/Graduate student to use this service<br>";
-            // if(in_array($request->grant_holder_email, array($email, $userName)))
-            // {
-            //     //User can access
-            //     return view('SpeedCodeApproval', ['cost'=>2, 'poster_id'=>$poster_id]);
+
+            // //Check external
+            // if ($External == 1) {
+
+            //     //check if user is an external user:
+            //     if($this->userInAccessGroup($user, 'external'))
+            //     {
+            //         $userCanSubmit = true;
+            //         return Inertia::render('PosterApplication', ['departments'=> config('app.departments')]);
+            //     }
             // }
             // else
             // {
-            //     return "User Cannot Access";
+            //     return "<br>We are not currently accepting printing jobs outside of the Faculty of Social Science<br>";
             // }
+            // //check undergrad
+            // if ($uGrad == 1) {
+            //     //Currently Accepting Ugrad Applications.
+
+            //     //check if user is an external user:
+            //     if($this->userInAccessGroup($user, 'undergrad'))
+            //     {
+            //         $userCanSubmit = true;
+            //     }
+            // }
+            // else
+            // {
+            //     return "<br>We are currently NOT Accepting new UGrad applications<br>";
+            // }
+            // // foreach($userGroups as $g)
+            // // {
+            // //     // $rString .= "<br>".$g->getAttribute('cn')[0];
+            // //     $rString .= "<br>".$g;
+            // // }
+            // return "<br>You must be a social science student or UWO faculty/Staff/Graduate student to use this service<br>";
+            // // if(in_array($request->grant_holder_email, array($email, $userName)))
+            // // {
+            // //     //User can access
+            // //     return view('SpeedCodeApproval', ['cost'=>2, 'poster_id'=>$poster_id]);
+            // // }
+            // // else
+            // // {
+            // //     return "User Cannot Access";
+            // // }
         } catch (Exception $e) {
             //Should return a page indicating that user does not have access to application process
             return "no user found $e";

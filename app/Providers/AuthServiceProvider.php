@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
@@ -48,12 +49,7 @@ class AuthServiceProvider extends ServiceProvider
             // 3) SSC + undergrads
 
             //First check if user is SSC fac/Staff
-            if($this->userInAccessGroup($user, 'normal'))
-            {
-                log::info("user  is normal");
-                return true;
-            }
-            return false;
+            return $this->UserHasAccess($user);
         });
 
     }
@@ -85,4 +81,48 @@ class AuthServiceProvider extends ServiceProvider
         }
         return false;
     }
+
+    /**
+     * Summary of userHasAccess
+     * @param \LdapRecord\Models\ActiveDirectory\User $user
+     * @return bool
+     */
+    private function UserHasAccess(User $user): bool
+    {
+        //Eligible groups
+        //Check if user is in SSC fac/staff
+        if($this->userInAccessGroup($user, 'normal'))
+            {
+                log::info("user  is normal");
+                return true;
+            }
+         //check if External users allowed and if user is an external user:
+        $External = Settings::where('setting', 'external')->get()->first()->value;
+        
+        if ($External == 1) {           
+            if($this->userInAccessGroup($user, 'external'))
+            {
+                log::info("user  is external");
+                return true;
+            }
+        }
+
+        $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+        if ($uGrad == 1) {
+            //Currently Accepting Ugrad Applications.
+
+            //check if user is an external user:
+            if($this->userInAccessGroup($user, 'undergrad'))
+            {
+                log::info("user is undergrad");
+                return true;
+            }
+        }
+        //We have checked all possibilities but user not authenticated
+
+        return false;
+    }
+
+
+    
 }
