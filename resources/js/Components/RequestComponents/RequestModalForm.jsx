@@ -218,13 +218,20 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     </Alert>
                 </Col>
                 <Col>
-                    <Form.Label>SpeedCode</Form.Label>
+                    <Form.Label>SpeedCode | Account</Form.Label>
                     <InputGroup>
 
                         <Form.Control
                             name="speed_code"
                             type="text"
                             defaultValue={formD.speed_code}
+                            required
+                            isValid={formD.speed_code_approved == 1}
+                        />
+                        <Form.Control
+                            name="account"
+                            type="text"
+                            defaultValue={formD.account}
                             required
                             isValid={formD.speed_code_approved == 1}
                         />
@@ -239,6 +246,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     </InputGroup>
 
                 </Col>
+                
             </Row>
         </>
     );
