@@ -76,8 +76,9 @@ class SettingsController extends Controller
             $cost = Settings::where('setting', 'cost')->firstorfail();
             $undergrad = Settings::where('setting', 'undergrad')->firstorfail();
             $external = Settings::where('setting', 'external')->firstorfail();
+            $discount = Settings::where('setting', 'discount')->firstorfail();
 
-            return self::successResponse(['cost' => $cost->value, 'undergrad' => $undergrad->value, 'external' => $external->value], "success");
+            return self::successResponse(['cost' => $cost->value, 'undergrad' => $undergrad->value, 'external' => $external->value, "discount" => $discount->value], "success");
         } catch (\Exception $e) {
             log::info($e);
             return self::errorResponse("Error retrieving form settings", 500);

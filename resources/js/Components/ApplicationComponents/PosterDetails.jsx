@@ -15,6 +15,15 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
     const [Total, setTotal] = useState(0);
 
 
+    const DiscountField = (
+        <Col sm="2">
+            <div className="bg-secondary bg-opacity-10 rounded p-1">
+                <h6>Estimated Discount</h6>
+                <CurrencyDollar size="25"/>{(formSettings?.discount * formData.quantity).toFixed(2) ?? 0}
+            </div>
+        </Col>
+    )
+
 
     return (
         <>
@@ -79,7 +88,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
             </Row>
 
             <Row >
-                <Col sm="2" >
+                <Col xs="2">
                     <InputGroup className="mb-3">
                         <InputGroup.Text id="basic-addon1">X</InputGroup.Text>
                         <FloatingLabel
@@ -111,6 +120,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                         <CurrencyDollar size="25"/>{formData?.total ?? 0}
                     </div>
                 </Col>
+                {formData.apply_for_discount ? DiscountField : null}
             </Row>
             <Row>
                 <small>An email containing the total cost will be sent when the poster has been placed in the queue for printing.</small>
