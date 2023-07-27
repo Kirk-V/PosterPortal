@@ -16,8 +16,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
     const [transactionDate, setTransactionDate] = useState(jobsData.transaction_date);
 
 
-    if(transactionDate == null){
-        
+    if (transactionDate == null) {
+
         let data = { ...jobsData }; //Deep copy so that setformD will trigger rerender
         data[`transaction_date`] = new Date().toISOString().split('T')[0];
         setTransactionDate(data['transaction_date']);
@@ -27,7 +27,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
     //     console.log("setting transaction date");
     //     let data = { ...jobsData }; //Deep copy so that setformD will trigger rerender
     //     data[`transaction_date`] = new Date().toISOString().split('T')[0];
-        
+
     // }
 
     const handleControlChange = (event) => {
@@ -46,17 +46,15 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         // Send Data to backEnd
     }
 
-    const handleFormSubmit =  (event) =>
-    {
+    const handleFormSubmit = (event) => {
         console.log("receiptform submitted");
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
         if (form.checkValidity() === false) {
-            console.log("not valid"); 
+            console.log("not valid");
         }
-        else
-        {
+        else {
             //We have a valid form. We can now send data show the receipt. 
             let options = {
                 method: 'POST',
@@ -66,51 +64,47 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     // depending on the request body
                     "Content-Type": 'application/json',
                     'Accept': 'application/json'
-                  },
+                },
             }
             fetch(`api/jobs/makeTransactionAndUpdate`, options)
-            .then( (res) => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                return res.json()
-            })
-            .then((response) => {
-                console.log("req data:");
-                console.log(`okay, Added Transaction Reply: ${JSON.stringify(response)}`);
-                // setRequest(response);
-                if(response.status == "Success")
-                {
-                    console.log("success, updating UI state");
-                    //Call Show Receipt here
-                    handleShowReceipt();
-                }
-    
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! Status: ${res.status}`);
+                    }
+                    return res.json()
+                })
+                .then((response) => {
+                    console.log("req data:");
+                    console.log(`okay, Added Transaction Reply: ${JSON.stringify(response)}`);
+                    // setRequest(response);
+                    if (response.status == "Success") {
+                        console.log("success, updating UI state");
+                        //Call Show Receipt here
+                        handleShowReceipt();
+                    }
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
 
             //Show Reciept by calling handleShowReceipt
         }
     }
 
-    const calculateTotalCost = () => 
-    {
+    const calculateTotalCost = () => {
         return jobsData.quantity * jobsData.cost;
     }
 
-    const updateTotalReceived = () =>
-    {
-        let discount = jobsData.discount_eligible == 1? jobsData.discount : 0;
+    const updateTotalReceived = () => {
+        let discount = jobsData.discount_eligible == 1 ? jobsData.discount : 0;
         jobsData.total_received = jobsData.cost * jobsData.quantity - discount;
         console.log("new total received = " + jobsData.total_received);
         let data = { ...jobsData };
         dataUpdateHandler(data);
     }
 
-    const updateTotalCost = () =>
-    {
+    const updateTotalCost = () => {
         jobsData.total = (jobsData.cost * jobsData.quantity).toFixed(2);
         console.log("new total = " + jobsData.total);
         let data = { ...jobsData };
@@ -124,21 +118,21 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <h4>Grant Holder Information</h4>
                 </Col>
             </Row>
-            
+
             <Row>
-            <Col xs={3}>
-                        <Form.Label className="mb-0">
-                            Approver Type
-                        </Form.Label>
-                        <Form.Select
-                            name="approver_type"
-                            defaultValue={jobsData.approver_type}
-                            onChange={(e) => handleControlChange(e)}>
-                            <option value="dosa">Designate</option>
-                            <option value="grant_holder">Grant Holder</option>
-                            <option value="administrator">Administrator</option>
-                        </Form.Select>
-                    </Col>
+                <Col xs={3}>
+                    <Form.Label className="mb-0">
+                        Approver Type
+                    </Form.Label>
+                    <Form.Select
+                        name="approver_type"
+                        defaultValue={jobsData.approver_type}
+                        onChange={(e) => handleControlChange(e)}>
+                        <option value="dosa">Designate</option>
+                        <option value="grant_holder">Grant Holder</option>
+                        <option value="administrator">Administrator</option>
+                    </Form.Select>
+                </Col>
                 <Col xs={4}>
                     <Form.Label className="mb-0">
                         Approver Name
@@ -219,7 +213,32 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         </Row>
     )
 
-
+    let SpeedCodeSection = (
+        <>
+            <Col xs={4}>
+            <Form.Label className="mb-0">
+                        Speed Code
+                    </Form.Label>
+                    <Form.Control
+                        type="Text"
+                        name="speed_code"
+                        defaultValue={jobsData.speed_code}
+                        onChange={(e) => handleControlChange(e)}
+                    />
+            </Col>
+            <Col xs={4}>
+            <Form.Label className="mb-0">
+                        Account
+                    </Form.Label>
+                    <Form.Control
+                        type="Text"
+                        name="account"
+                        defaultValue={jobsData.account}
+                        onChange={(e) => handleControlChange(e)}
+                    />
+            </Col>
+        </>
+    )
 
     return (
         <>
@@ -322,7 +341,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={6}>
+                    <Col xs={4}>
                         <Form.Label className="mb-0">
                             Payment Type
                         </Form.Label>
@@ -334,6 +353,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             <option value="speed_code">Speed Code</option>
                         </Form.Select>
                     </Col>
+                    {jobsData.payment_method == "speed_code" ? SpeedCodeSection : null}
                 </Row>
                 {jobsData.payment_method == "speed_code" ? GrantHolderInfo : null}
                 <Row>
@@ -393,15 +413,15 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             cost Per Poster
                         </Form.Label>
                         <InputGroup>
-                        <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
-                        <Form.Control
-                            type="number"
-                            name="cost"
-                            // value ={calculateTotalCost()}
-                            defaultValue={parseFloat(jobsData.cost).toFixed(2)}
-                            onChange={(e) => handleControlChange(e)} />
+                            <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
+                            <Form.Control
+                                type="number"
+                                name="cost"
+                                // value ={calculateTotalCost()}
+                                defaultValue={parseFloat(jobsData.cost).toFixed(2)}
+                                onChange={(e) => handleControlChange(e)} />
                         </InputGroup>
-                        
+
                     </Col>
                 </Row>
 
@@ -420,13 +440,13 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                                 name="total"
                                 value={parseFloat(jobsData.total).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
-                                required/>
+                                required />
                         </InputGroup>
                     </Col>
                 </Row>
 
                 {jobsData.discount_eligible == "1" ? DiscountSection : null}
-                
+
 
                 <Row className="justify-content-end">
                     <Col xs={3}>
@@ -443,7 +463,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                                 name="total_received"
                                 value={parseFloat(jobsData.total_received).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
-                                required/>
+                                required />
                         </InputGroup>
                     </Col>
                 </Row>

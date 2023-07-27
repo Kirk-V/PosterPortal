@@ -57,7 +57,7 @@
                     Total
                 </div>
                 <div class="col-4 border-bottom">
-                    ${{number_format((float)$poster->cost * $poster->quantity, 2, '.', '');}}
+                    ${{number_format((float)$poster->cost * $poster->quantity, 2, '.', '')}}
                 </div>
             </div>
             <div class="row mt-4 justify-content-center">
