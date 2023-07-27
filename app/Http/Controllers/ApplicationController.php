@@ -83,7 +83,11 @@ class ApplicationController extends Controller
         // We can do this by checking the signed in user in ActiveDirectory (AD) and checking
         // the settings to see what groups should be allowed in.
         // This can also give us some information on the user
-        $user = Auth::user();
+        if(Gate::allows('applicant'))
+        {
+            log::info("user is normal");
+        }
+
 
         //This line is for testing without authorization of user.
         // return Inertia::render('PosterApplication', [

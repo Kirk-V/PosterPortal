@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Http\Controllers\Approvals;
@@ -12,6 +13,8 @@ use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequestsController;
+use LdapRecord\Models\ActiveDirectory\User;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +33,13 @@ Route::get('/', function () {
 
 
 Route::get('/posterportal', function () {
-    return Inertia::render('posterportal');
+   
+    if(Gate::allows('admin'))
+    {
+        log::info("gate allows");
+        return Inertia::render('posterportal');
+    }
+    // return Inertia::render('posterportal');
 });
 
 
