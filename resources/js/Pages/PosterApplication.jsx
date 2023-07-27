@@ -79,7 +79,7 @@ function PosterApplication({ auth, data, departments }) {
         if(paymentMethod == 'cash')
         {
             //We need to round down values
-            costPer = Math.floor(costPer);
+            costPer = costPer;
             total = Math.floor(total);
         }
         return [costPer.toFixed(2), total.toFixed(2)];
@@ -103,11 +103,15 @@ function PosterApplication({ auth, data, departments }) {
             let width = newData?.width ?? 0;
             let height = newData?.height ?? 0;
             let quantity = newData?.quantity ?? 0;
-            let units = newData?.units ?? 'cms';
+            let units = newData?.units ?? false;
             let payment_method = newData?.payment_method ?? 'cash';
             console.log("sending for cost update");
-            newData['cost'] = calcCostPer(width, height, units, quantity, payment_method)[0];
-            newData['total'] = calcCostPer(width, height, units, quantity, payment_method)[1];
+            if(units)
+            {
+                newData['cost'] = calcCostPer(width, height, units, quantity, payment_method)[0];
+                newData['total'] = calcCostPer(width, height, units, quantity, payment_method)[1];
+            }
+            
         }
 
         setFieldData(newData);
