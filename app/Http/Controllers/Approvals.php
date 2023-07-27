@@ -38,6 +38,15 @@ class Approvals extends Controller
             $userName = $user->getAttribute("cn")[0];
             if(in_array($request->approver_email, array($email, $userName)))
             {
+                //Check if poster can be approved
+                if(!($request->payment_method == "speed_code"))
+                {
+                    return view('ApprovalViews.ApprovalInvalid', ['Message' => "No valid poster with id #".$poster->poster_id]);
+                }
+                if($poster->state == 'rejected' || $poster->speed_code_approved == 1)
+                {
+                    return view('ApprovalViews.ApprovalInvalid', ['Message' => "This poster has already been approved/rejected"]);
+                }
                 //User can access
                 return view('SpeedCodeApproval', ['request'=>$request, 'poster'=> $poster]);
             }
@@ -48,8 +57,15 @@ class Approvals extends Controller
         }
         catch(\Exception $e)
         {
-            return "no user found";
+            log::error($e);
+            return "Error Occured";
         }
+    }
+
+
+    public function approvalView2()
+    {
+        return view('ApprovalViews.ApprovalView');
     }
 
     public function approveSpeedCode(Request $request, $id)
@@ -58,7 +74,9 @@ class Approvals extends Controller
         $rString = $id;
         //Get poster
         $rString .= $request->input('speedcode');
-        if(Posters::updateApprovalStatus($id, "accept", $request->input('speedcode')))
+        $speedCode = $request->input('speedcode');
+        $account = $request->input('account');
+        if(Posters::updateApprovalStatus($id, "accept", $request->input('speedcode'), $account))
         {
             return view('approvalUpdated', ['success'=>true]);
         }

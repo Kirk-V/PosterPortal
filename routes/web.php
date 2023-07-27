@@ -54,6 +54,7 @@ Route::controller(ApplicationController::class)->group(function () {
 
 Route::controller(Approvals::class)->group(function () {
     Route::get('/approve', 'approvalView');
+    Route::get('/approve2', 'approvalView2');
     Route::post('/approveSpeedCode&id={id}', 'approveSpeedCode');
     Log::info("test");
     Route::post('/rejectSpeedCode&id={id}', 'rejectSpeedCode');

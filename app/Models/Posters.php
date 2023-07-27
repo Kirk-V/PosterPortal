@@ -209,7 +209,7 @@ class Posters extends Model
 
     
 
-    public static function updateApprovalStatus($poster_id, $approval_status, $speed_code=null): bool
+    public static function updateApprovalStatus($poster_id, $approval_status, $speed_code=null, $account=null): bool
     {
         //First get the poster and compare to user
         $poster = Posters::findOrFail($poster_id);
@@ -230,6 +230,7 @@ class Posters extends Model
                 if($approval_status == 'accept')
                 {
                     $poster->speed_code = $speed_code;
+                    $poster->account = $account;
                     $poster->speed_code_approved = 1;
                     $poster->state = "ready";
                 }
