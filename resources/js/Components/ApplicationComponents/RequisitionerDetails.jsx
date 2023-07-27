@@ -7,6 +7,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
+
+
 export default function RequisitionerDetails({ allowUndergrad = true, serverValidationAttempted, validationFields, formData, handleControlUpdate, departmentList, formSettings }) {
   const [ApplyingForDiscount, setApplyingforDiscount] = useState(false);
   const departments = departmentList;
@@ -31,15 +33,13 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
         <InputGroup className="mb-3">
           <div><strong className='fs-5'> Undergraduate Student -</strong> Paying by Cash?
           <Form.Check
-            className="ms-2 me-1 form-check-inline"
+            className="ps-1 pe-1 ms-2 me-1 bg-primary bg-gradient rounded form-check-inline shadow"
             type="checkbox"
-            label="Click to apply for the pre-approved course discount."
             id={`discountText`}
             name="apply_for_discount"
             value={ApplyingForDiscount ? 0 : 1}
-
             onChange={(e) => { handleControlUpdate(e), ToggleApplyForDiscount() }}
-          />
+          /><strong>click</strong> to apply for the pre-approved course discount.
           (Note: discount does not apply to Speedcode payments).
           </div>
         </InputGroup>
