@@ -124,5 +124,5 @@ class AuthServiceProvider extends ServiceProvider
     }
 
 
-    
+
 }
