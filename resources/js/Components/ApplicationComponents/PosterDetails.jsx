@@ -120,7 +120,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                         <CurrencyDollar size="25"/>{formData?.total ?? 0}
                     </div>
                 </Col>
-                {formData.apply_for_discount ? DiscountField : null}
+                {formData.apply_for_discount == 1 ? DiscountField : null}
             </Row>
             <Row>
                 <small>An email containing the total cost will be sent when the poster has been placed in the queue for printing.</small>
