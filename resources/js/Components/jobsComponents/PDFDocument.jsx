@@ -1,5 +1,5 @@
 import React from 'react';
-import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image,  } from '@react-pdf/renderer';
+import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image, } from '@react-pdf/renderer';
 import { Form, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import { useEffect, useState } from 'react';
 
@@ -85,7 +85,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             height: 80,
             borderBottom: "2px solid black",
         },
-        headerColumn : {
+        headerColumn: {
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -102,33 +102,35 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
 
     });
 
+    let SpeedCodeSection = (
+        <>
+            <View style={styles.infoColumn}>
+                <Text style={styles.label}>Speed Code</Text>
+                <Text style={styles.value}>{redactSpeedCode ? "" : jobData.speed_code}</Text>
+            </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.label}>Account</Text>
+                <Text style={styles.value}>{redactSpeedCode ? "" : jobData.account}</Text>
+            </View>
+        </>
+    )
+
+
     let GrantHolderSection = (
         <>
-            <View style={styles.subSectionHeader}>
-                <Text>Grant Holder Information</Text>
+        <View style={styles.rowView}>
+            <View style={styles.infoColumn}>
+                <Text style={styles.label}>Approver Name</Text>
+                <Text style={styles.value}>{jobData.approver_name}</Text>
             </View>
-            <View style={styles.rowView}>
-                <View style={styles.infoColumnMedium}>
-                    <Text style={styles.label}>Approver Type</Text>
-                    <Text style={styles.value}>{jobData.approver_type}</Text>
-                </View>
-                <View style={styles.infoColumn}>
-                    <Text style={styles.label}>Approver Name</Text>
-                    <Text style={styles.value}>{jobData.approver_name}</Text>
-                </View>
+            <View style={styles.infoColumn}>
+                <Text style={styles.label}>Approver Department</Text>
+                <Text style={styles.value}>{jobData.approver_department}</Text>
+            </View>
+                
                 <View style={styles.infoColumn}>
                     <Text style={styles.label}>Approver Email</Text>
                     <Text style={styles.value}>{jobData.approver_email}</Text>
-                </View>
-            </View>
-            <View style={styles.rowView}>
-                <View style={styles.infoColumn}>
-                    <Text style={styles.label}>Speed Code and Account</Text>
-                    <Text style={styles.value}>{redactSpeedCode ? "" : jobData.speed_code}</Text>
-                </View>
-                <View style={styles.infoColumn}>
-                    <Text style={styles.label}>Grant Holder</Text>
-                    <Text style={styles.value}>{redactSpeedCode ? "" : jobData.grant_holder}</Text>
                 </View>
             </View>
         </>
@@ -136,11 +138,11 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
 
     let DiscountField = (
         <View style={styles.rowView}>
-                <View style={styles.infoColumnSmallRight}>
-                    <Text style={styles.label}>SDF Discount</Text>
-                    <Text style={styles.value}>$ {parseFloat(jobData.discount).toFixed(2)}</Text>
-                </View> 
+            <View style={styles.infoColumnSmallRight}>
+                <Text style={styles.label}>SDF Discount</Text>
+                <Text style={styles.value}>$ {parseFloat(jobData.discount).toFixed(2)}</Text>
             </View>
+        </View>
     )
 
     let DetailsSection = (
@@ -165,32 +167,32 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             <View style={styles.rowView}>
                 <View style={styles.infoColumnSmallRight}>
                     <Text style={styles.label}>Sub Total</Text>
-                    <Text style={styles.value}>$ {parseFloat(jobData.total).toFixed(2)}</Text>
-                </View> 
+                    <Text style={styles.value}>$ {parseFloat(jobData.cost * jobData.quantity).toFixed(2)}</Text>
+                </View>
             </View>
-            {jobData.discount_eligible? DiscountField : null}
+            {jobData.discount_eligible == 1 ? DiscountField : null}
             <View style={styles.rowView}>
                 <View style={styles.infoColumnSmallRight}>
                     <Text style={styles.label}>Total</Text>
                     <Text style={styles.value}>$ {parseFloat(jobData.total_received).toFixed(2)}</Text>
-                </View> 
+                </View>
             </View>
         </>
 
     )
 
-    let Header= (
+    let Header = (
         <>
-        <View style={styles.headerRow}>
-            <Image src={"SSC_Stacked_PurpleGrey.png"} style={styles.headerImage}/>
-            <View style={styles.headerColumn}>
-                <Text style={styles.headerTextLine}>Social Science Technology Services</Text>
-                <Text style={styles.headerTextLine}>Poster Printing</Text>
-                <Text style={styles.headerTextLine}>Social Sciences Centre 1226</Text>
-                <Text style={styles.headerTextLine}>ssts-posters@uwo.ca</Text>
+            <View style={styles.headerRow}>
+                <Image src={"SSC_Stacked_PurpleGrey.png"} style={styles.headerImage} />
+                <View style={styles.headerColumn}>
+                    <Text style={styles.headerTextLine}>Social Science Technology Services</Text>
+                    <Text style={styles.headerTextLine}>Poster Printing</Text>
+                    <Text style={styles.headerTextLine}>Social Sciences Centre 1226</Text>
+                    <Text style={styles.headerTextLine}>ssts-posters@uwo.ca</Text>
+                </View>
+
             </View>
-            
-        </View>
         </>
     )
 
@@ -216,7 +218,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         <Text style={styles.label}>Technician</Text>
                         <Text style={styles.value}>{jobData.technician}</Text>
                     </View>
-                    
+
                     <View style={styles.infoColumn}>
                         <Text style={styles.label}>Poster No.</Text>
                         <Text style={styles.value}>{jobData.poster_id}</Text>
@@ -240,8 +242,8 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         <Text style={styles.label}>Department</Text>
                         <Text style={styles.value}>{jobData.department}</Text>
                     </View>
-                    {jobData.discount_eligible ? CourseField: null}
-                    
+                    {jobData.discount_eligible ? CourseField : null}
+
                 </View>
                 <View style={styles.sectionHeader}>
                     <Text>Payment</Text>
@@ -251,8 +253,10 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         <Text style={styles.label}>Type</Text>
                         <Text style={styles.value}>{jobData.payment_method}</Text>
                     </View>
+                    {jobData.payment_method == "speed_code" ? SpeedCodeSection : null}
                 </View>
-                {jobData.payment_method == "speedcode" ? GrantHolderSection : null}
+                {jobData.payment_method == "speed_code" ? GrantHolderSection : null}
+
                 {DetailsSection}
             </Page>
         </Document>
@@ -277,13 +281,11 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             })
             .then((response) => {
                 console.log(`okay, Email response: ${JSON.stringify(response)}`);
-                if(response.status == "Success")
-                {
-                    if(to == "Requisitioner")
-                    {
+                if (response.status == "Success") {
+                    if (to == "Requisitioner") {
                         jobData.emailed_receipt_req = 1;
                     }
-                    
+
                 }
             })
             .catch((error) => {
@@ -296,7 +298,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
     }
 
     const emailReqBtn = (
-        <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary": "danger"} className="" onClick={(e) => handleEmailClick(e, "Requisitioner")}>Email Requisitioner</Button>
+        <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary" : "danger"} className="" onClick={(e) => handleEmailClick(e, "Requisitioner")}>Email Requisitioner</Button>
     )
 
     const redactSpeedCodeBtn = (
@@ -317,9 +319,9 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         {MyDocument}
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
-                        {jobData.payment_method == 'speedcode' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
-                        <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
-                        <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary": "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
+                        {jobData.payment_method == 'speed_code' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
+                        <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
                     </div>
                 </div>
 

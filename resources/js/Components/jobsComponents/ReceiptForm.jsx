@@ -14,13 +14,23 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
     const [totalCost, setTotalCost] = useState(0)
     const [validated, setValidated] = useState(false);
     const [transactionDate, setTransactionDate] = useState(jobsData.transaction_date);
+    const [totalReceieved, setTotalReceived] = useState(jobsData.total_received);
 
-
+    console.log(JSON.stringify(jobsData));
     if (transactionDate == null) {
 
         let data = { ...jobsData }; //Deep copy so that setformD will trigger rerender
         data[`transaction_date`] = new Date().toISOString().split('T')[0];
         setTransactionDate(data['transaction_date']);
+        dataUpdateHandler(data);
+    }
+
+    if(totalReceieved == 0)
+    {
+        console.log("Updating total REceived")
+        let data = {...jobsData};
+        data['total_received'] = jobsData.cost * jobsData.quantity - jobsData.discount;
+        setTotalReceived(data['total_received']);
         dataUpdateHandler(data);
     }
     // const setDefaultTransactionDate = () => {
@@ -222,7 +232,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Control
                         type="Text"
                         name="speed_code"
-                        defaultValue={jobsData.speed_code}
+                        defaultValue={totalReceieved}
                         onChange={(e) => handleControlChange(e)}
                     />
             </Col>
@@ -428,7 +438,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 <Row className="justify-content-end">
                     <Col xs={3}>
                         <Form.Label className="mb-0">
-                            Total
+                            Sub Total
                         </Form.Label>
                         <InputGroup>
                             <Button variant="outline-secondary" id="button-addon1" onClick={updateTotalCost}>
@@ -438,7 +448,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             <Form.Control
                                 type="number"
                                 name="total"
-                                value={parseFloat(jobsData.total).toFixed(2)}
+                                value={(jobsData.quantity * jobsData.cost).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
                                 required />
                         </InputGroup>
