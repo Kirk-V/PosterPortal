@@ -10,7 +10,7 @@ import JobsSendPickUpButton from "./JobsSendPickUpButton";
 import PDF from "./PDFDocument";
 
 //Form to change the job data around.
-export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, handleShowReceipt }) {
+export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, handleShowReceipt, departments}) {
     const [totalCost, setTotalCost] = useState(0)
     const [validated, setValidated] = useState(false);
     const [transactionDate, setTransactionDate] = useState(jobsData.transaction_date);
