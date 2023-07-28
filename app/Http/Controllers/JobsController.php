@@ -27,6 +27,7 @@ class JobsController extends Controller
         Log::info("returning index interia");
         return Inertia::render('posterportal', [
             'currentView' => 'jobs',
+            'departments' => config("app.departments")
         ]);
     }
 

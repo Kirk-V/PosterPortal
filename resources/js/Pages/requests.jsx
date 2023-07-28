@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import RequestTable from '@/Components/RequestComponents/RequestTable';
 
 
-function Requests({ auth, data, showErrorHandle}) {
+function Requests({ auth, data, showErrorHandle, departments}) {
     const requests = data;
     const [settings, setSettings] = useState(null);
 
@@ -33,7 +33,7 @@ function Requests({ auth, data, showErrorHandle}) {
 
     return (
         <>
-        <RequestTable settings={settings} showErrorHandle/>
+        <RequestTable settings={settings} showErrorHandle departments={departments}/>
         </>
     );
 

@@ -28,7 +28,10 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return Inertia::render('posterportal');
+    return Inertia::render('posterportal',
+    [
+        'departments' => config("app.departments"),
+    ]);
 });
 
 
@@ -37,7 +40,10 @@ Route::get('/posterportal', function () {
     if(Gate::allows('admin'))
     {
         log::info("gate allows");
-        return Inertia::render('posterportal');
+        return Inertia::render('posterportal',
+        [
+            'departments' => config("app.departments"),
+        ]);
     }
     // return Inertia::render('posterportal');
 });

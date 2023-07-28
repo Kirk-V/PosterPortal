@@ -282,20 +282,9 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             name="department"
                             defaultValue={jobsData.department}
                             onChange={(e) => handleControlChange(e)}>
-                            <option value="Anth">Anthropology</option>
-                            <option value="BANDM">Brain and Mind</option>
-                            <option value="DAN">DAN Management</option>
-                            <option value="DEAN">Deans Office</option>
-                            <option value="ECON">Economics</option>
-                            <option value="GEO">Geography</option>
-                            <option value="HIST">History</option>
-                            <option value="INDIG">Indigenous Studies</option>
-                            <option value="NEST">NEST</option>
-                            <option value="POLI">Politcal Science</option>
-                            <option value="PSYCH">Psychology</option>
-                            <option value="SOC">Sociology</option>
-                            <option value="SSTS">SSTS</option>
-                            <option value="OTHER">Other</option>
+                                {departments.map((departmentName) => (
+                                    <option key={departmentName} value={departmentName}>{departmentName}</option>
+                                ))}
                         </Form.Select>
                     </Col>
                     <Col xs={3}>

@@ -11,13 +11,14 @@ import JobForm from "./ReceiptForm";
 
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
-export default function JobsModal({ modalData, onHide, show, showErrorHandle }) {
+export default function JobsModal({ modalData, onHide, show, showErrorHandle, departments}) {
+    console.log(`jobs modal departments: ${JSON.stringify(departments)}`);
     return (
         <>
             {modalData == null ? (
                 <UnLoadedModal onHide={onHide} show={show} showErrorHandle={showErrorHandle}/>
             ) : (
-                <LoadedModal modalData={modalData} onHide={onHide} show={show} showErrorHandle={showErrorHandle}/>
+                <LoadedModal modalData={modalData} onHide={onHide} show={show} showErrorHandle={showErrorHandle}  departments={departments}/>
             )}
         </>
     );
@@ -51,7 +52,7 @@ function UnLoadedModal({ onHide, show, showErrorHandle }) {
     );
 }
 
-function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
+function LoadedModal({ modalData, onHide, show, showErrorHandle, departments }) {
     const [jobState, setJobState] = useState(modalData.job_state);
     const [showingReceipt, setShowingReceipt] = useState(false);
     const [showingMakeTransaction, setshowingMakeTransaction] = useState(false);
@@ -211,7 +212,7 @@ function LoadedModal({ modalData, onHide, show, showErrorHandle }) {
 
 
     let PrepareReceipt = (
-        <JobForm jobsData={jobsData} dataUpdateHandler={handleDataUpdate} handleShowReceipt={handleShowRecieptChange}/>
+        <JobForm jobsData={jobsData} dataUpdateHandler={handleDataUpdate} handleShowReceipt={handleShowRecieptChange}  departments={departments}/>
     )
 
 

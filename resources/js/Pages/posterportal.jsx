@@ -20,19 +20,19 @@ function PosterPortal({ auth, currentView, data, user, departments }) {
         setErrorToast({ message: errorMessage, errorType: errorType, show: true });
     }
 
-
+    console.log(`PosterPortal departments: ${JSON.stringify(departments)}`);
     let pageView;
     if (currentView === 'requests') {
-        pageView = <Requests data={data} showErrorHandle={handleErrorToast}/>;
+        pageView = <Requests data={data} showErrorHandle={handleErrorToast} departments={departments}/>;
     }
     else if (currentView === 'settings') {
         pageView =<Settings departments={departments} showErrorHandle={handleErrorToast}/>;
     }
     else if (currentView === 'jobs') {
-        pageView = <Jobs showErrorHandle={handleErrorToast}/>;
+        pageView = <Jobs showErrorHandle={handleErrorToast} departments={departments}/>;
     }
     else {
-        pageView = <Requests data={data} />;
+        pageView = <Requests data={data} showErrorHandle={handleErrorToast} departments={departments}/>;
     }
 
 

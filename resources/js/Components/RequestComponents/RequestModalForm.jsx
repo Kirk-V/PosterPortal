@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import CourseSelect from "@/Components/RequestComponents/CourseSelect";
 import { useEffect } from "react";
 
-export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept }) {
+export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept, departments }) {
     const [formData, setformData] = useState(formD);
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
@@ -344,6 +344,17 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         />
                     </Form.Group>
                 </Col>
+                <Col xs={2}>
+                        <Form.Label >Department</Form.Label>
+                        <Form.Select
+                            name="department"
+                            defaultValue={formD.department}
+                            onChange={(e) => handleControlChange(e)}>
+                                {departments.map((departmentName) => (
+                                    <option key={departmentName} value={departmentName}>{departmentName}</option>
+                                ))}
+                        </Form.Select>
+                    </Col>
                 <Col xs={3}>
                     <Form.Group
                         className="mb-3"

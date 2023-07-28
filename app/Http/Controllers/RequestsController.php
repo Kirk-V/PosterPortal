@@ -26,6 +26,7 @@ class RequestsController extends Controller
         log::info("returning index interia");
         return Inertia::render('posterportal', [
             'currentView' => 'requests',
+            'departments' => config("app.departments"),
             'data' => $this->getAll(),
         ]);
     }
