@@ -304,7 +304,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     <h5>Requsitioner Details</h5>
                 </Col>
             </Row>
-            <Row className="mb-2">
+            <Row className="mb-2 g-2">
                 <Col>
                     <Form.Group
                         className="mb-3"
@@ -319,7 +319,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         />
                     </Form.Group>
                 </Col>
-                <Col>
+                <Col >
                     <Form.Group
                         className="mb-3"
                         controlId="requestFormLastName"
@@ -355,12 +355,12 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                                 ))}
                         </Form.Select>
                     </Col>
-                <Col xs={3}>
+                <Col xs={2}>
                     <Form.Group
                         className="mb-3"
                         controlId="requestFormFirstName"
                     >
-                        <Form.Label>Applied For Discount</Form.Label>
+                        <Form.Label>Wants Discount</Form.Label>
                         <Form.Select
                             name="applied_for_discount"
                             defaultValue={formD.applied_for_discount}
