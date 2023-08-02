@@ -13,7 +13,12 @@
 <p>Dimensions: {{$poster->width}} x {{$poster->height}} ({{$poster->units}})</p>
 <p>Cost Per Poster: ${{$poster->cost}}</p>
 <p>Quantity: {{$poster->quantity}}</p>
-<p>Total: ${{ number_format((float)($poster->cost * $poster->quantity), 2, '.', '' )}}</p>
+@if(strTolower($poster->requests->payment_method) == "speed_code")
+    <p>Total: ${{ number_format((float)($poster->cost * $poster->quantity), 2, '.', '' )}}</p>
+@else
+    <p>Total: ${{ number_format(floor((float)($poster->cost * $poster->quantity)), 2, '.', '' )}}</p>
+@endif
+
 <p>Payment Method: {{$poster->requests->payment_method}}</p>
 
 
