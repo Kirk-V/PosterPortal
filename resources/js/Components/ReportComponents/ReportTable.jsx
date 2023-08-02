@@ -7,13 +7,16 @@ import ReportTableHead from './ReportTableHead';
 import ReportRow from './ReportRow';
 import ReportTableBottomRow from './ReportTableBottomRow';
 import ReportPDF from './ReportPDF';
+import PosterModal from './PosterModal';
 
 export default function ReportTable({tableOptions, handleReconciled}) {
     // const [tableSettings, setTableSettings] = useState(tableOptions)
     const [hasData, setHasData] = useState(false);
     const [rowData, setRowData] = useState(null);
     const [totalValues, setTotalValues] = useState(null);
-    const [showPDF, setShowPDF] = useState(false);
+    const [showPrintPDF, setShowPrintPDF] = useState(false);
+    const [showingPosterModal, setShowingPosterModal] = useState(false);
+    const [posterModalData, setPosterModalData] = useState(null);
 
     
 
@@ -73,14 +76,26 @@ export default function ReportTable({tableOptions, handleReconciled}) {
 
     const makePrintPDF = () => 
     {
-        setShowPDF(true);
+        setShowPrintPDF(true);
     }
 
     const closePrintPDF = () => 
     {
-        setShowPDF(false);
+        setShowPrintPDF(false);
     }
 
+    const handleRowClick = (poster_id) => 
+    {
+        console.log("showing Poster Modal");
+        setPosterModalData(rowData.poster_id);
+        setShowingPosterModal(true);
+    }
+
+
+    const handleCloseModal = () => {
+        setShowingPosterModal(false);
+        setPosterModalData(null);
+    }
 
     return (
         <>
@@ -103,7 +118,8 @@ export default function ReportTable({tableOptions, handleReconciled}) {
                 
             </Table>        
         </div>
-        {showPDF? <ReportPDF handleCloseModal={closePrintPDF} reportData={rowData} reportSettings={tableOptions}/>: null}
+        {showPrintPDF? <ReportPDF handleCloseModal={closePrintPDF} reportData={rowData} reportSettings={tableOptions}/>: null}
+        {showingPosterModal? <PosterModal posterData={posterModalData}/>: null}
         </>
         
     )

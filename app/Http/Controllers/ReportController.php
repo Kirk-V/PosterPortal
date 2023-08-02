@@ -53,8 +53,9 @@ class ReportController extends Controller
         Log::info("Retrieve data for $startDate, $endDate, $payment_type");
         // $reportQuery = Transactions::with(['posters', 'posters.requests'])->whereDate('transaction_date', '>', $startDate == -1? '01/01/0001': $startDate);
         
-        $posters = Posters::with(['transactions','jobs', 'requests'])->whereHas('transactions', function (Builder $dateQuery) use ($startDate) {
-            $dateQuery->where('transaction_date', '>', $startDate == -1? '01/01/0001': $startDate);
+        $posters = Posters::with(['transactions','jobs', 'requests'])->whereHas('transactions', function (Builder $dateQuery) use ($startDate, $endDate) {
+            $dateQuery->where('transaction_date', '>=', $startDate == -1? '01/01/0001': $startDate)
+            ->where('transaction_date', '<=', $endDate == -1? '01/01/2100': $endDate);
         });
 
         return $this->successResponse($posters->get());
