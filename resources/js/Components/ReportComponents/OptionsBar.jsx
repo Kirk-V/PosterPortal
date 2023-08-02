@@ -7,17 +7,15 @@ import Fade from "react-bootstrap/Fade";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 
-export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPosters }) {
+export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPosters, BudgetYears }) {
 
-    let n = 5; //go back 5 yeras in the budget year dropdown
-    let year = new Date().getFullYear();
-    let BudgetYears = Array.from(Array(n), (_, i) => year - i);
-    console.log(BudgetYears);
+    console.log("options bar: "+JSON.stringify(parentOptions));
+
+    
     return (
         <Row> 
             <Col xs="4">
                 {/* start date */}
-
                 <InputGroup>
                     <Form.Group>
                         <Form.Label>
@@ -28,7 +26,7 @@ export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPost
                             required
                             type="date"
                             name="start_date"
-                            defaultValue={parentOptions?.start_date ?? null}
+                            value={parentOptions?.start_date ?? null}
                             onChange={(e) => handleOptionsUpdate(e)}>
                         </Form.Control>
                     </Form.Group>
@@ -40,7 +38,7 @@ export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPost
                             required
                             type="date"
                             name="end_date"
-                            defaultValue={parentOptions?.end_date ?? null}
+                            value={parentOptions?.end_date ?? null}
                             onChange={(e) => handleOptionsUpdate(e)}>
                         </Form.Control>
                     </Form.Group>
@@ -55,9 +53,9 @@ export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPost
                 </Form.Label>
                 <Form.Select
                     name="budget_year"
-                    defaultValue={parentOptions?.payment_type ?? null}
+                    value={parentOptions?.budget_year}
                     onChange={(e) => handleOptionsUpdate(e)}>
-                    {BudgetYears.map((year) => {
+                    {BudgetYears.map((year, i) => {
                         return <option key={year} value={year}>{year}/{year-1}</option>
                     })}
                 </Form.Select>

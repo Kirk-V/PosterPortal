@@ -57,7 +57,7 @@
                     Total
                 </div>
                 <div class="col-4 border-bottom">
-                    ${{number_format((float)$poster->cost * $poster->quantity, 2, '.', '');}}
+                    ${{number_format((float)$poster->cost * $poster->quantity, 2, '.', '')}}
                 </div>
             </div>
             <div class="row mt-4 justify-content-center">
@@ -78,6 +78,8 @@
                                         type="text" 
                                         class="form-control" 
                                         name="speedcode"
+                                        maxLength="4"
+                                        pattern="[A-Za-z0-9]+"
                                         placeholder="Speed Code"
                                         aria-label="SpeedCode"
                                         required>
@@ -89,7 +91,9 @@
                                         type="text"
                                         class="form-control" 
                                         value={{config('app.default_account')}}
-                                        name="account" 
+                                        name="account"
+                                        maxLength="6"
+                                        pattern="[A-Za-z0-9]+"
                                         aria-label="Account">
                                         <label for="speedcode">Account</label>
                                 </div>

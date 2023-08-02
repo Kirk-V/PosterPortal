@@ -10,9 +10,19 @@ import ReportTable from '@/Components/ReportComponents/ReportTable';
 
 export default function Reports() {
     const [errorToast, setErrorToast] = useState({message: "", errorType: "", show: false});
-    const [options, setOptions] = useState(null);
+    const [budgetYears, setBudgetYears] = useState(Array.from(Array(5), (_, i) => new Date().getFullYear() - i));
+    const [options, setOptions] = useState(()=> {
+        return {
+            'budget_year' : budgetYears[0],
+            'start_date' : `${budgetYears[0]}-04-01`,
+            'end_date' : `${budgetYears[0]+1}-04-01`,
+            'payment_type': "All"
+        }
+    });
     const [tableReady, setTableReady] = useState(false);
 
+
+    console.log("optsion Sstate is = "+JSON.stringify(options));
     const handleToastClose = () => 
     {
         setErrorToast({ message: "", errorType: "", show: false });
@@ -26,11 +36,21 @@ export default function Reports() {
     const handleOptionsUpdate = (e) => {
         let name = e.target.name;
         let val = e.target.value;
-        console.log(`update: ${name} to ${val}`);
-        let copy = {...options}
-        copy[name] = val;
-        setTableReady(false); //prevent reload of table while adjusting settings
-        setOptions(copy);
+        if(name == 'budget_year')
+        {
+            console.log("UPdate by");
+            handleBudgetYearChange(val);
+        }
+        else
+        {
+            console.log(`update: ${name} to ${val}`);
+            let copy = {...options}
+            copy[name] = val;
+            setTableReady(false); //prevent reload of table while adjusting settings
+            setOptions(copy);
+        }
+        
+        
     }
 
     const updateTable = () => {
@@ -42,13 +62,32 @@ export default function Reports() {
         
     }
 
+    const handleSetDefaults = () => 
+    {
+        //default values are
+        let defaults = {
+            'budget_year' : BudgetYears[0],
+            'start_date' : `${BudgetYears[0]}-04-01`,
+            'end_date' : `${BudgetYears[0]+1}-04-01`,
+        }
+        setOptions(defaults);
+    }
+
+    const handleBudgetYearChange = (newYear) => {
+        let optionsCopy = {...options};
+        console.log("new year"+newYear);
+        optionsCopy['budget_year'] = `${newYear}`;
+        optionsCopy['start_date'] = `${newYear}-04-01`;
+        optionsCopy['end_date'] = `${newYear-1}-04-01`;
+        setOptions(optionsCopy);
+    }
+
     return (
         <>
         <Container>
             <ReportsLayout/>
-            <OptionsBar handleOptionsUpdate={handleOptionsUpdate} getPosters={updateTable} />
+            <OptionsBar parentOptions={options} handleOptionsUpdate={handleOptionsUpdate} getPosters={updateTable} BudgetYears={budgetYears} setDefaults={handleSetDefaults}/>
             {tableReady ? <ReportTable tableOptions={options} handleReconciled={reconcilePoster} /> : null}
-
         </Container>
         </>
         

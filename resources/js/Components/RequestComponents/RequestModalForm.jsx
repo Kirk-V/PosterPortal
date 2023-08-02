@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import CourseSelect from "@/Components/RequestComponents/CourseSelect";
 import { useEffect } from "react";
 
-export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept }) {
+export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept, departments }) {
     const [formData, setformData] = useState(formD);
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
@@ -218,13 +218,20 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     </Alert>
                 </Col>
                 <Col>
-                    <Form.Label>SpeedCode</Form.Label>
+                    <Form.Label>SpeedCode | Account</Form.Label>
                     <InputGroup>
 
                         <Form.Control
                             name="speed_code"
                             type="text"
                             defaultValue={formD.speed_code}
+                            required
+                            isValid={formD.speed_code_approved == 1}
+                        />
+                        <Form.Control
+                            name="account"
+                            type="text"
+                            defaultValue={formD.account}
                             required
                             isValid={formD.speed_code_approved == 1}
                         />
@@ -239,6 +246,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     </InputGroup>
 
                 </Col>
+                
             </Row>
         </>
     );
@@ -296,7 +304,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     <h5>Requsitioner Details</h5>
                 </Col>
             </Row>
-            <Row className="mb-2">
+            <Row className="mb-2 g-2">
                 <Col>
                     <Form.Group
                         className="mb-3"
@@ -311,7 +319,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         />
                     </Form.Group>
                 </Col>
-                <Col>
+                <Col >
                     <Form.Group
                         className="mb-3"
                         controlId="requestFormLastName"
@@ -336,12 +344,23 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         />
                     </Form.Group>
                 </Col>
-                <Col xs={3}>
+                <Col xs={2}>
+                        <Form.Label >Department</Form.Label>
+                        <Form.Select
+                            name="department"
+                            defaultValue={formD.department}
+                            onChange={(e) => handleControlChange(e)}>
+                                {departments.map((departmentName) => (
+                                    <option key={departmentName} value={departmentName}>{departmentName}</option>
+                                ))}
+                        </Form.Select>
+                    </Col>
+                <Col xs={2}>
                     <Form.Group
                         className="mb-3"
                         controlId="requestFormFirstName"
                     >
-                        <Form.Label>Applied For Discount</Form.Label>
+                        <Form.Label>Wants Discount</Form.Label>
                         <Form.Select
                             name="applied_for_discount"
                             defaultValue={formD.applied_for_discount}

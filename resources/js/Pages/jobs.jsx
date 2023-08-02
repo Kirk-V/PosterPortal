@@ -2,7 +2,7 @@
 import { router } from '@inertiajs/react'
 import RequestTable from '@/Components/RequestComponents/RequestTable';
 import JobsTable from '@/Components/jobsComponents/JobsTable';
-function Jobs({ auth, data, showErrorHandle}) {
+function Jobs({ auth, data, showErrorHandle, departments}) {
     
     const requests = data;
 
@@ -21,9 +21,9 @@ function Jobs({ auth, data, showErrorHandle}) {
         console.log(`Setting error to ${errorMessage} , ${errorType}, true`);
         setErrorToast({ message: errorMessage, errorType: errorType, show: true });
     }
-
+    console.log(`jobs departments: ${JSON.stringify(departments)}`);
     return (
-        <JobsTable showErrorHandle={showErrorHandle}/>
+        <JobsTable showErrorHandle={showErrorHandle} departments={departments}/>
 
         
     );

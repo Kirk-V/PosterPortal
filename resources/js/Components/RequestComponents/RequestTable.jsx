@@ -7,7 +7,7 @@ import RequestModal from '@/Components/RequestComponents/RequestModal';
 import ErrorToast from '@/Components/ErrorToast';
 
 
-export default function RequestTable({settings, showErrorHandle}) {
+export default function RequestTable({settings, showErrorHandle, departments}) {
     const [error, setError] = useState(null);
     const [headingsLoaded, setHeadingsLoaded] = useState(false);
     const [bodyLoaded, setBodyLoaded] = useState(false);
@@ -121,7 +121,7 @@ export default function RequestTable({settings, showErrorHandle}) {
                 {bodyLoaded == true && headingsLoaded == true ? <RequestTableBody data={items} headers={headings} handleRowClick={handleClick}></RequestTableBody> :null}
                 {error == true? <h1>error</h1> : null}
         </Table>
-        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings} showErrorHandle={showErrorHandle} key={modalData}/>
+        <RequestModal show={showModal} requestData={modalData} onHide={handleClose} courseData={courseData} settings={settings} showErrorHandle={showErrorHandle} key={modalData} departments={departments}/>
         {/* <ErrorToast errorMessage={errorToast.message} errorType={errorToast.errorType} show={errorToast.show} handleClose={handleToastClose} /> */}
         </>
 
