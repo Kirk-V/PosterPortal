@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $user = User::where('cn', $_SERVER['LOGON_USER'])
+        $user = User::where('cn', $_SERVER["AUTH_USER"])
             ->limit(1)
             ->get()
             ->first();
@@ -96,8 +96,16 @@ class AuthServiceProvider extends ServiceProvider
                 log::info("user  is normal");
                 return true;
             }
-         //check if External users allowed and if user is an external user:
-        $External = Settings::where('setting', 'external')->get()->first()->value;
+        //check if External users allowed and if user is an external user:
+        try{
+            $External = Settings::where('setting', 'external')->get()->first()->value;
+        }
+        catch(\Exception $e)
+        {
+            log::info("database error");
+            return false;
+        }
+        
         
         if ($External == 1) {           
             if($this->userInAccessGroup($user, 'external'))
@@ -106,8 +114,15 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         }
-
-        $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+        try{
+            $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+        }
+        catch(\Exception $e)
+        {
+            log::info("database error");
+            return false;
+        }
+        
         if ($uGrad == 1) {
             //Currently Accepting Ugrad Applications.
 
