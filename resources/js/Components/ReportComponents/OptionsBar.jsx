@@ -56,7 +56,7 @@ export default function OptionsBar({ parentOptions, handleOptionsUpdate, getPost
                     value={parentOptions?.budget_year}
                     onChange={(e) => handleOptionsUpdate(e)}>
                     {BudgetYears.map((year, i) => {
-                        return <option key={year} value={year}>{year}/{year-1}</option>
+                        return <option key={year} value={year}>{year}/{year+1}</option>
                     })}
                 </Form.Select>
             </Col>
