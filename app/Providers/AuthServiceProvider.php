@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $user = User::where('cn', $_SERVER["AUTH_USER"])
+        $user = User::where('cn', config('app.env') == 'OfficePC' ? 'kvande85' : $_SERVER["AUTH_USER"])
             ->limit(1)
             ->get()
             ->first();

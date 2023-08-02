@@ -23,7 +23,7 @@ class PostersFactory extends Factory
             // 'poster_id' => fake()->randomNumber(5, false),
             // 'request_id' => fake()->randomNumber(5, false),
             // 'job_id' => fake()->randomNumber(5, false),
-            'state' => fake()->randomElement(['pending', 'ready', 'rejected', 'accepted', 'printed', 'paid', 'complete']),
+            'state' => fake()->randomElement(['pending', 'ready', 'rejected', 'accepted', 'complete', 'paid']),
             'width' => fake()->randomFloat(2),
             'height' => fake()->randomFloat(2),
             'quantity' => fake()->randomDigitNotZero(),
@@ -39,14 +39,14 @@ class PostersFactory extends Factory
         
     }
 
-    // public function configure(): static
-    // {
-    //     return $this->afterCreating(function (Posters $poster){
-    //         if($poster->state == "printed")
-    //         {
-    //             $total = $poster->cost*$poster->quantity;
-    //             $poster->transactions->create(['total' => $total]);
-    //         }
-    //     });
-    // }
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Posters $poster)
+        {
+            if($poster->state == "complete")
+            {
+                $poster->transactions = Transactions::factory()->recycle($poster)->count(1)->create();
+            }
+        });
+    }
 }

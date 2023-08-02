@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id('poster_id')->first();
             // $table->foreignId('request_id')->nullable()->references('request_id')->on('Requests')->nullOnDelete();
             // $table->foreignId('job_id')->nullable()->references('job_id')->on('Jobs')->nullOnDelete();
-            $table->enum('state', ['pending', 'ready', 'rejected', 'accepted', 'printed', 'paid', 'complete']);
+            $table->enum('state', ['pending', 'ready', 'rejected', 'accepted', 'complete', 'paid']);
             $table->float('width', 8, 2);
             $table->float('height', 8, 2);
             $table->integer('quantity');
@@ -74,7 +74,7 @@ return new class extends Migration
             $table->id('job_id');
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
             $table->string('technician');
-            $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'picked_up', 'on_hold', 'cancelled']);
+            $table->enum('job_state', ['in_queue', 'printed', 'pending_pickup', 'on_hold', 'cancelled', 'picked_up']);
             $table->date('print_date')->nullable();
             $table->boolean('emailed_receipt_req')->default(false);
             $table->boolean('emailed_receipt_grant_holder')->default(false);

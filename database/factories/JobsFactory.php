@@ -17,13 +17,27 @@ class JobsFactory extends Factory
      */
     public function definition(): array
     {
-        $state = fake()->randomElement(['in_queue', 'printed', 'on_hold']);
-        $print_date = $state == 'printed' ? fake()->dateTime() :null;
+        $state = fake()->randomElement(['in_queue', 'printed', 'pending_pickup',  'on_hold', 'cancelled', 'picked_up']);
+        
         return [
             //id auto gen'd
             'poster_id' => Posters::factory(),
-            'job_state' => $state,
-            'print_date' => $print_date,
+            'job_state' => function (array $attributes)
+            {
+                if(Posters::find($attributes['poster_id'])->state == 'accepted')
+                {
+                    return fake()->randomElement(['in_queue', 'printed', 'pending_pickup']);
+                }
+                else
+                {
+                    return fake()->randomElement(['cancelled', 'picked_up']);
+                }
+            },
+            'print_date' => function(array $attributes)
+            {
+                $state = $attributes['job_state'];
+                return ($state == 'printed' || $state == 'pending_pickup') ? fake()->dateTime() :null;
+            },
             'emailed_receipt_req' => $state == 'printed'? fake()->randomElement([1, 0,]) : 0,
             'emailed_receipt_grant_holder' => $state == 'printed'? fake()->randomElement([1, 0,]) : 0,
             'emailed_receipt_ssts' => $state == 'printed'? fake()->randomElement([1, 0,]) : 0,

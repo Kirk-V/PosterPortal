@@ -29,12 +29,18 @@ class DatabaseSeeder extends Seeder
         // ]);
         // error_log('Some message here.');
 
+            
 
+        // Posters::factory()
+        // ->has(Requests::factory())
+        // ->has(Jobs::factory())
+        // ->has(Transactions::factory())
+        // ->count(100)
+        // ->create();
 
         Posters::factory()
         ->has(Requests::factory())
         ->has(Jobs::factory())
-        ->has(Transactions::factory())
         ->count(100)
         ->create();
 
@@ -55,4 +61,5 @@ class DatabaseSeeder extends Seeder
             'value' => 12
         ]);
     }
+
 }

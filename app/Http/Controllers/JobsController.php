@@ -89,8 +89,18 @@ class JobsController extends Controller
             log::info("job is null");
             return response(["success" => False]);
         }
+        
         $job->job_state = $state;
         $job->save();
+
+        if($state == 'picked_up')
+        {
+            log::info("also updating the poster state to complete");
+            $poster = $job->posters;
+            $poster->state = 'complete';
+            $poster->save();
+        }
+        
         return response(["success" => True]);
     }
 
