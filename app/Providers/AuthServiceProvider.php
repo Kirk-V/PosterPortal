@@ -28,13 +28,17 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if(config('app.env') == 'homeDesktop')
+        {
+            return;
+        }
         $user = User::where('cn', config('app.env') == 'OfficePC' ? 'kvande85' : $_SERVER["AUTH_USER"])
             ->limit(1)
             ->get()
             ->first();
         Auth::login($user);
-        
-        
+
+
         Gate::define('admin', function (User $user) {
             log::info("testing user");
             log::info($user->getAttribute("cn")[0]);
@@ -43,7 +47,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('applicant', function (User $user){
-            //Depending on the settings, we are accepting applitions from 
+            //Depending on the settings, we are accepting applitions from
             // 2) SSC Faculty/Staff ('normal group')
             // 2) SSC and SSC Undergrads
             // 3) SSC + undergrads
@@ -105,9 +109,9 @@ class AuthServiceProvider extends ServiceProvider
             log::info("database error");
             return false;
         }
-        
-        
-        if ($External == 1) {           
+
+
+        if ($External == 1) {
             if($this->userInAccessGroup($user, 'external'))
             {
                 log::info("user  is external");
@@ -122,7 +126,7 @@ class AuthServiceProvider extends ServiceProvider
             log::info("database error");
             return false;
         }
-        
+
         if ($uGrad == 1) {
             //Currently Accepting Ugrad Applications.
 

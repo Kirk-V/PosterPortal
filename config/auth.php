@@ -59,22 +59,19 @@ return [
     |
     */
 
-    'providers' => [
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\User::class,
-        // ],
-
+    'providers' => config('app.env') == 'homeDesktop' ?
+    [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+    ] :
+    [
         'users' => [
             'driver' => 'ldap',
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
             'rules' => [],
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
