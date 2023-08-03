@@ -1,122 +1,160 @@
-
-
-import React from 'react';
-import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, BlobProvider, Image, } from '@react-pdf/renderer';
+import React from "react";
+import {
+    pdf,
+    Page,
+    Text,
+    View,
+    Document,
+    StyleSheet,
+    PDFViewer,
+    BlobProvider,
+    Image,
+} from "@react-pdf/renderer";
 
 export default function PDFRow({ rowData }) {
     // console.log("NEW ROW "+JSON.stringify(rowData));
     const styles = StyleSheet.create({
-        page: {
-            flexDirection: 'column',
-            backgroundColor: '#fff',
-            padding: 20,
-            fontSize: 12,
-        },
-        rowView:
-        {
-            flexDirection: 'row',
+        rowView: {
+            flexDirection: "row",
             paddingTop: 5,
-            border: '1'
+            paddingBottom: 5,
+            borderBottom: 1,
+            borderColor: "grey"
         },
         infoColumn: {
-            flexDirection: 'col',
-            width: "50%",
-        },
-        label: {
-            fontSize: 12,
-            color: 'gray',
-            textAlign: 'left',
-            marginBottom: 2,
-        },
-        value: {
-            fontSize: 8,
-            height: 20,
+            flexDirection: "col",
             width: "100%",
-            textAlign: 'left',
-        },
-        sectionHeader: {
-            marginLeft: 20,
-            fontSize: 24,
-            color: 'gray',
-            marginTop: 20,
-        },
-        subSectionHeader: {
-            marginLeft: 20,
-            fontSize: 16,
-            color: 'gray',
-            marginTop: 10,
-        },
-        infoColumnLarge: {
-            flexDirection: 'col',
-            marginLeft: 10,
-            marginRight: 10,
-            width: "50%",
-        },
-        infoColumnSmall: {
-            flexDirection: 'col',
-            marginLeft: 10,
-            marginRight: 10,
-            width: 100,
-        },
-        infoColumnMedium: {
-            flexDirection: 'col',
-            marginLeft: 10,
-            marginRight: 10,
-            width: 140,
-        },
-        infoColumnSmallRight: {
-            flexDirection: 'col',
-            width: 100,
-            marginLeft: "auto"
-        },
-        headerRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 5,
-            paddingLeft: 20,
-            marginBottom: 10,
-            height: 80,
-            borderBottom: "2px solid black",
-        },
-        headerColumn: {
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-        },
-        headerTextLine: {
-            textAlign: 'center',
 
         },
-        headerImage: {
-            width: 210,
-            height: 50,
-        }
+
+        valueDollars: {
+            fontSize: 12,
+            textAlign: "center",
+        },
     });
     return (
         <View style={styles.rowView}>
-            <View style={styles.infoColumn}>
-                <Text style={styles.value}>{rowData.transactions.transaction_date}</Text>
-            </View>
-            <View style={styles.infoColumn}>
-                <Text style={styles.value}>{rowData.poster_id}</Text>
-            </View>
-
-            <View style={styles.infoColumn}>
-                <Text style={styles.value}>{rowData.requests.first_name} {rowData.requests.first_name}</Text>
-                <Text style={styles.value}>{rowData.requests.email}</Text>
-            </View>
-            <View style={styles.infoColumn}>
-                <Text style={styles.value}>{rowData.poster_id}</Text>
-            </View>
-            <View style={styles.infoColumn}>
-                <Text style={styles.value}>{rowData.poster_id}</Text>
-            </View>
-            <View style={styles.infoColumn}>
-                <Text style={styles.value}>{rowData.poster_id}</Text>
-            </View>
-            <View style={styles.infoColumn}>
-                <Text style={styles.value}>{rowData.poster_id}</Text>
-            </View>
+            <DateCell date={rowData.transactions.transaction_date} />
+            <PosterNumberCell posterNumber={rowData.poster_id} />
+            <RequisitionerCell
+                first={rowData.requests.first_name}
+                last={rowData.requests.last_name}
+                email={rowData.requests.email}
+            />
+            <ApproverCell name={rowData.requests.approver_name} type={rowData.requests.approver_type} email={rowData.requests.approver_email}/>
+            <DollarCell amount={rowData.transactions.total} active={rowData.requests.payment_method == "speed_code"}/>
+            <DollarCell amount={rowData.transactions.total} active={rowData.requests.payment_method == "cash"}/>
+            <DollarCell amount={rowData.discount} active={rowData.discount_eligible == "1"}/>
+            <DollarCell amount={rowData.transactions.total}/>
+            <DollarCell amount={rowData.transactions.total_received}/>
         </View>
-    )
+    );
+}
+
+function RequisitionerCell({ first, last, email }) {
+    const styles = StyleSheet.create({
+        infoColumn: {
+            flexDirection: "col",
+            width: "200%",
+
+        },
+        value: {
+            fontSize: 10,
+            width: "100%",
+            textAlign: "left",
+        },
+    });
+    return (
+        <View style={styles.infoColumn}>
+            <Text style={styles.value}>
+                {first} {last}
+            </Text>
+            <Text style={styles.value}>{email}</Text>
+        </View>
+    );
+}
+
+function DateCell({ date }) {
+    const styles = StyleSheet.create({
+        dateColumn: {
+            flexDirection: "row",
+            width: "110%",
+
+        },
+        value: {
+            fontSize: 12,
+            textAlign: "center",
+        },
+        valueDate: {
+            fontSize: 12,
+            textAlign: "left",
+
+        },
+    });
+    return (
+        <View style={styles.dateColumn}>
+            <Text style={styles.valueDate}>{date}</Text>
+        </View>
+    );
+}
+
+function PosterNumberCell({ posterNumber }) {
+    const styles = StyleSheet.create({
+        infoColumn: {
+            flexDirection: "col",
+            width: "65%",
+
+        },
+        value: {
+            fontSize: 12,
+            textAlign: "center",
+        },
+    });
+    return (
+        <View style={styles.infoColumn}>
+            <Text style={styles.value}>{posterNumber}</Text>
+        </View>
+    );
+}
+
+function ApproverCell({ name, type, email }) {
+    const styles = StyleSheet.create({
+        infoColumn: {
+            flexDirection: "col",
+            width: "200%",
+
+        },
+        value: {
+            fontSize: 10,
+            width: "100%",
+            textAlign: "left",
+        },
+    });
+    return (
+        <View style={styles.infoColumn}>
+            <Text style={styles.value}>{name}</Text>
+            <Text style={styles.value}>{type}</Text>
+            <Text style={styles.value}>{email}</Text>
+        </View>
+    );
+}
+
+function DollarCell({amount, active=true}) {
+    const styles = StyleSheet.create({
+        infoColumn: {
+            flexDirection: "col",
+            width: "80%",
+
+        },
+        value: {
+            fontSize: 10,
+            width: "100%",
+            textAlign: "left",
+        },
+    });
+    return (
+        <View style={styles.infoColumn}>
+            {active ? <Text style={styles.value}>{parseFloat(amount).toFixed(2)}</Text> : <Text>-</Text>}
+        </View>
+    );
 }

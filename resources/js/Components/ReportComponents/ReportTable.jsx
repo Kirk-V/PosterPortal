@@ -18,17 +18,17 @@ export default function ReportTable({tableOptions, handleReconciled}) {
     const [showingPosterModal, setShowingPosterModal] = useState(false);
     const [posterModalData, setPosterModalData] = useState(null);
 
-    
+
 
     // Get the required rows from the database
     useEffect(() => {
         console.log("get new data"+ JSON.stringify(tableOptions));
-        let options = 
+        let options =
         {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-            }   
+            }
         }
         fetch(`api/reportData?start=${tableOptions?.start_date ?? -1}&end=${tableOptions?.end_date ?? -1}&payment=${tableOptions?.payment_type ?? -1}`, options)
         .then( (response) => {
@@ -53,7 +53,7 @@ export default function ReportTable({tableOptions, handleReconciled}) {
         );
     }, [tableOptions])
 
-    const findTotals = (allRows) => 
+    const findTotals = (allRows) =>
     {
         let receivedTotal= 0, grantPayment= 0,SDFDiscount= 0, cashPayment = 0, subtotal=0;
         allRows.forEach((row) => {
@@ -61,7 +61,7 @@ export default function ReportTable({tableOptions, handleReconciled}) {
             receivedTotal += parseFloat(row.transactions.total_received);
             grantPayment += row.requests.payment_method == 'speed_code' ? parseFloat(row.transactions.total): 0;
             cashPayment += row.requests.payment_method == 'cash' ? parseFloat(row.transactions.total): 0;
-            SDFDiscount += parseFloat(row.discount);            
+            SDFDiscount += parseFloat(row.discount);
         });
         let totals = {
             total: subtotal,
@@ -74,17 +74,17 @@ export default function ReportTable({tableOptions, handleReconciled}) {
         return totals;
     }
 
-    const makePrintPDF = () => 
+    const makePrintPDF = () =>
     {
         setShowPrintPDF(true);
     }
 
-    const closePrintPDF = () => 
+    const closePrintPDF = () =>
     {
         setShowPrintPDF(false);
     }
 
-    const handleRowClick = (poster_id) => 
+    const handleRowClick = (poster_id) =>
     {
         console.log("showing Poster Modal");
         setPosterModalData(rowData.poster_id);
@@ -115,12 +115,12 @@ export default function ReportTable({tableOptions, handleReconciled}) {
                 }): null}
                 <ReportTableBottomRow totals={totalValues}></ReportTableBottomRow>
                 </tbody>
-                
-            </Table>        
+
+            </Table>
         </div>
         {showPrintPDF? <ReportPDF handleCloseModal={closePrintPDF} reportData={rowData} reportSettings={tableOptions}/>: null}
         {showingPosterModal? <PosterModal posterData={posterModalData}/>: null}
         </>
-        
+
     )
 }
