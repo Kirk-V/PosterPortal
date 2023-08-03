@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         // error_log('Some message here.');
 
-            
+
 
         // Posters::factory()
         // ->has(Requests::factory())
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         Posters::factory()
         ->has(Requests::factory())
         ->has(Jobs::factory())
-        ->count(100)
+        ->count(1000)
         ->create();
 
         DB::table('settings')->insert([

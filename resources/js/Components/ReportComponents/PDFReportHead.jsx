@@ -153,7 +153,7 @@ function ApproverHead() {
     });
     return (
         <View style={styles.columnHeader}>
-            <Text style={styles.columnHeaderValue}>Requisitioner</Text>
+            <Text style={styles.columnHeaderValue}>Approver</Text>
         </View>
     );
 }
