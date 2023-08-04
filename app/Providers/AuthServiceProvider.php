@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         {
             return;
         }
-        $user = User::where('cn', config('app.env') == 'OfficePC' ? 'kvande85' : $_SERVER["AUTH_USER"])
+        $user = User::where('cn', config('app.env') == 'OfficePC' ? 'kvande85' : $_SERVER["AUTH_USER"] ?? 'kvande85')
             ->limit(1)
             ->get()
             ->first();
