@@ -143,7 +143,7 @@ function LoadedModal({ modalData, onHide, show, showErrorHandle, departments }) 
     function handleDataUpdate(newData)
     {
         setJobsData(newData);
-        console.log("updated data");
+        console.log("updated data to "+ JSON.stringify(newData));
     }
 
     function handleShowRecieptChange()
