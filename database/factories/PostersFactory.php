@@ -32,11 +32,11 @@ class PostersFactory extends Factory
             'discount_eligible' => fake()->randomElement([0,1]),
             'speed_code' => fake()->optional($weight = 0.4)->bothify('?????-#####'),
             'speed_code_approved' => fake()->boolean(),
-            'discount' => fake()->randomFloat(2),
-            'cost' => fake()->randomFloat(2),
+            'discount' => fake()->randomFloat(2, 10, 200),
+            'cost' => fake()->randomFloat(2, 10, 600),
             'file_location' => fake()->word()."/".fake()->fileExtension(),
         ];
-        
+
     }
 
     public function configure(): static

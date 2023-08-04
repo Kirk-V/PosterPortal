@@ -7,7 +7,7 @@ import ReportTableHead from './ReportTableHead';
 import ReportRow from './ReportRow';
 import ReportTableBottomRow from './ReportTableBottomRow';
 import ReportPDF from './ReportPDF';
-import PosterModal from './PosterModal';
+import PosterReportModal from './PosterReportModal/PosterReportModal';
 
 export default function ReportTable({tableOptions, handleReconciled}) {
     // const [tableSettings, setTableSettings] = useState(tableOptions)
@@ -17,7 +17,6 @@ export default function ReportTable({tableOptions, handleReconciled}) {
     const [showPrintPDF, setShowPrintPDF] = useState(false);
     const [showingPosterModal, setShowingPosterModal] = useState(false);
     const [posterModalData, setPosterModalData] = useState(null);
-
 
 
     // Get the required rows from the database
@@ -84,10 +83,11 @@ export default function ReportTable({tableOptions, handleReconciled}) {
         setShowPrintPDF(false);
     }
 
-    const handleRowClick = (poster_id) =>
+    const handleRowClick = (poster_id, posterData) =>
     {
         console.log("showing Poster Modal");
-        setPosterModalData(rowData.poster_id);
+        setPosterModalData(posterData);
+        console.log(`Showing modal for poster ${poster_id}: ${JSON.stringify(posterData)}`)
         setShowingPosterModal(true);
     }
 
@@ -105,13 +105,13 @@ export default function ReportTable({tableOptions, handleReconciled}) {
                     <Button onClick={makePrintPDF}>Print</Button>
                 </Col>
             </Row>
-            <Table
+            <Table hover={true}
                 striped={true}>
                 <ReportTableHead></ReportTableHead>
                 <tbody>
                 {hasData ? rowData?.map((row)=> {
                     // console.log(`row being added: ${JSON.stringify(row)}`);
-                    return <ReportRow key={row.poster_id} data={row}/>
+                    return <ReportRow key={row.poster_id} data={row} handleRowClick={handleRowClick}/>
                 }): null}
                 <ReportTableBottomRow totals={totalValues}></ReportTableBottomRow>
                 </tbody>
@@ -119,7 +119,7 @@ export default function ReportTable({tableOptions, handleReconciled}) {
             </Table>
         </div>
         {showPrintPDF? <ReportPDF handleCloseModal={closePrintPDF} reportData={rowData} reportSettings={tableOptions}/>: null}
-        {showingPosterModal? <PosterModal posterData={posterModalData}/>: null}
+        {showingPosterModal? <PosterReportModal Display={showingPosterModal} PosterData={posterModalData} handleModalHide={handleCloseModal}/>:null}
         </>
 
     )

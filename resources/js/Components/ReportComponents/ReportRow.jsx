@@ -2,10 +2,10 @@ import React from 'react'
 import ApproverReportCell from './ApproverReportCell'
 import RequisitionerReportCell from './RequisitionerReportCell'
 
-export default function ReportRow({data}) {
+export default function ReportRow({data, handleRowClick}) {
     console.log(JSON.stringify(data));
   return (
-    <tr>
+    <tr onClick={()=> handleRowClick(data.poster_id, data)} role="button">
         <td>{data.transactions.transaction_date}</td>
         <td>{data.poster_id}</td>
         <td><RequisitionerReportCell FirstName={data.requests.first_name} LastName={data.requests.last_name} Email={data.requests.email}/></td>

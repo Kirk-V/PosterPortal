@@ -23,9 +23,9 @@ class TransactionsFactory extends Factory
                 //id auto gen'd
                 'poster_id' => Posters::factory(),
                 'transaction_date' => fake()->dateTimeBetween('-5 years')->format('Y-m-d'),
-                'total_received' => fake()->randomFloat(),
                 'reconciled' => fake()->boolean(),
-                'total' => fake()->randomFloat(2,2, 600)
+                'total' => fake()->randomFloat(2,2, 600),
+                'total_received' => fake()->randomFloat(2,2, 600),
         ];
     }
 }
