@@ -23,7 +23,7 @@ export default function CourseList({}) {
                 return res.json();
             })
             .then((response) => {
-                console.log("req data:");
+                console.log("Got Course Data:");
                 // console.log(`okay, Scourse Data is: ${JSON.stringify(response)}`);
                 if (response.status == "Success") {
                     console.log("setting course data");
@@ -32,7 +32,7 @@ export default function CourseList({}) {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.log(`Got an error retrieving course Data`);
             });
     }, []);
 
@@ -111,7 +111,7 @@ export function CourseLines({ courseData }) {
             // console.log(`okay, Scourse Data is: ${JSON.stringify(response)}`);
             if (response.status == "Success") {
                 console.log("Deleted Course");
-                
+
                 let newCourses = [...allCourses];
                 newCourses.splice(index, 1);
                 setAllCourses(newCourses);
