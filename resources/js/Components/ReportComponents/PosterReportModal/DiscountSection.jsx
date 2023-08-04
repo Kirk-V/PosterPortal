@@ -4,12 +4,12 @@ import { Modal, Row, Col, Form } from "react-bootstrap";
 const DiscountSection = ({ course, department }) => {
     return (
         <>
-            <Row>
+            <Row className="mt-3">
                 <Col>
-                    <h5>Discount Information</h5>
+                    <h3>Discount Information</h3>
                 </Col>
             </Row>
-            <Row>
+            <Row className="ms-3">
                 <Col xs={3}>
                     <Form.Label className="border-bottom">
                         <strong>Course</strong>

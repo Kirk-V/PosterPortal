@@ -20,12 +20,12 @@ const SpeedCodeSection = ({
     );
     return (
         <>
-            <Row>
+            <Row className="mt-3">
                 <Col>
                     <h3>Speed Code Information</h3>
                 </Col>
             </Row>
-            <Row>
+            <Row className="ms-3">
                 <Col>
                     <Form.Label className="border-bottom">
                         <strong>Approver Name</strong>
@@ -47,7 +47,7 @@ const SpeedCodeSection = ({
                 </Col>
                 {approver_type == 'dosa' ? GrantHolder:null}
             </Row>
-            <Row>
+            <Row className="ms-3">
                 <Col>
                     <Form.Label className="border-bottom">
                         <strong>Speed Code</strong>

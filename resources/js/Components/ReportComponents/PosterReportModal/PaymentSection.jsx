@@ -25,7 +25,7 @@ const PaymentSection = ({
     );
     return (
         <>
-            <Row>
+            <Row className="mt-3">
                 <Col>
                     <h3>Payment</h3>
                 </Col>

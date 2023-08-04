@@ -19,7 +19,7 @@ export default function ReportTableBottomRow({ totals }) {
                 <td>grant: {totals?.grant.toFixed(2)}</td>
                 <td>+ cash: {totals?.cash.toFixed(2)}</td>
                 <td>+ discount: {totals?.SDF.toFixed(2)}</td>
-                <td>= {(totals?.grant + totals?.cash + totals?.SDF).toFixed(2)}</td>
+                <td>= {(totals?.grant + totals?.cash - totals?.SDF).toFixed(2)}</td>
             </tr>
 
         </>

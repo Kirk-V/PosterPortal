@@ -10,7 +10,7 @@ const RequisitionerSection = ({first_name, last_name, email, department, payment
                     <h3>Requisitioner</h3>
                 </Col>
             </Row>
-            <Row>
+            <Row className="ms-3">
                 <Col>
                     <Form.Label className="border-bottom">
                         <strong>Name</strong>
