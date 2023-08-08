@@ -10,12 +10,11 @@ export default function ReportTableBottomRow({ totals }) {
                 <td></td>
                 <td>{totals?.grant.toFixed(2)}</td>
                 <td>{totals?.cash.toFixed(2)}</td>
-                <td>{totals?.total.toFixed(2)}</td>
                 <td>{totals?.SDF.toFixed(2)}</td>
-                <td>{totals?.received.toFixed(2)}</td>
+                <td>{totals?.total.toFixed(2)}</td>
             </tr>
             <tr className="table-warning">
-                <td colSpan={5}>Check: Grant + cash - discount</td>
+                <td colSpan={4}>Check: Grant + cash - discount</td>
                 <td>grant: {totals?.grant.toFixed(2)}</td>
                 <td>+ cash: {totals?.cash.toFixed(2)}</td>
                 <td>+ discount: {totals?.SDF.toFixed(2)}</td>

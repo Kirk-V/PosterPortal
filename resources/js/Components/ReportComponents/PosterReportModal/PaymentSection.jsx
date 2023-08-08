@@ -10,6 +10,7 @@ const PaymentSection = ({
     total_received,
     discount,
     discount_eligible,
+    payment_method
 }) => {
     let Discount = (
         <Row className="ms-4 border-bottom">
@@ -67,7 +68,7 @@ const PaymentSection = ({
                 <Row>
                     <Col xs={9} className="d-flex">
                         <Form.Label className="ms-auto">
-                            <strong>Total Received</strong>
+                            <strong>{payment_method == 'speed_code'? "Total" : "Cash Received"}</strong>
                         </Form.Label>
                     </Col>
                     <Col xs={3}>

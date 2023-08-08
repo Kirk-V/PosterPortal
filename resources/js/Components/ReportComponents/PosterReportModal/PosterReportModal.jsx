@@ -32,7 +32,7 @@ const PosterReportModal = ({ Display = false, PosterData, handleModalHide}) => {
                             department={PosterData.requests.course_department}
                         />
                     ) : null}
-                    <SpeedCodeSection
+                    {PosterData.Payment_method== 'speed_code' ? <SpeedCodeSection
                         approver={PosterData.requests.approver_name}
                         grant_holder_name={
                             PosterData.requests.grant_holder_name
@@ -42,7 +42,7 @@ const PosterReportModal = ({ Display = false, PosterData, handleModalHide}) => {
                         approver_email={PosterData.requests.approver_email}
                         speed_code={PosterData.speed_code}
                         account={PosterData.account}
-                    />
+                    /> : null}
                     <PaymentSection
                         quantity={PosterData.quantity}
                         width={PosterData.width}
@@ -52,6 +52,7 @@ const PosterReportModal = ({ Display = false, PosterData, handleModalHide}) => {
                         total_received={PosterData.transactions.total_received}
                         discount={PosterData.discount}
                         discount_eligible={PosterData.discount_eligible}
+                        payment_method={PosterData.payment_method}
                     />
                 </Modal.Body>
             </Modal>

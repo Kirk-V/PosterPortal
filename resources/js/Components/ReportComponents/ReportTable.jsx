@@ -59,7 +59,7 @@ export default function ReportTable({tableOptions, handleReconciled}) {
             subtotal += parseFloat(row.transactions.total);
             receivedTotal += parseFloat(row.transactions.total_received);
             grantPayment += row.requests.payment_method == 'speed_code' ? parseFloat(row.transactions.total): 0;
-            cashPayment += row.requests.payment_method == 'cash' ? parseFloat(row.transactions.total): 0;
+            cashPayment += row.requests.payment_method == 'cash' ? parseFloat(row.transactions.total_received): 0;
             SDFDiscount += parseFloat(row.discount);
         });
         let totals = {
