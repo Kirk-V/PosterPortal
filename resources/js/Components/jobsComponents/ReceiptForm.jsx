@@ -130,7 +130,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
             </Row>
 
             <Row>
-                <Col xs={3}>
+                <Col xs={4}>
                     <Form.Label className="mb-0">
                         Approver Type
                     </Form.Label>
@@ -154,7 +154,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         onChange={(e) => handleControlChange(e)}
                     />
                 </Col>
-                <Col xs={5}>
+                <Col xs={4}>
                     <Form.Label className="mb-0">
                         Email
                     </Form.Label>
@@ -167,17 +167,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 </Col>
             </Row>
             <Row className="mt-2">
-                <Col xs={4}>
-                    <Form.Label className="mb-0">
-                        Speed Code and Account
-                    </Form.Label>
-                    <Form.Control
-                        type="Text"
-                        name="speed_code"
-                        defaultValue={jobsData.speed_code}
-                        onChange={(e) => handleControlChange(e)}
-                    />
-                </Col>
+                
                 <Col xs={4}>
                     <Form.Label className="mb-0">
                         Grant Holder
@@ -200,6 +190,18 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         onChange={(e) => handleControlChange(e)}
                     />
                 </Col>
+                <Col xs={4}>
+                        <Form.Label className="mb-0">Approver Department</Form.Label>
+                        <Form.Select
+                            name="approver_department"
+                            value={jobsData.approver_department}
+                            onChange={(e) => handleControlChange(e)}>
+                                <option value={'Null'}></option>
+                                {departments.map((departmentName) => (
+                                    <option key={departmentName} value={departmentName}>{departmentName}</option>
+                                ))}
+                        </Form.Select>
+                    </Col>
             </Row>
 
         </>
