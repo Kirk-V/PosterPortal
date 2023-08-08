@@ -6,6 +6,7 @@ use App\Mail\PickUpNotice;
 use App\Models\Transactions;
 use Exception;
 use App\Models\Jobs;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use App\Mail\PDFMail;
 use App\Models\Posters;
@@ -195,12 +196,38 @@ class JobsController extends Controller
         {
             return self::errorResponse("Could not find posterID in json", 400);
         }
+        $validated = $request->validate([
+            'transaction_date' => ['required', 'date'],
+            'technician' => ['required'],
+            'department' => ['required', Rule::in(config('app.departments'))],
+            'poster_id' => ['required'],
+            'last_name' => ['required','string', 'max:250'],
+            'first_name' => ['required','string', 'max:250'],
+            'email' => ['required', 'email','string', 'max:250'],
+            'approver_department' => [Rule::requiredIf($request->payment_method == 'speed_code'), Rule::excludeIf($request->payment_method == 'cash'),'string', 'max:250'],
+            'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code'), Rule::excludeIf($request->payment_method == 'cash'),'string', 'max:250', 'in:dosa,grant_holder,administrator'],
+            'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code'), Rule::excludeIf($request->payment_method == 'cash'), 'string', 'max:250'],
+            'approver_email' => [Rule::requiredIf($request->payment_method == 'speed_code'), Rule::excludeIf($request->payment_method == 'cash'), 'string', 'max:250'],
+            'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type != 'grant_holder')],
+            'speed_code' => [Rule::requiredIf($request->payment_method == 'speed_code')],
+            'account' => [Rule::requiredIf($request->payment_method == 'speed_code')],
+
+            'quantity' => ['required', 'integer'],
+            'width'=> ['required'],
+            'height' => ['required'],
+            'units' => ['required', 'in:cm,inches'],
+            'cost' => ['required'],
+            'total' => ['required'],
+            'discount' => ['required'],
+            'total_received' => ['required']
+        ]);
+        log::info("passed Validation");
         // $transaction = new Transactions;
         // $transaction->transaction_date = $request->transaction_date;
         // $transaction->total_received = $request->total_received;
         // $poster->transactions()->save($transaction);
 
-        $poster = $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received]);
+        $poster = $poster->transactions()->updateOrCreate(['poster_id' => $poster->poster_id],['transaction_date' => $request->transaction_date, 'total_received' => $request->total_received, 'total' => $request->total]);
         Posters::updateAllPosterData($request->poster_id, $request->all());
         return self::successResponse("Success", "Success");
     }

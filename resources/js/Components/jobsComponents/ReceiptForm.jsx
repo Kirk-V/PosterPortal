@@ -76,6 +76,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     'Accept': 'application/json'
                 },
             }
+            console.log("sending data to make transaction: "+JSON.stringify(jobsData));
             fetch(`api/jobs/makeTransactionAndUpdate`, options)
                 .then((res) => {
                     if (!res.ok) {
@@ -89,7 +90,6 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     // setRequest(response);
                     if (response.status == "Success") {
                         console.log("success, updating UI state");
-                        //Call Show Receipt here
                         handleShowReceipt();
                     }
 
@@ -379,6 +379,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="number"
                             name="width"
+                            pattern="^\d*(\.\d{0,2})?$"
                             defaultValue={parseFloat(jobsData.width).toFixed(2)}
                             onChange={(e) => handleControlChange(e)} />
 
@@ -437,7 +438,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             <Form.Control
                                 type="number"
                                 name="total"
-                                value={(jobsData.quantity * jobsData.cost).toFixed(2)}
+                                value={parseFloat(jobsData.total).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
                                 required />
                         </InputGroup>

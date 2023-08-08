@@ -77,8 +77,8 @@ export default function Reports() {
         let optionsCopy = {...options};
         console.log("new year"+newYear);
         optionsCopy['budget_year'] = `${newYear}`;
-        optionsCopy['start_date'] = `${newYear}-04-01`;
-        optionsCopy['end_date'] = `${parseInt(newYear)+1}-04-01`;
+        optionsCopy['start_date'] = `${newYear}-05-01`;
+        optionsCopy['end_date'] = `${parseInt(newYear)+1}-04-30`;
         setOptions(optionsCopy);
     }
 

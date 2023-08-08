@@ -70,10 +70,8 @@ export default function PDFReportHead({ reportSettings }) {
                 <ApproverHead/>
                 <DollarAmountHead title="Grant"/>
                 <DollarAmountHead title="Cash"/>
-                <DollarAmountHead title="Total"/>
                 <DollarAmountHead title="Discount"/>
-                <DollarAmountHead title="Recieved"/>
-
+                <DollarAmountHead title="Total"/>
             </View>
         </>
     );

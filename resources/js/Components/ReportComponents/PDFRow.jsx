@@ -43,10 +43,9 @@ export default function PDFRow({ rowData }) {
             />
             <ApproverCell name={rowData.requests.approver_name} type={rowData.requests.approver_type} email={rowData.requests.approver_email}/>
             <DollarCell amount={rowData.transactions.total} active={rowData.requests.payment_method == "speed_code"}/>
-            <DollarCell amount={rowData.transactions.total} active={rowData.requests.payment_method == "cash"}/>
+            <DollarCell amount={rowData.transactions.total_received} active={rowData.requests.payment_method == "cash"}/>
             <DollarCell amount={rowData.discount} active={rowData.discount_eligible == "1"}/>
             <DollarCell amount={rowData.transactions.total}/>
-            <DollarCell amount={rowData.transactions.total_received}/>
         </View>
     );
 }
