@@ -38,7 +38,7 @@ export default function PDFReportHead({ reportSettings }) {
         },
         headerImage: {
             width: 150,
-            height: 40,
+            height: 35,
         },
 
     });
