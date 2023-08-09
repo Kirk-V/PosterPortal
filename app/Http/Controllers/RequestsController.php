@@ -71,6 +71,7 @@ class RequestsController extends Controller
     /**
      * Summary of rejectRequest
      *      If a request needs to be cancelled it must move the associated poster state to 'rejected'.
+     *      It must also create a Transaction that has 0 for all values. (Total etc).
      *      By doing this we can see that a poster job was not done, and no financial reconciliation should
      *      take place.
      * @return \Illuminate\Http\JsonResponse
@@ -85,7 +86,13 @@ class RequestsController extends Controller
         {
             log::info("Rejecting Poster ".$request->posters->poster_id);
             $request->posters->state = 'rejected';
+            //void transaction
+            // $transaction = new Transactions();
+            
+            $request->posters->transactions()->create(['transaction_date'=>date("Y-m-d"), 'total_received'=>0, 'total'=>0]);
             $request->posters->save();
+
+            log::info("transaction added");
             if($request->posters->state == 'rejected')
             {
                 //Send email notification
@@ -117,14 +124,10 @@ class RequestsController extends Controller
         try{
             DB::beginTransaction();//This allows failed DB transaction to be undone automatically if error thrown
             $poster = Posters::with('requests','transactions')->find($posterId);
-            $transaction = $poster->transactions;
+            //We should update or create the transaction
+            $poster->transactions()->updateOrCreate(['transaction_date'=>date("Y-m-d"), 'total_received'=>0, 'total'=>0]);
+
             $request = $poster->requests;
-            if($transaction)
-            {
-                $transaction->total = 0;
-                $transaction->save();
-                log::info("poster has transaction");
-            }
             //Make changed to poster
             $poster->state = 'rejected';
             $poster->discount = 0;
@@ -142,13 +145,13 @@ class RequestsController extends Controller
             Mail::to($request->email)->send(new PosterRejectedNotice($request->poster_id));
             if($request->payment_method == 'speed_code')
             {
-                log::info("sendingn email to grantholde");
+                log::info("sending email to grantholde");
                 Mail::to($request->approver_email)->send(new PosterRejectionNoticeApprover($request->poster_id));
             }
         }
         catch(\Exception $e)
         {
-            log::info("Couldnt send all requests $e");
+            log::info("Couldnt send all emails to notify of rejection: $e");
             self::successResponse(["warning"=>"Could not send all rejection notice emails, please notify all parties manually"], "success");
         }
         return self::successResponse("false");
