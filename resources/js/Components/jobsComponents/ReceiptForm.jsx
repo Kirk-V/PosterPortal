@@ -192,15 +192,12 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 </Col>
                 <Col xs={4}>
                         <Form.Label className="mb-0">Approver Department</Form.Label>
-                        <Form.Select
+                        <Form.Control
+                            type="Text"
                             name="approver_department"
-                            value={jobsData.approver_department}
-                            onChange={(e) => handleControlChange(e)}>
-                                <option value={'Null'}></option>
-                                {departments.map((departmentName) => (
-                                    <option key={departmentName} value={departmentName}>{departmentName}</option>
-                                ))}
-                        </Form.Select>
+                            value={jobsData.approver_department}>
+                            
+                        </Form.Control>
                     </Col>
             </Row>
 
@@ -234,7 +231,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Control
                         type="Text"
                         name="speed_code"
-                        defaultValue={totalReceieved}
+                        value={jobsData.speed_code}
                         onChange={(e) => handleControlChange(e)}
                     />
             </Col>
@@ -245,7 +242,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Control
                         type="Text"
                         name="account"
-                        defaultValue={jobsData.account}
+                        value={jobsData.account}
                         onChange={(e) => handleControlChange(e)}
                     />
             </Col>
