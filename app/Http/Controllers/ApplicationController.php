@@ -256,7 +256,7 @@ class ApplicationController extends Controller
                 'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250', 'in:dosa,grant_holder,administrator'],
                 'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
                 'approver_email' => [Rule::requiredIf($request->payment_method == 'speed_code'),'string', 'max:250'],
-                'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type != 'grant_holder')],
+                'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type == 'dosa')],
                 'cost' => ['required','decimal:0,4'],
                 'poster_file' => ['required', 'in:oneDrive,email'],
                 'file' => [Rule::requiredIf($request->poster_file == 'oneDrive')]

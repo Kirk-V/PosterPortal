@@ -9,7 +9,12 @@ export default function ReportRow({data, handleRowClick}) {
         <td>{data.transactions.transaction_date}</td>
         <td>{data.poster_id}</td>
         <td><RequisitionerReportCell FirstName={data.requests.first_name} LastName={data.requests.last_name} Email={data.requests.email}/></td>
-        {data.requests.payment_method == 'speed_code' ? <td className='border-end'><ApproverReportCell  Name={data.requests.approver_name} Type={data.requests.payment_method} Email={data.requests.approver_email}/></td>: <td className='border-end'>-</td>}
+        {data.requests.payment_method == 'speed_code' ? 
+          <td className='border-end'>
+            <ApproverReportCell  Name={data.requests.approver_type == 'dosa' ? data.requests.grant_holder_name : data.requests.approver_name} Type={data.requests.payment_method} Email={data.requests.approver_email}/>
+          </td>
+          : 
+          <td className='border-end'>-</td>}
         <td>{data.requests.payment_method == 'speed_code' ? data.state == 'rejected' ? 'VOID': `$${parseFloat(data.transactions.total)}`: <td>-</td>}</td>
         <td>{data.requests.payment_method == 'cash' ? data.state == 'rejected' ? 'VOID': `$${parseFloat(data.transactions.total_received).toFixed(2)}`: <td>-</td>}</td>
         <td className="border-end">{data.state == 'rejected' ? 'VOID':parseFloat(data.discount).toFixed(2)}</td>
