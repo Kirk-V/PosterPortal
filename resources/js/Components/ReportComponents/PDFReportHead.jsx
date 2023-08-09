@@ -42,7 +42,6 @@ export default function PDFReportHead({ reportSettings }) {
         },
 
     });
-    //Date	Poster #	Requisitioner	Approver	Grant Payment	Cash Payment	Total	SDF Discount	Received
     return (
         <>
             {/* Header */}
