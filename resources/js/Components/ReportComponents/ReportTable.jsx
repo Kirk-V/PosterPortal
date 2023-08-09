@@ -118,7 +118,7 @@ export default function ReportTable({tableOptions, handleReconciled}) {
 
             </Table>
         </div>
-        {showPrintPDF? <ReportPDF handleCloseModal={closePrintPDF} reportData={rowData} reportSettings={tableOptions}/>: null}
+        {showPrintPDF? <ReportPDF handleCloseModal={closePrintPDF} reportData={rowData} reportSettings={tableOptions} totals={totalValues}/>: null}
         {showingPosterModal? <PosterReportModal Display={showingPosterModal} PosterData={posterModalData} handleModalHide={handleCloseModal}/>:null}
         </>
 

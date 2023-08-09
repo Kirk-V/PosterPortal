@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { ModalBody } from 'react-bootstrap';
 import PDFRow from './PDFRow';
 import PDFReportHead from './PDFReportHead';
+import PDFReportLastRow from './PDFReportLastRow';
 
-export default function ReportPDF({ reportSettings, reportData, handleCloseModal }) {
+export default function ReportPDF({ reportSettings, reportData, handleCloseModal, totals }) {
     const [show, setShow] = useState(true);
 
     const handleClose = () => {
@@ -17,7 +18,7 @@ export default function ReportPDF({ reportSettings, reportData, handleCloseModal
         page: {
             flexDirection: 'column',
             backgroundColor: '#fff',
-            padding: 20,
+            padding: 20, 
             fontSize: 12,
         },
     });
@@ -31,6 +32,7 @@ export default function ReportPDF({ reportSettings, reportData, handleCloseModal
                             <Page size="A4" style={styles.page}>
                                 <PDFReportHead reportSettings={reportSettings}/>
                                 {reportData.map( (row) => {return  <PDFRow key={(row.poster_id)} rowData={row}></PDFRow>})}
+                                <PDFReportLastRow totals={totals}/>
                             </Page>
                         </Document>
                     </PDFViewer>

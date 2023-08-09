@@ -14,13 +14,12 @@ export default function ReportTableBottomRow({ totals }) {
                 <td>{totals?.total.toFixed(2)}</td>
             </tr>
             <tr className="table-warning">
-                <td colSpan={4}>Check: Grant + cash - discount</td>
+                <td colSpan={4}>Check: Account + cash received + SDF discount</td>
                 <td>grant: {totals?.grant.toFixed(2)}</td>
                 <td>+ cash: {totals?.cash.toFixed(2)}</td>
                 <td>+ discount: {totals?.SDF.toFixed(2)}</td>
                 <td>= {(totals?.grant + totals?.cash + totals?.SDF).toFixed(2)}</td>
             </tr>
-
         </>
 
     )

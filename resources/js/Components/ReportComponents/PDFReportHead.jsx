@@ -15,18 +15,19 @@ export default function PDFReportHead({ reportSettings }) {
     const styles = StyleSheet.create({
         rowView: {
             flexDirection: "row",
-            paddingTop: 5,
             borderBottom: "2"
         },
-
+        aboveHeader: {
+            borderTop: "2",
+            flexDirection: "row",
+            height: 25,
+        },
         headerRow: {
             flexDirection: "row",
             justifyContent: "space-between",
             padding: 5,
             paddingLeft: 20,
-            marginBottom: 10,
             height: 80,
-            borderBottom: "2px solid black",
         },
         headerColumn: {
             flexDirection: "column",
@@ -63,6 +64,10 @@ export default function PDFReportHead({ reportSettings }) {
                 </View>
             </View>
             {/* Top Row */}
+            <View style={styles.aboveHeader}>
+                <InformationTitle />
+                <PaymentMethodsTitle />
+            </View>
             <View style={styles.rowView}>
                 <DateColumnHead />
                 <PosterNumberHead />
@@ -70,9 +75,55 @@ export default function PDFReportHead({ reportSettings }) {
                 <ApproverHead/>
                 <DollarAmountHead title="Grant"/>
                 <DollarAmountHead title="Cash"/>
-                <DollarAmountHead title="Discount"/>
+                <DollarAmountHead title="Discount" rightBorder={true}/>
                 <DollarAmountHead title="Total"/>
             </View>
+        </>
+    );
+}
+
+
+
+function InformationTitle() {
+    const styles = StyleSheet.create({
+        AboveHeaderCell: {
+            width : "55%",
+            borderRight: '1px',
+        },
+        centerValue: {
+            fontSize: 12,
+            marginLeft: '100px'
+        },
+    });
+    return (
+        <View style={styles.AboveHeaderCell}>
+            <Text style={styles.centerValue}>Information</Text>
+        </View>
+    );
+}
+
+function PaymentMethodsTitle() {
+    const styles = StyleSheet.create({
+        AboveHeaderCell: {
+            width : "33.6%",
+            borderRight: '1px',
+        },
+        centerValue: {
+            fontSize: 12,
+            marginLeft: '12px'
+        },
+        blankSpace: {
+            width: "8.93%"
+        }
+    });
+    return (
+        <>
+        <View style={styles.AboveHeaderCell}>
+            <Text style={styles.centerValue}>Payment Methods</Text>
+        </View>
+        <View style={styles.blankSpace}>
+            
+        </View>
         </>
     );
 }
@@ -81,7 +132,7 @@ function DateColumnHead() {
     const styles = StyleSheet.create({
         dateColumn: {
             flexDirection: "row",
-            width: "110%",
+            width: "8%",
         },
         value: {
             fontSize: 12,
@@ -103,7 +154,7 @@ function PosterNumberHead() {
     const styles = StyleSheet.create({
         columnHeader: {
             flexDirection: "col",
-            width: "65%",
+            width: "7%",
 
         },
         columnHeaderValue: {
@@ -123,7 +174,7 @@ function RequisitionerHead() {
     const styles = StyleSheet.create({
         columnHeader: {
             flexDirection: "row",
-            width: "200%",
+            width: "20%",
         },
         columnHeaderValue: {
             fontSize: 12,
@@ -142,7 +193,8 @@ function ApproverHead() {
     const styles = StyleSheet.create({
         columnHeader: {
             flexDirection: "row",
-            width: "200%",
+            width: "20%",
+            borderRight: '1px',
         },
         columnHeaderValue: {
             fontSize: 12,
@@ -156,19 +208,31 @@ function ApproverHead() {
     );
 }
 
-function DollarAmountHead({ title }) {
+function DollarAmountHead({ title, rightBorder=false }) {
     const styles = StyleSheet.create({
         columnHeader: {
             flexDirection: "row",
-            width: "80%",
+            paddingLeft : "5px",
+            width: "11.2%",
         },
+        columnHeaderWithRightBorder :
+        {
+            paddingLeft : "5px",
+            flexDirection: "row",
+            width: "11.2%",
+            borderRight: "1px",
+        },
+        
         columnHeaderValue: {
             fontSize: 10,
             textAlign: "center",
         },
+        borderEnd: {
+            borderRight: "1px",
+        }
     });
     return (
-        <View style={styles.columnHeader}>
+        <View style={rightBorder ? styles.columnHeaderWithRightBorder : styles.columnHeader }>
             <Text style={styles.columnHeaderValue}>{title}</Text>
         </View>
     );
