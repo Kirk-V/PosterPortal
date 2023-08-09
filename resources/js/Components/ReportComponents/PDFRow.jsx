@@ -45,7 +45,7 @@ export default function PDFRow({ rowData }) {
             <DollarCell amount={rowData.transactions.total} active={rowData.requests.payment_method == "speed_code"}/>
             <DollarCell amount={rowData.transactions.total_received} active={rowData.requests.payment_method == "cash"}/>
             <DollarCell amount={rowData.discount} active={rowData.discount_eligible == "1"}/>
-            <DollarCell amount={rowData.transactions.total}/>
+            {rowData.state == 'rejected' ? <VoidCell/> : <DollarCell amount={rowData.transactions.total}/>}
         </View>
     );
 }
@@ -154,6 +154,26 @@ function DollarCell({amount, active=true}) {
     return (
         <View style={styles.infoColumn}>
             {active ? <Text style={styles.value}>{parseFloat(amount).toFixed(2)}</Text> : <Text>-</Text>}
+        </View>
+    );
+}
+
+function VoidCell() {
+    const styles = StyleSheet.create({
+        infoColumn: {
+            flexDirection: "col",
+            width: "80%",
+
+        },
+        value: {
+            fontSize: 10,
+            width: "100%",
+            textAlign: "left",
+        },
+    });
+    return (
+        <View style={styles.infoColumn}>
+            {<Text>VOID</Text>}
         </View>
     );
 }
