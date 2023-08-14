@@ -20,7 +20,6 @@ function PosterPortal({ auth, currentView, data, user, departments }) {
         setErrorToast({ message: errorMessage, errorType: errorType, show: true });
     }
 
-    console.log(`PosterPortal departments: ${JSON.stringify(departments)}`);
     let pageView;
     if (currentView === 'requests') {
         pageView = <Requests data={data} showErrorHandle={handleErrorToast} departments={departments}/>;

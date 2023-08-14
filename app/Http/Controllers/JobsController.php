@@ -85,7 +85,7 @@ class JobsController extends Controller
         log::info("$jobID being updated with state $state");
         DB::enableQueryLog();
         $job = Jobs::find($request->input('job_id'));
-        log::info(DB::getQueryLog());
+        // log::info(DB::getQueryLog());
         if ($job == null) {
             log::info("job is null");
             return response(["success" => False]);
@@ -141,6 +141,7 @@ class JobsController extends Controller
      */
     public function emailPDFReceipt(Request $request)
     {
+        
         // Extract the required parameters
         $recipientType = $request->query('to');
         $poster_id = $request->query('id');
@@ -165,12 +166,28 @@ class JobsController extends Controller
                 $poster->jobs->emailed_receipt_ssts= true;
                 break;
         }
-        log::info("Email to $toAddress request for $poster_id");
-        // log::info($request->getContent());
-        file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent());
-        Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new PDFMail($poster_id, $recipientType));
-        $poster->jobs->save();
-        return self::successResponse("none");
+        try
+        {
+            
+            log::info("Email to $toAddress request for $poster_id");
+            
+            // log::info($request->getContent());
+            if(file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent()))
+            {
+                return self::successResponse(['sent'=> true]);
+            }
+            else
+            {
+                return self::errorResponse("Cannot create PDF", 400);
+            }
+            // Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new PDFMail($poster_id, $recipientType));
+            $poster->jobs->save();
+        }
+        catch(\Exception $e)
+        {
+            log::info("$e");
+        }
+        return self::successResponse(['sent'=> true]);
     }
 
     public function emailPickUp(Request $request)

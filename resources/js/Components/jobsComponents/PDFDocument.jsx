@@ -266,8 +266,10 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
 
     async function handleEmailClick(event, to) {
         event.preventDefault();
+        event.stopPropagation();
         let bodydata = await pdf(MyDocument).toBlob();
-        console.log(bodydata);
+        console.log(bodydata);        
+        
         let options = {
             method: 'POST',
             body: bodydata,
@@ -278,6 +280,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
         fetch(`api/jobs/sendPDFEmail?id=${jobData.poster_id}&to=${to}`, options)
             .then((res) => {
                 if (!res.ok) {
+                    console.log("response not okay!");
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return res.json()
@@ -286,22 +289,53 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 console.log(`okay, Email response: ${JSON.stringify(response)}`);
                 if (response.status == "Success") {
                     if (to == "Requisitioner") {
-                        jobData.emailed_receipt_req = 1;
+                        // jobData.emailed_receipt_req = 1;
+                        console.log("Recieved response! "+JSON.stringify(response));
                     }
-
                 }
             })
             .catch((error) => {
                 console.log("Error : " + error);
-            })
+            });
+        return;
     }
 
     const handleRedactClick = () => {
         setRedactSpeedCode(true);
     }
 
+    const handleEmailRequisitionerClick = async (event) =>
+    {
+        event.preventDefault();
+        event.stopPropagation();
+        const bodydata = await pdf(MyDocument).toBlob();
+        console.log(bodydata);        
+        
+        let options = {
+            method: 'POST',
+            body: bodydata,
+        }
+        let goGetIt = await fetch(`api/jobs/sendPDFEmail?id=${jobData.poster_id}&to=Requisitioner`, options)
+            .then((res) => {
+                if (!res.ok) {
+                    console.log("response not okay!");
+                    // throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return res.json()
+            })
+            .then((response) => {
+                console.log(`okay, Email response: ${JSON.stringify(response)}`);
+                return;
+            })
+            .catch((error) => {
+                console.log("Error : " + error);
+            });
+        console.log("finished");
+        return;
+    }
+
     const emailReqBtn = (
-        <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary" : "danger"} className="" onClick={(e) => handleEmailClick(e, "Requisitioner")}>Email Requisitioner</Button>
+        <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary" : "danger"} onClick={async function (e) { await handleEmailRequisitionerClick(e); e.preventDefault(); e.stopPropagation(); console.log("never ends"); }}>Email Requisitioner</Button>
     )
 
     const redactSpeedCodeBtn = (
@@ -323,8 +357,8 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
                         {jobData.payment_method == 'speed_code' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
-                        <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
-                        <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
+                        {/* <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button> */}
+                        {/* <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button> */}
                     </div>
                 </div>
 

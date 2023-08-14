@@ -21,7 +21,6 @@ function Jobs({ auth, data, showErrorHandle, departments}) {
         console.log(`Setting error to ${errorMessage} , ${errorType}, true`);
         setErrorToast({ message: errorMessage, errorType: errorType, show: true });
     }
-    console.log(`jobs departments: ${JSON.stringify(departments)}`);
     return (
         <JobsTable showErrorHandle={showErrorHandle} departments={departments}/>
 

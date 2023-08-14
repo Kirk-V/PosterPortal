@@ -12,7 +12,6 @@ import JobForm from "./ReceiptForm";
 //This component holds request data, and should call for extra data related to a request when needed
 // ie. if the request is undergrad and needs to be combined with course info.
 export default function JobsModal({ modalData, onHide, show, showErrorHandle, departments}) {
-    console.log(`jobs modal departments: ${JSON.stringify(departments)}`);
     return (
         <>
             {modalData == null ? (
