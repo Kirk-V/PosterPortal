@@ -63,6 +63,8 @@ export default function JobsTable({showErrorHandle, departments}) {
 
     console.log(`jobs table departments: ${JSON.stringify(departments)}`);
     function handleRowClick(rowData){
+        //Check if the rowData has set the transaction date yet, if not add it now. 
+        rowData[`transaction_date`] = new Date().toISOString().split('T')[0];
         setModalData(rowData);
         setShowingModal(true);
         console.log(`showmodal: ${showingModal}`);

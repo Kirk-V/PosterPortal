@@ -270,7 +270,10 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
         console.log(bodydata);
         let options = {
             method: 'POST',
-            body: bodydata
+            body: bodydata,
+            headers: {
+                'Accept': 'application/json',
+            },
         }
         fetch(`api/jobs/sendPDFEmail?id=${jobData.poster_id}&to=${to}`, options)
             .then((res) => {
