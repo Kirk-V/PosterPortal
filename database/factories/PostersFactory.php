@@ -36,7 +36,6 @@ class PostersFactory extends Factory
             'cost' => fake()->randomFloat(2, 10, 600),
             'file_location' => fake()->word()."/".fake()->fileExtension(),
         ];
-
     }
 
     public function configure(): static
@@ -49,4 +48,6 @@ class PostersFactory extends Factory
             }
         });
     }
+
+    
 }

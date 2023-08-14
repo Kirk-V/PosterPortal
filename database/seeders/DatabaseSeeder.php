@@ -38,11 +38,48 @@ class DatabaseSeeder extends Seeder
         // ->count(100)
         // ->create();
 
+
+        // Create appropriate test data we should have a range of customer and payment types
+        // 
+
+        // Posters::factory()
+        // ->has(Requests::factory())
+        // ->has(Jobs::factory())
+        // ->count(1000)
+        // ->create();
+
+
+        //Add a course to reference later.
+        Courses::factory([
+            'number'=> 4850,
+            'department' => 'psychology'
+            ])->count(1)->create();
+
+        //Two Posters that are Cash - Random SSC Departments
+        //One without Discount...
         Posters::factory()
-        ->has(Requests::factory())
-        ->has(Jobs::factory())
-        ->count(1000)
-        ->create();
+        ->has(Requests::factory(['payment_method' => 'cash', 'email' => 'kvande85@uwo.ca','applied_for_discount' => false]))
+        ->count(1)
+        ->create([
+            'state' => 'pending',
+            'speed_code' => null,
+            'speed_code_approved' => 0,
+            'discount_eligible' => 0,
+        ]);
+        //One with SDF Discount...
+        Posters::factory()
+        ->has(Requests::factory([
+            'payment_method' => 'cash', 
+            'applied_for_discount' => true,
+            'email' => 'kvande85@uwo.ca',
+            'course_department' => 'psychology']))
+        ->count(1)
+        ->create([
+            'state' => 'pending',
+            'speed_code' => null,
+            'speed_code_approved' => 0,
+            'discount_eligible' => 0,
+        ]);
 
         DB::table('settings')->insert([
             'setting' => 'cost',
