@@ -44,8 +44,9 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
     const CashSection = (
         <Row >
             <Col>
-                <small>Cash payments (Pre-payment is not required).</small>
-                <p><small>Payment is completed when the poster is picked up.</small></p>
+                <p><small>Cash payments (Pre-payment is not required). 
+                Payment is completed when the poster is picked up.</small> <br/>
+                Payment method cannot be changed <strong>AFTER</strong> the poster has been printed.</p>
             </Col>
         </Row>
     )
@@ -216,7 +217,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
         <>
             <Row>
                 <h1>Payment Method</h1>
-                <small>Payment method cannot be changed after the poster has been printed.</small>
+                
             </Row>
             <Row className="mt-2 mb-2">
                 <Col sm="3">
