@@ -21,7 +21,7 @@ export default function PosterFile({serverValidationAttempted, validationFields,
 
   const EmailSecton = (
     <Row>
-      <p className="lead">After submitting this form, you will be emailed a request for a poster file(s) along with further instructions. Please reply to this email with your poster file attached.</p>
+      <p className="lead">After submitting this form, you will receive an automated email requesting the poster file(s). Please reply to this email with the poster file(s) attached.</p>
     </Row>
   )
 
@@ -60,7 +60,8 @@ export default function PosterFile({serverValidationAttempted, validationFields,
         <h1>Poster File</h1>
       </Row>
       <Row>
-        <p>Your <strong>PDF or PowerPoint</strong> poster file can be shared using a oneDrive link or via email. Please select an option and follow the instructions that appear.</p>
+        <p>Pdf file required. A PowerPoint file (if available) can also be submitted as a secondary file.</p>
+        <p> <strong>BEFORE SUBMITTING</strong>: Please check the poster dimensions. If the poster dimensions do not match the dimensions entered on this form, printing cannot proceed.<br/>Note: It is <strong>not</strong> the responsibility of SSTS to modify or make changes to the poster.</p>
       </Row>
       <Row className="mt-2 mb-2">
         <Col sm="3">

@@ -318,7 +318,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 .then((res) => {
                     if (!res.ok) {
                         console.log("response not okay!");
-                        // throw new Error(`HTTP error! Status: ${response.status}`);
+                        throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     return res.json()
                 })
@@ -358,8 +358,8 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
                         {jobData.payment_method == 'speed_code' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
-                        {/* <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button> */}
-                        {/* <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button> */}
+                        <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
                     </div>
                 </div>
 
