@@ -14,7 +14,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     const [request, setRequest] = useState(null);
     const [formData, setFormData] = useState(null); // originally comes from request.
     const [formIsValid, setFormIsValid] = useState(false);
-    console.log("modal made");
+
     // We have the passed Data already in the requestData Prop, so lets display it in a form
     // for editing
 
@@ -41,7 +41,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 let costPer = response.cost;
                 let quantity = response.quantity;
                 let discount = response.discount_eligible == "1" ? response.discount : 0;
-                response.total = ((costPer - discount) * quantity).toFixed(2);
+                response.total = (costPer * quantity).toFixed(2);
                 setFormData(response);
             },
             (error) => {

@@ -14,12 +14,38 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     const [isSpeedCode, setIsSpeedCode] = useState(false);
     const [total, setTotal] = useState(0);
     const [validated, setValidated] = useState(false);
+    const [sdfBalance, setSDFBalance] = useState(null);
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
     // This will allow for users to change the course info attached to the request..
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
     // can become its own component.
 
+    useEffect(() => {
+        let options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            },
+        }
+        fetch(`api/SDFBalance`, options)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return res.json();
+            })
+            .then((response) => {
+                console.log(`okay, Balance is: ${JSON.stringify(response)}`);
+                if (response.status == "Success") {
+                    setSDFBalance(response.data.Balance);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
+    console.log("total is " + formD.total);
     function handleOpenFile() {
         console.log("file opening");
     }
@@ -38,7 +64,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let discount = data.discount;
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + (costPer - discount) * quantity);
-        return ((costPer * quantity) - discount).toFixed(2);
+        return (costPer * quantity).toFixed(2);
     };
 
 
@@ -50,8 +76,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let inchWidth = data.units == "centimeters" ? 0.3937007874 * data.width : data.width;
         let inchHeight = data.units == "centimeters" ? 0.3937007874 * data.height : data.height;
         var total = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
-        if(data.payment_method == 'cash')
-        {
+        if (data.payment_method == 'cash') {
             //round down
             total = Math.round(total);
         }
@@ -60,8 +85,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     }
 
     const calcualteDiscount = (data) => {
-        if(data.discount_eligible)
-        {
+        if (data.discount_eligible) {
             return data.quantity * settings.discount;
         }
     }
@@ -77,7 +101,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
             data.total = calculateTotal(data); //The total cost
             console.log(`cost now: ${data.cost}`);
         }
-        else if (["quantity",  "cost"].includes(name)) {
+        else if (["quantity", "cost"].includes(name)) {
             data.discount = calcualteDiscount(data);
             data.total = calculateTotal(data);
             console.log(`total now: ${data.total}`);
@@ -246,7 +270,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     </InputGroup>
 
                 </Col>
-                
+
             </Row>
         </>
     );
@@ -271,6 +295,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         type="number"
                         className="border-0"
                         readOnly
+                        value={sdfBalance.toFixed(2)}
                         required
                     />
                 </Form.Group>
@@ -300,7 +325,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
             className='mt-1'
             name="external_department"
             type="text"
-            onChange={(e) =>  handleControlChange(e)}
+            onChange={(e) => handleControlChange(e)}
             value={formD.external_department ?? ""}
             required
         />
@@ -356,18 +381,18 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     </Form.Group>
                 </Col>
                 <Col xs={2}>
-                        <Form.Label >Department</Form.Label>
-                        <Form.Select
-                            name="department"
-                            defaultValue={formD.department}
-                            onChange={(e) => handleControlChange(e)}>
-                                {departments.map((departmentName) => (
-                                    <option key={departmentName} value={departmentName}>{departmentName}</option>
-                                ))}
-                        </Form.Select>
-                        {formD.department == 'Other (Non Social Science Department)'? externalDepartment: null }
-                        
-                    </Col>
+                    <Form.Label >Department</Form.Label>
+                    <Form.Select
+                        name="department"
+                        defaultValue={formD.department}
+                        onChange={(e) => handleControlChange(e)}>
+                        {departments.map((departmentName) => (
+                            <option key={departmentName} value={departmentName}>{departmentName}</option>
+                        ))}
+                    </Form.Select>
+                    {formD.department == 'Other (Non Social Science Department)' ? externalDepartment : null}
+
+                </Col>
                 <Col xs={2}>
                     <Form.Group
                         className="mb-3"
@@ -519,9 +544,34 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         </InputGroup>
                     </Form.Group>
                 </Col>
+
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormEmail">
-                        <Form.Label>Discount</Form.Label>
+                        <Form.Label>Total</Form.Label>
+                        <InputGroup className="mb-3">
+                            <InputGroup.Text id="basic-addon2">
+                                $
+                            </InputGroup.Text>
+                            <Form.Control
+                                name="total"
+                                type="number"
+                                value={parseFloat(formD.total).toFixed(2)}
+                                // value={calculateTotal()} 
+                                onChange={(e) => handleControlChange(e)}
+                                readOnly />
+                        </InputGroup>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs='8'>
+                    <Form.Label className="float-end">
+                        Discount
+                    </Form.Label>
+                </Col>
+                <Col>
+                    <Form.Group className="mb-3" controlId="requestFormEmail">
+
                         <InputGroup className="mb-3">
                             <InputGroup.Text id="basic-addon2">
                                 $
@@ -537,20 +587,25 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         </InputGroup>
                     </Form.Group>
                 </Col>
+            </Row>
+            <Row>
+                <Col xs='8'>
+                    <Form.Label className="float-end">
+                        Total Payment
+                    </Form.Label>
+                </Col>
                 <Col>
                     <Form.Group className="mb-3" controlId="requestFormEmail">
-                        <Form.Label>Total</Form.Label>
+
                         <InputGroup className="mb-3">
                             <InputGroup.Text id="basic-addon2">
                                 $
                             </InputGroup.Text>
                             <Form.Control
-                                name="total"
                                 type="number"
-                                value={parseFloat(formD.total).toFixed(2)}
-                                // value={calculateTotal()} 
+                                value={parseFloat(formD.cost * formD.quantity - formD.discount).toFixed(2)}
                                 onChange={(e) => handleControlChange(e)}
-                                readOnly />
+                            />
                         </InputGroup>
                     </Form.Group>
                 </Col>
