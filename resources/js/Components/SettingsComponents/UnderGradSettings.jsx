@@ -14,8 +14,8 @@ function UnderGradSettingsCard({ settingsData, updateSetting, departments, SDFBa
     const [withdrawalAmount, setWithdrawalAmount] = useState(0);
     const [depositAmount, setDepositAmount] = useState(0);
     const [sdfBalance , setSdfBalance] = useState(SDFBalance);
-    //Get Course Data On Load;
-    console.log("ugrad rerender");
+
+
 
 
     const updateAddCourseData = (e) => {
