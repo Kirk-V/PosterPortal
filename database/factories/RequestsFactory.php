@@ -29,7 +29,7 @@ class RequestsFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
             'email' => fake()->email(),
-            'department' => fake()->randomElement(['Anthropology', 'Brain and Mind', 'Dan Management', 'Deans Office', 'Economics', 'Geography', 'History', 'Indigenous Studies', 'Nest', 'Political Science', 'Psychology', 'Sociology', 'SSTS', 'Other']),
+            'department' => fake()->randomElement(config('app.departments')),
             'payment_method' => fake()->randomElement(['cash', 'speed_code']),
             'applied_for_discount' => fake()->boolean(),
             'user_logged_in' => fake()->userName(),
@@ -39,7 +39,7 @@ class RequestsFactory extends Factory
 
         if($returnArray["payment_method"] == 'speed_code')
         {
-            $returnArray['approver_type'] = fake()->randomElement(['dosa', 'administrator', 'grant holder']);
+            $returnArray['approver_type'] = fake()->randomElement(['dosa', 'administrator', 'grant_holder']);
             $returnArray['grant_holder_name'] = fake()->name();
             $returnArray['approver_email'] = fake()->email();
             if($returnArray['approver_type'] == 'dosa')

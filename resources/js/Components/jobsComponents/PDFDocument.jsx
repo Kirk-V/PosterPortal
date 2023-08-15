@@ -336,7 +336,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
 }
 
     const emailReqBtn = (
-        <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary" : "danger"} onClick={async function (e) { await handleEmailRequisitionerClick(e); e.preventDefault(); e.stopPropagation(); console.log("never ends"); }}>Email Requisitioner</Button>
+        <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary" : "danger"} onClick={async function (e) { e.preventDefault(); e.stopPropagation(); await handleEmailRequisitionerClick(e);  console.log("never ends"); }}>Email Requisitioner</Button>
     )
 
     const redactSpeedCodeBtn = (

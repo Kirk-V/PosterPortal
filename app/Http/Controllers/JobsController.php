@@ -183,7 +183,7 @@ class JobsController extends Controller
             log::info("ERROR saving/emailing pdf $e");
             return self::errorResponse('Could not send PDF', 400);
         }
-        return self::successResponse(['sent'=> true, "Created PDF", ]);
+        return self::successResponse(['sent'=> true], "Created PDF");
     }
 
     public function emailPickUp(Request $request)

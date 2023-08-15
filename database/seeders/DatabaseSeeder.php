@@ -56,9 +56,13 @@ class DatabaseSeeder extends Seeder
             ])->count(1)->create();
 
         //Two Posters that are Cash - Random SSC Departments
-        //One without Discount...
+        //One without Discount and external...
         Posters::factory()
-        ->has(Requests::factory(['payment_method' => 'cash', 'email' => 'kvande85@uwo.ca','applied_for_discount' => false]))
+        ->has(Requests::factory([
+            'payment_method' => 'cash', 
+            'email' => 'kvande85@uwo.ca',
+            'applied_for_discount' => false,
+            'department' => "Other (Non Social Science Department)"]))
         ->count(1)
         ->create([
             'state' => 'pending',
@@ -80,6 +84,44 @@ class DatabaseSeeder extends Seeder
             'speed_code_approved' => 0,
             'discount_eligible' => 0,
         ]);
+
+        //Speedcode payment - DOSA
+        Posters::factory()
+        ->has(Requests::factory([
+            'payment_method' => 'speed_code', 
+            'applied_for_discount' => false,
+            'email' => 'kvande85@uwo.ca',
+            'grant_holder_name' => 'grant one',
+            'approver_name' => 'dosa Approver',
+            'approver_type' => 'dosa',
+            'approver_email' => 'kvande85@uwo.ca',
+            'approver_department' => 'ssts']))
+        ->count(1)
+        ->create([
+            'state' => 'pending',
+            'speed_code' => null,
+            'speed_code_approved' => 0,
+            'discount_eligible' => 0,
+        ]);
+
+        Posters::factory()
+        ->has(Requests::factory([
+            'payment_method' => 'speed_code', 
+            'applied_for_discount' => false,
+            'email' => 'kvande85@uwo.ca',
+            'approver_name' => 'admin approver',
+            'approver_type' => 'administrator',
+            'approver_email' => 'kvande85@uwo.ca',
+            'approver_department' => 'ssts']))
+        ->count(1)
+        ->create([
+            'state' => 'pending',
+            'speed_code' => null,
+            'speed_code_approved' => 0,
+            'discount_eligible' => 0,
+            'discount' => 0
+        ]);
+
 
         DB::table('settings')->insert([
             'setting' => 'cost',

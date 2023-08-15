@@ -29,6 +29,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
     {
         console.log("Updating total REceived")
         let data = {...jobsData};
+        let discountTotal = jobsData.discount_eligible ? jobsData.discount : 0;
         data['total_received'] = jobsData.cost * jobsData.quantity - jobsData.discount;
         setTotalReceived(data['total_received']);
         dataUpdateHandler(data);
@@ -279,7 +280,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Label className="mb-0">Department</Form.Label>
                         <Form.Select
                             name="department"
-                            defaultValue={jobsData.department}
+                            value={jobsData.department}
                             onChange={(e) => handleControlChange(e)}>
                                 {departments.map((departmentName) => (
                                     <option key={departmentName} value={departmentName}>{departmentName}</option>

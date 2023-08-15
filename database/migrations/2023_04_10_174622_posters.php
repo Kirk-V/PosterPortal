@@ -59,7 +59,7 @@ return new class extends Migration
             $table->enum('payment_method', ['cash','speed_code']);
             $table->string('grant_holder_name')->nullable();
             $table->string('approver_name')->nullable();
-            $table->string('approver_type')->nullable();
+            $table->enum('approver_type', ['grant_holder', 'dosa', 'administrator'])->nullable();
             $table->string('designate_name')->nullable();
             $table->string('approver_email')->nullable();
             $table->boolean('applied_for_discount');
