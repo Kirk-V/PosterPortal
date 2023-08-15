@@ -78,6 +78,14 @@ class Posters extends Model
         return array('cost'=>$costPer, 'discount' => $discount, 'total' => $total);
     }
 
+
+
+    /**
+     * Summary of acceptPoster:
+     * Updates the state of the poster to accepted
+     * @param mixed $id Poster ID of the poster to accept
+     * @return bool true if success, false otherwise
+     */
     public static function acceptPoster($id)
     {
         try{
@@ -97,6 +105,15 @@ class Posters extends Model
         
 
 
+    /**
+     * Summary of updatePoster:
+     *  Finds the provided poster and updates it with all available  values in the param: updateArray.
+     *  This is accomplished by checking the database for the available column names and checking if
+     *  they exist in the update Array. If they exist, the data associated with the column is updated. 
+     * @param mixed $id
+     * @param mixed $updateArray
+     * @return void
+     */
     public static function updatePoster($id, $updateArray)
     {
         $poster = Posters::findOrFail($id);

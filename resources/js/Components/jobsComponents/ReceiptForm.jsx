@@ -27,19 +27,14 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
 
     if(totalReceieved == 0)
     {
-        console.log("Updating total REceived")
+        console.log("Updating total Received")
         let data = {...jobsData};
-        let discountTotal = jobsData.discount_eligible ? jobsData.discount : 0;
-        data['total_received'] = jobsData.cost * jobsData.quantity - jobsData.discount;
+        let discountTotal = jobsData.discount_eligible == "0" ? 0: jobsData.discount; 
+        data['total_received'] = jobsData.cost * jobsData.quantity - discountTotal;
         setTotalReceived(data['total_received']);
         dataUpdateHandler(data);
     }
-    // const setDefaultTransactionDate = () => {
-    //     console.log("setting transaction date");
-    //     let data = { ...jobsData }; //Deep copy so that setformD will trigger rerender
-    //     data[`transaction_date`] = new Date().toISOString().split('T')[0];
 
-    // }
 
     const handleControlChange = (event) => {
         const value = event.target.value;
@@ -250,6 +245,17 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         </>
     )
 
+    var externalDepartment = (
+        <Form.Control
+            className='mt-1'
+            name="external_department"
+            type="text"
+            onChange={(e) =>  handleControlChange(e)}
+            value={jobsData.external_department ?? ""}
+            required
+        />
+    )
+
     return (
         <>
             <Form className="border rounded p-3" noValidate validated={validated} onSubmit={handleFormSubmit}>
@@ -286,6 +292,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                                     <option key={departmentName} value={departmentName}>{departmentName}</option>
                                 ))}
                         </Form.Select>
+                        {jobsData.department == 'Other (Non Social Science Department)' ? externalDepartment: null}
                     </Col>
                     <Col xs={3}>
                         <Form.Label className="mb-0">

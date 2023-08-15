@@ -295,6 +295,17 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         </Row>
     );
 
+    var externalDepartment = (
+        <Form.Control
+            className='mt-1'
+            name="external_department"
+            type="text"
+            onChange={(e) =>  handleControlChange(e)}
+            value={formD.external_department ?? ""}
+            required
+        />
+    )
+
 
     //display request data in a formdata.position
     return (
@@ -354,6 +365,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                                     <option key={departmentName} value={departmentName}>{departmentName}</option>
                                 ))}
                         </Form.Select>
+                        {formD.department == 'Other (Non Social Science Department)'? externalDepartment: null }
+                        
                     </Col>
                 <Col xs={2}>
                     <Form.Group

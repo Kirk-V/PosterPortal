@@ -240,7 +240,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 <View style={styles.rowView}>
                     <View style={styles.infoColumn}>
                         <Text style={styles.label}>Department</Text>
-                        <Text style={styles.value}>{jobData.department}</Text>
+                        <Text style={styles.value}>{jobData.department == 'Other (Non Social Science Department)'? jobData.external_department: jobData.department}</Text>
                     </View>
                     {jobData.discount_eligible ? CourseField : null}
 
