@@ -168,26 +168,22 @@ class JobsController extends Controller
         }
         try
         {
-            
-            log::info("Email to $toAddress request for $poster_id");
-            
-            // log::info($request->getContent());
-            if(file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $request->getContent()))
-            {
-                return self::successResponse(['sent'=> true]);
-            }
-            else
-            {
-                return self::errorResponse("Cannot create PDF", 400);
-            }
-            // Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new PDFMail($poster_id, $recipientType));
+            log::info("Email to $toAddress request for $poster_id");   
+            $pdfBlob = $request->getContent();
+            $pdfFile = fopen("../resources/views/mail/Receipt_$poster_id.pdf", "w");
+            fwrite($pdfFile, $pdfBlob);
+            fclose($pdfFile);
+
+            // file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $pdfBlob);
+            Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new PDFMail($poster_id, $recipientType));
             $poster->jobs->save();
         }
         catch(\Exception $e)
         {
-            log::info("$e");
+            log::info("ERROR saving/emailing pdf $e");
+            return self::errorResponse('Could not send PDF', 400);
         }
-        return self::successResponse(['sent'=> true]);
+        return self::successResponse(['sent'=> true, "Created PDF", ]);
     }
 
     public function emailPickUp(Request $request)

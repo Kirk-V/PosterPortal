@@ -118,16 +118,16 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
 
     let GrantHolderSection = (
         <>
-        <View style={styles.rowView}>
-            <View style={styles.infoColumn}>
-                <Text style={styles.label}>Approver Name</Text>
-                <Text style={styles.value}>{jobData.approver_name}</Text>
-            </View>
-            <View style={styles.infoColumn}>
-                <Text style={styles.label}>Approver Department</Text>
-                <Text style={styles.value}>{jobData.approver_department}</Text>
-            </View>
-                
+            <View style={styles.rowView}>
+                <View style={styles.infoColumn}>
+                    <Text style={styles.label}>Approver Name</Text>
+                    <Text style={styles.value}>{jobData.approver_name}</Text>
+                </View>
+                <View style={styles.infoColumn}>
+                    <Text style={styles.label}>Approver Department</Text>
+                    <Text style={styles.value}>{jobData.approver_department}</Text>
+                </View>
+
                 <View style={styles.infoColumn}>
                     <Text style={styles.label}>Approver Email</Text>
                     <Text style={styles.value}>{jobData.approver_email}</Text>
@@ -268,8 +268,8 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
         event.preventDefault();
         event.stopPropagation();
         let bodydata = await pdf(MyDocument).toBlob();
-        console.log(bodydata);        
-        
+        console.log(bodydata);
+
         let options = {
             method: 'POST',
             body: bodydata,
@@ -290,7 +290,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 if (response.status == "Success") {
                     if (to == "Requisitioner") {
                         // jobData.emailed_receipt_req = 1;
-                        console.log("Recieved response! "+JSON.stringify(response));
+                        console.log("Recieved response! " + JSON.stringify(response));
                     }
                 }
             })
@@ -304,35 +304,36 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
         setRedactSpeedCode(true);
     }
 
-    const handleEmailRequisitionerClick = async (event) =>
-    {
+    const handleEmailRequisitionerClick = async (event) => {
         event.preventDefault();
         event.stopPropagation();
-        const bodydata = await pdf(MyDocument).toBlob();
-        console.log(bodydata);        
-        
-        let options = {
-            method: 'POST',
-            body: bodydata,
+        pdf(MyDocument).toBlob().then((blobData) => {
+            console.log(`BlobData ${blobData}`);
+            let options = {
+                method: 'POST',
+                ContentType: 'application/octet-stream',
+                body: blobData,
+            }
+            let goGetIt = fetch(`api/jobs/sendPDFEmail?id=${jobData.poster_id}&to=Requisitioner`, options)
+                .then((res) => {
+                    if (!res.ok) {
+                        console.log("response not okay!");
+                        // throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return res.json()
+                })
+                .then((response) => {
+                    console.log(`okay, Email response: ${JSON.stringify(response)}`);
+                    return;
+                })
+                .catch((error) => {
+                    console.log("Error : " + error);
+                });
+            console.log("finished");
+            return;
         }
-        let goGetIt = await fetch(`api/jobs/sendPDFEmail?id=${jobData.poster_id}&to=Requisitioner`, options)
-            .then((res) => {
-                if (!res.ok) {
-                    console.log("response not okay!");
-                    // throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return res.json()
-            })
-            .then((response) => {
-                console.log(`okay, Email response: ${JSON.stringify(response)}`);
-                return;
-            })
-            .catch((error) => {
-                console.log("Error : " + error);
-            });
-        console.log("finished");
-        return;
-    }
+    )
+}
 
     const emailReqBtn = (
         <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary" : "danger"} onClick={async function (e) { await handleEmailRequisitionerClick(e); e.preventDefault(); e.stopPropagation(); console.log("never ends"); }}>Email Requisitioner</Button>
