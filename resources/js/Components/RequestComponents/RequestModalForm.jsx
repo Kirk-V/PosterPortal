@@ -295,7 +295,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         type="number"
                         className="border-0"
                         readOnly
-                        value={sdfBalance.toFixed(2)}
+                        value={sdfBalance?.toFixed(2)}
                         required
                     />
                 </Form.Group>

@@ -157,7 +157,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 </View>
                 <View style={styles.infoColumnLarge}>
                     <Text style={styles.label}>Description</Text>
-                    <Text style={styles.value}>{`${jobData.width} X ${jobData.height} Poster`}</Text>
+                    <Text style={styles.value}>{`${parseFloat(jobData.width).toFixed(2)} X ${parseFloat(jobData.height).toFixed(2)} Poster`}</Text>
                 </View>
                 <View style={styles.infoColumnSmall}>
                     <Text style={styles.label}>Cost Per Poster</Text>

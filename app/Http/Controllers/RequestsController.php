@@ -186,6 +186,6 @@ class RequestsController extends Controller
     }
 
     public function getPendingRequestsHeaders(){
-        return ['Poster'=>'poster_id', 'First'=>'requests.first_name', 'Last'=>'requests.last_name', 'Email'=>'requests.email', 'Payment'=>'requests.payment_method', 'Position'=>'requests.position', 'Status'=>'state'];
+        return ['Poster'=>'poster_id', 'First'=>'requests.first_name', 'Last'=>'requests.last_name', 'Email'=>'requests.email', 'Payment'=>'requests.payment_method', 'Status'=>'state'];
     }
 }

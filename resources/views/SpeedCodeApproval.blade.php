@@ -79,8 +79,10 @@
                                         class="form-control" 
                                         name="speedcode"
                                         maxLength="4"
+                                        minlength="4"
                                         pattern="[A-Za-z0-9]+"
                                         placeholder="Speed Code"
+                                        style="text-transform:uppercase"
                                         aria-label="SpeedCode"
                                         required>
                                         <label for="speedcode">Speed Code</label>
