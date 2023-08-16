@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 export default function PDF({ show, jobData, handleCloseReceipt }) {
     const [redactSpeedCode, setRedactSpeedCode] = useState(false);
+    const [emailedReq, setEmailedReq] = useState(jobData.emailed_receipt_req);
     // Create styles
     const styles = StyleSheet.create({
         page: {
@@ -303,7 +304,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 console.log(`okay, Email response: ${JSON.stringify(response)}`);
                 if (response.status == "Success") {
                     if (to == "Requisitioner") {
-                        // jobData.emailed_receipt_req = 1;
+                        
                         console.log("Recieved response! " + JSON.stringify(response));
                     }
                 }
@@ -338,6 +339,8 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     return res.json()
                 })
                 .then((response) => {
+                    jobData.emailed_receipt_req = 1;
+                    setEmailedReq(1);
                     console.log(`okay, Email response: ${JSON.stringify(response)}`);
                     return;
                 })
@@ -351,7 +354,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
 }
 
     const emailReqBtn = (
-        <Button type="button" variant={jobData.emailed_receipt_req == 0 ? "primary" : "danger"} onClick={async function (e) { e.preventDefault(); e.stopPropagation(); await handleEmailRequisitionerClick(e);  console.log("never ends"); }}>Email Requisitioner</Button>
+        <Button type="button" variant={emailedReq == 0 ? "primary" : "danger"} onClick={async function (e) { e.preventDefault(); e.stopPropagation(); await handleEmailRequisitionerClick(e);  console.log("never ends"); }}>Email Requisitioner</Button>
     )
 
     const redactSpeedCodeBtn = (
