@@ -113,14 +113,19 @@ function PosterApplication({ auth, data, departments }) {
             }
             
         }
+        // If we have toggled off apply for discount we need to remove the values in the 
+        // course number and course department fields
+        if (['apply_for_discount'].includes(name))
+        {
+            if(value == 0)
+            {
+                delete newData.course_number;
+                newData['course_department'] = null;
+            }
+        }
 
         setFieldData(newData);
-
     }
-    console.log(JSON.stringify(fieldData));
-
-
-
  
 
     const handleSubmit = (event) => {
@@ -219,7 +224,7 @@ function PosterApplication({ auth, data, departments }) {
         <>
             {ErrorWithSubmission ?? false ? null : ErrorWithSubmission}
             <Row>
-                <p>This printing service is available to Social Science faculty, staff, graduate students, associated members and affiliates. </p>
+                <p>This printing service is available to Social Science faculty, staff, graduate students, associated members and affiliates. We reserve the right to refuse any poster submitted to Social Science Technology Services for printing.</p>
                 <p>Need more information? Please visit our <a href="https://ssts.uwo.ca/services/posters/poster_printing_faqs.html" target="_blank">Poster Printing FAQ's page</a></p>
                 <p>If you wish to cancel an application or require further information, please notify SSTS by email <a href="mailto:ssts-posters@uwo.ca">ssts-posters@uwo.ca</a></p>
             </Row>

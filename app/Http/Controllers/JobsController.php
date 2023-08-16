@@ -155,7 +155,7 @@ class JobsController extends Controller
         $recipientType = $request->query('to');
         $poster_id = $request->query('id');
         if (is_null($recipientType) || is_null($poster_id)) {
-            return self::errorResponse("Cannot create PDF with provided query string", 400);
+            return self::errorResponse("Cannot create PDF with provided query string, must provide id and recipient type", 400);
         }
         //Get poster
         $poster = Posters::find($poster_id);
@@ -182,16 +182,23 @@ class JobsController extends Controller
             $pdfFile = fopen("../resources/views/mail/Receipt_$poster_id.pdf", "w");
             fwrite($pdfFile, $pdfBlob);
             fclose($pdfFile);
-
-            // file_put_contents("../resources/views/mail/Receipt_$poster_id.pdf", $pdfBlob);
+        }
+        catch(\Exception $e)
+        {
+            log::info("ERROR saving pdf $e");
+            return self::errorResponse('Could not send PDF, problem writing to file', 400);
+        }
+        try
+        {
             Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new PDFMail($poster_id, $recipientType));
             $poster->jobs->save();
         }
         catch(\Exception $e)
         {
-            log::info("ERROR saving/emailing pdf $e");
-            return self::errorResponse('Could not send PDF', 400);
+            log::info("ERROR emailing pdf $e");
+            return self::errorResponse('Could not send PDF, problem sending email', 400);
         }
+               
         return self::successResponse(['sent'=> true], "Created PDF");
     }
 

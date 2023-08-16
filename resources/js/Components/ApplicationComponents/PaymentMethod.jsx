@@ -171,7 +171,7 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
                     >
                         <sup><InfoCircle color="red" size={12} /></sup>
                     </OverlayTrigger> to approve the printing expense.</p>
-                    <p>Posters are placed "On Hold" until we receive a speedcode from the individual with account signing authority.</p>
+                    <p>Posters are placed "On Hold" until we receive a speedcode from the individual with account signing authority. If approval is not received or is declined, you can request to make a Cash payment to proceed with printing.</p>
                 
             </Row>
             <Row>

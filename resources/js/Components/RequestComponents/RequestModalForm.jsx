@@ -63,8 +63,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let quantity = data.quantity;
         let discount = data.discount;
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
-        console.log("calculated Total" + (costPer - discount) * quantity);
-        return (costPer * quantity).toFixed(2);
+        console.log("calculated Total" + costPer  * quantity);
+        return Math.floor((costPer * quantity)).toFixed(2);
     };
 
 
@@ -78,7 +78,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         var total = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
         if (data.payment_method == 'cash') {
             //round down
-            total = Math.round(total);
+            total = Math.floor(total);
         }
         console.log("cost:" + total);
         return total;
@@ -561,7 +561,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <Form.Control
                                 name="total"
                                 type="number"
-                                value={parseFloat(formD.total).toFixed(2)}
+                                value={(parseFloat(formD.payment_method == 'speed_code'? formD.total : Math.floor(formD.total))).toFixed(2)}
                                 // value={calculateTotal()} 
                                 onChange={(e) => handleControlChange(e)}
                                 readOnly />
