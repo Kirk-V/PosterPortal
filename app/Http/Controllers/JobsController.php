@@ -65,6 +65,15 @@ class JobsController extends Controller
         return  ['Poster No.' => 'poster_id', 'State' => 'job_state', 'Payment Type' => 'payment_method', 'First Name' => 'first_name', 'Last Name' => 'last_name',  'Requisitioner Eamil' => 'email', 'Department' => 'department', 'Print Date' => 'print_date'];
     }
 
+
+
+    /**
+     * Summary of getJobsData: Provides the necessary data to the jobs section of the
+     * UI.
+     * @param mixed $page
+     * @param mixed $entriesPerPage
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getJobsData($page, $entriesPerPage = 50)
     {
         $jobs = DB::table('Posters')->where('state', 'accepted')
