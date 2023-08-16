@@ -117,6 +117,20 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         dataUpdateHandler(data);
     }
 
+    const grantHolderName = (
+        <Col xs={4}>
+                    <Form.Label className="mb-0">
+                        Grant Holder
+                    </Form.Label>
+                    <Form.Control
+                        type="Text"
+                        name="grant_holder_name"
+                        defaultValue={jobsData.grant_holder_name}
+                        onChange={(e) => handleControlChange(e)}
+                    />
+                </Col>
+    )
+
     let GrantHolderInfo = (
         <>
             <Row>
@@ -164,17 +178,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
             </Row>
             <Row className="mt-2">
                 
-                <Col xs={4}>
-                    <Form.Label className="mb-0">
-                        Grant Holder
-                    </Form.Label>
-                    <Form.Control
-                        type="Text"
-                        name="grant_holder_name"
-                        defaultValue={jobsData.grant_holder_name}
-                        onChange={(e) => handleControlChange(e)}
-                    />
-                </Col>
+                {jobsData.approver_type == 'dosa'? grantHolderName: <Col xs={4}></Col>}
                 <Col xs={4}>
                     <Form.Label className="mb-0">
                         Approver

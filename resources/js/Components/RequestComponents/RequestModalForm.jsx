@@ -172,6 +172,19 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         }
     }
 
+    const grantholderName = (
+        <Col>
+            <Form.Group className="mb-3" controlId="requestFormFirstName">
+                <Form.Label>Grant Holder Name</Form.Label>
+                <Form.Control
+                    name="grant_holder_name"
+                    type="text"
+                    defaultValue={formD.grant_holder_name}
+                    required
+                />
+            </Form.Group>
+        </Col>
+    )
 
     var GrantHolderInfo = (
         <>
@@ -193,24 +206,15 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                 <Form.Group className="mb-3" controlId="requestFormFirstName">
                     <Form.Label>Approver Name</Form.Label>
                     <Form.Control
-                        name="grant_holder_name"
+                        name="approver_name"
                         type="text"
                         defaultValue={formD.approver_name}
                         required
                     />
                 </Form.Group>
             </Col>
-            <Col>
-                <Form.Group className="mb-3" controlId="requestFormFirstName">
-                    <Form.Label>Grant Holder Name</Form.Label>
-                    <Form.Control
-                        name="grant_holder_name"
-                        type="text"
-                        defaultValue={formD.grant_holder_name}
-                        required
-                    />
-                </Form.Group>
-            </Col>
+        {formD.approver_type == 'dosa' ?grantholderName:null}
+
             <Col>
                 <Form.Group
                     className="mb-3"

@@ -26,6 +26,12 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             marginRight: 10,
             width: "50%",
         },
+        grantHolderNameCol: {
+            flexDirection: 'col',
+            marginLeft: 10,
+            marginRight: 10,
+            width: "100%",
+        },
         label: {
             fontSize: 12,
             color: 'gray',
@@ -102,6 +108,12 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
 
     });
 
+    let grantHolderName = (
+        <View style={styles.grantHolderNameCol}>
+                <Text style={styles.label}>Grant Holder Name</Text>
+                <Text style={styles.value}>{redactSpeedCode ? "" : jobData.grant_holder_name}</Text>
+            </View>
+    )
     let SpeedCodeSection = (
         <>
             <View style={styles.infoColumn}>
@@ -112,8 +124,10 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 <Text style={styles.label}>Account</Text>
                 <Text style={styles.value}>{redactSpeedCode ? "" : jobData.account}</Text>
             </View>
+            {jobData.approver_type == 'dosa'? grantHolderName:null}
         </>
     )
+    
 
 
     let GrantHolderSection = (
@@ -295,6 +309,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                 }
             })
             .catch((error) => {
+
                 console.log("Error : " + error);
             });
         return;
@@ -343,6 +358,9 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
         <Button type="button" className="" onClick={() => handleRedactClick()}>Redact SpeedCode</Button>
     )
 
+    const emailGrantHolder = (
+        <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+    )
 
 
     return (
@@ -358,7 +376,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     </PDFViewer>
                     <div className="d-flex justify-content-evenly align-items-center p-3">
                         {jobData.payment_method == 'speed_code' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
-                        <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("GrantHolder")}>Email Grant Holder</Button>
+                        {jobData.payment_method == 'speed_code' ? emailGrantHolder: null}
                         <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary" : "danger"} className="" onClick={() => handleEmailClick("AdminAssistant")}>Email Mary</Button>
                     </div>
                 </div>
