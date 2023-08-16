@@ -253,6 +253,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             name="speed_code"
                             type="text"
                             defaultValue={formD.speed_code}
+                            onChange={(e) => handleControlChange(e)}
                             required
                             isValid={formD.speed_code_approved == 1}
                         />
@@ -260,13 +261,14 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             name="account"
                             type="text"
                             defaultValue={formD.account}
+                            onChange={(e) => handleControlChange(e)}
                             required
                             isValid={formD.speed_code_approved == 1}
                         />
 
                         <Button
                             variant="outline-secondary"
-                            id="button-addon2"
+                            id="approveSpeedCode"
                             onClick={handleApproved}
                         >
                             Approve
