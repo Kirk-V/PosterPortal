@@ -95,9 +95,10 @@
                                         value={{config('app.default_account')}}
                                         name="account"
                                         maxLength="6"
-                                        pattern="[A-Za-z0-9]+"
+                                        minLength="6"
+                                        pattern="[0-9]+"
                                         aria-label="Account">
-                                        <label for="speedcode">Account</label>
+                                        <label for="account">6 Digit Account</label>
                                 </div>
                             </div>
                         </div>
