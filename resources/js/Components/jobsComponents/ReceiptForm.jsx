@@ -403,7 +403,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             type="number"
                             name="height"
                             onChange={(e) => handleControlChange(e)} 
-                            value={parseFloat(jobsData.height).toFixed(2)}/>
+                            defaultValue={parseFloat(jobsData.height).toFixed(2)}/>
 
                     </Col>
                     <Col xs={2}>

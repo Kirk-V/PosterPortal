@@ -97,13 +97,13 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         console.log(`${name} being updated`);
         data[`${name}`] = value;
         if (["width", "height", "units", "discount"].includes(name)) {
-            data.cost = calculateCost(data); //The cost per poster
-            data.total = calculateTotal(data); //The total cost
+            data.cost = parseFloat(calculateCost(data)).toFixed(2); //The cost per poster
+            data.total = parseFloat(calculateTotal(data)).toFixed(2); //The total cost
             console.log(`cost now: ${data.cost}`);
         }
         else if (["quantity", "cost"].includes(name)) {
-            data.discount = calcualteDiscount(data);
-            data.total = calculateTotal(data);
+            data.discount = parseFloat(calcualteDiscount(data)).toFixed(2);
+            data.total = parseFloat(calculateTotal(data)).toFixed(2);
             console.log(`total now: ${data.total}`);
         }
         // setformD(data);
@@ -525,11 +525,12 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                                 $
                             </InputGroup.Text>
                             <Form.Control
-                                as="input"
                                 type="number"
+                                as="input"
                                 name="cost"
-                                value={parseFloat(formD.cost).toFixed(2)}
+                                step="0.01"
                                 onChange={(e) => handleControlChange(e)}
+                                defaultValue={parseFloat(formD.cost).toFixed(2)}
                             />
                         </InputGroup>
                     </Form.Group>
