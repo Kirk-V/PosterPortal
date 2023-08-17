@@ -179,7 +179,7 @@ class JobsController extends Controller
         {
             log::info("Email to $toAddress request for $poster_id");   
             $pdfBlob = $request->getContent();
-            $pdfFile = fopen("../resources/views/mail/Receipt_$poster_id.pdf", "w");
+            $pdfFile = fopen("../resources/views/mail/Receipts/Receipt_$poster_id.pdf", "w");
             fwrite($pdfFile, $pdfBlob);
             fclose($pdfFile);
         }
