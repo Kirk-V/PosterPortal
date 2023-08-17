@@ -402,8 +402,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="number"
                             name="height"
-                            defaultValue={jobsData.height}
-                            onChange={(e) => handleControlChange(e)} />
+                            onChange={(e) => handleControlChange(e)} 
+                            value={parseFloat(jobsData.height).toFixed(2)}/>
 
                     </Col>
                     <Col xs={2}>
