@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 export default function PDF({ show, jobData, handleCloseReceipt }) {
     const [redactSpeedCode, setRedactSpeedCode] = useState(false);
     const [emailedReq, setEmailedReq] = useState(jobData.emailed_receipt_req);
+    const [emailedApprover, setEmailedApprover] = useState(jobData.emailed_receipt_grant_holder);
+    const [emailedAdminAssist, setEmailedAdminAssist] = useState(jobData.emailed_receipt_ssts);
     // Create styles
     const styles = StyleSheet.create({
         page: {
@@ -306,6 +308,14 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     if (to == "Requisitioner") {
                         
                         console.log("Recieved response! " + JSON.stringify(response));
+                    }
+                    if (to == "GrantHolder") {
+                        setEmailedApprover(1);
+                        console.log("Recieved response! sent email to approver" + JSON.stringify(response));
+                    }
+                    if (to == "AdminAssistant") {
+                        setEmailedAdminAssist(1);
+                        console.log("Recieved response! sent email to SSTS" + JSON.stringify(response));
                     }
                 }
             })
