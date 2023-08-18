@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 resources/views/mail/Receipt*.pdf
 public/web.config
+/resources/views/mail/Receipts

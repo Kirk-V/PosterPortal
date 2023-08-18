@@ -50,7 +50,7 @@ class PDFMail extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromPath("../resources/views/mail/Receipt_$this->poster_id.pdf"),
+            Attachment::fromPath("../resources/views/mail/Receipts/Receipt_$this->poster_id.pdf"),
         ];
     }
 }
