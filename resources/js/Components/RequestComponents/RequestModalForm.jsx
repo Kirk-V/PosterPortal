@@ -64,7 +64,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let discount = data.discount;
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + costPer  * quantity);
-        return Math.floor((costPer * quantity)).toFixed(2);
+        let roundedTotal = data.payment_method == 'cash' ? Math.floor((costPer * quantity)).toFixed(2): (costPer * quantity).toFixed(2);
+        return roundedTotal;
     };
 
 
@@ -75,13 +76,10 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         console.log("cost being calculated");
         let inchWidth = data.units == "centimeters" ? 0.3937007874 * data.width : data.width;
         let inchHeight = data.units == "centimeters" ? 0.3937007874 * data.height : data.height;
-        var total = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
-        if (data.payment_method == 'cash') {
-            //round down
-            total = Math.floor(total);
-        }
-        console.log("cost:" + total);
-        return total;
+        var costPer = (((inchWidth * inchHeight) / 144) * pricePerFoot).toFixed(2);
+        //We do not round down the cost per. We instead round down the total and total payments
+        console.log("cost:" + costPer);
+        return costPer;
     }
 
     const calcualteDiscount = (data) => {
@@ -96,8 +94,9 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         var data = { ...formD }; //Deep copy so that setformD will trigger rerender
         console.log(`${name} being updated`);
         data[`${name}`] = value;
+        // If dimensions change, we need to update the cost per poster, total, total payment
         if (["width", "height", "units", "discount"].includes(name)) {
-            data.cost = parseFloat(calculateCost(data)).toFixed(2); //The cost per poster
+            data.cost = calculateCost(data); //The cost per poster
             data.total = parseFloat(calculateTotal(data)).toFixed(2); //The total cost
             console.log(`cost now: ${data.cost}`);
         }
@@ -534,7 +533,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                                 name="cost"
                                 step="0.01"
                                 onChange={(e) => handleControlChange(e)}
-                                defaultValue={parseFloat(formD.cost).toFixed(2)}
+                                value={Math.round(formD.cost * 100)/100}
                             />
                         </InputGroup>
                     </Form.Group>
@@ -614,8 +613,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             </InputGroup.Text>
                             <Form.Control
                                 type="number"
-                                value={parseFloat(formD.cost * formD.quantity - formD.discount).toFixed(2)}
-                                onChange={(e) => handleControlChange(e)}
+                                value={parseFloat(formD.total - formD.discount).toFixed(2)}
                             />
                         </InputGroup>
                     </Form.Group>
