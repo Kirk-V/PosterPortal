@@ -61,7 +61,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     const calculateTotal = (data) => {
         let costPer = data.cost;
         let quantity = data.quantity;
-        let discount = data.discount;
+        let discount = parseFloat(data.discount);
         console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
         console.log("calculated Total" + costPer  * quantity);
         let roundedTotal = data.payment_method == 'cash' ? Math.floor((costPer * quantity)).toFixed(2): (costPer * quantity).toFixed(2);
@@ -85,6 +85,9 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     const calcualteDiscount = (data) => {
         if (data.discount_eligible) {
             return data.quantity * settings.discount;
+        }
+        else{
+            return 0;
         }
     }
 
@@ -139,6 +142,27 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         setValidated(true);
     };
 
+
+    const handleUpdateDiscountEligible = (event) => {
+        let data = { ...formD };
+        console.log("Updating discount elgibility");
+        if(data.discount_eligible == 1)
+        {
+            //discount already being applied
+            console.log("removing discount");
+            data['discount_eligible'] = 0;
+            data['discount'] = 0;
+        }
+        else{
+            console.log("adding discount");
+            data['discount'] = settings.discount * data.quantity;
+            data['discount_eligible'] = 1;
+        }
+        data.cost = calculateCost(data);
+        data.total = calculateTotal(data);
+        onUpdate(data);
+    }
+
     const handleApplyDiscount = (event) => {
         let data = { ...formD };
         console.log("adding in discount " + settings.discount);
@@ -148,6 +172,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         data.total = calculateTotal(data);
         onUpdate(data);
     }
+
+    
 
     const handleRemoveDiscount = (event) => {
         console.log("removing discount");
@@ -306,7 +332,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                 </Form.Group>
             </Col>
             <Col xs={3} className="align-self-center">
-                <Button variant="primary" onClick={handleApplyDiscount}>Apply discount</Button>{' '}
+                <Button variant={formD.discount_eligible == 0 ? "primary" : "danger"} onClick={handleUpdateDiscountEligible}>{formD.discount_eligible == 0 ? "Apply discount" : "Remove Discount"}</Button>{' '}
             </Col>
         </>
     );
