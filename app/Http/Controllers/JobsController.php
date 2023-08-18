@@ -124,7 +124,7 @@ class JobsController extends Controller
     public function sendPickUpEmail(Request $request)
     {
         $poster_id = $request->query('id');
-        ///get the requisitioner email to send the notification
+        //get the requisitioner email to send the notification
         $poster = Posters::find($poster_id);
         $req_email = Posters::find($poster_id)->requests->email;
         $request = Posters::find($poster_id)->requests;

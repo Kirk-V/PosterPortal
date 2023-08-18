@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class PDFMail extends Mailable
 {
@@ -20,6 +21,7 @@ class PDFMail extends Mailable
     public function __construct(public String $poster_id, public String $MailType)
     {
         //
+        Log::info("sending receipt for poster $poster_id to $MailType");
     }
 
     /**
@@ -27,8 +29,18 @@ class PDFMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        log::info("Building envelope: ".$this->MailType);
+        $subjectWording = "Requisitioner";
+        if($this->MailType == 'GrantHolder')
+        {
+            $subjectWording = "Grant Approver";
+        }
+        else if($this->MailType == 'AdminAssistant')
+        {
+            $subjectWording = "";
+        }
         return new Envelope(
-            subject: "Poster Printing Service Receipt",
+            subject: "SSTS Poster Printing Service - $subjectWording Receipt",
         );
     }
 
