@@ -10,7 +10,7 @@ import JobsSendPickUpButton from "./JobsSendPickUpButton";
 import PDF from "./PDFDocument";
 
 //Form to change the job data around.
-export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, handleShowReceipt, departments}) {
+export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, handleShowReceipt, departments }) {
     const [totalCost, setTotalCost] = useState(0)
     const [validated, setValidated] = useState(false);
     const [transactionDate, setTransactionDate] = useState(jobsData.transaction_date);
@@ -25,11 +25,10 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         dataUpdateHandler(data);
     }
 
-    if(totalReceieved == 0)
-    {
+    if (totalReceieved == 0) {
         console.log("Updating total Received")
-        let data = {...jobsData};
-        let discountTotal = jobsData.discount_eligible == "0" ? 0: jobsData.discount; 
+        let data = { ...jobsData };
+        let discountTotal = jobsData.discount_eligible == "0" ? 0 : jobsData.discount;
         data['total_received'] = jobsData.cost * jobsData.quantity - discountTotal;
         setTotalReceived(data['total_received']);
         dataUpdateHandler(data);
@@ -72,7 +71,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     'Accept': 'application/json'
                 },
             }
-            console.log("sending data to make transaction: "+JSON.stringify(jobsData));
+            console.log("sending data to make transaction: " + JSON.stringify(jobsData));
             fetch(`api/jobs/makeTransactionAndUpdate`, options)
                 .then((res) => {
                     if (!res.ok) {
@@ -119,16 +118,16 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
 
     const grantHolderName = (
         <Col xs={4}>
-                    <Form.Label className="mb-0">
-                        Grant Holder
-                    </Form.Label>
-                    <Form.Control
-                        type="Text"
-                        name="grant_holder_name"
-                        defaultValue={jobsData.grant_holder_name}
-                        onChange={(e) => handleControlChange(e)}
-                    />
-                </Col>
+            <Form.Label className="mb-0">
+                Grant Holder
+            </Form.Label>
+            <Form.Control
+                type="Text"
+                name="grant_holder_name"
+                defaultValue={jobsData.grant_holder_name}
+                onChange={(e) => handleControlChange(e)}
+            />
+        </Col>
     )
 
     let GrantHolderInfo = (
@@ -177,8 +176,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 </Col>
             </Row>
             <Row className="mt-2">
-                
-                {jobsData.approver_type == 'dosa'? grantHolderName: <Col xs={4}></Col>}
+
+                {jobsData.approver_type == 'dosa' ? grantHolderName : <Col xs={4}></Col>}
                 <Col xs={4}>
                     <Form.Label className="mb-0">
                         Approver
@@ -191,14 +190,14 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     />
                 </Col>
                 <Col xs={4}>
-                        <Form.Label className="mb-0">Approver Department</Form.Label>
-                        <Form.Control
-                            type="Text"
-                            name="approver_department"
-                            value={jobsData.approver_department}>
-                            
-                        </Form.Control>
-                    </Col>
+                    <Form.Label className="mb-0">Approver Department</Form.Label>
+                    <Form.Control
+                        type="Text"
+                        name="approver_department"
+                        value={jobsData.approver_department}>
+
+                    </Form.Control>
+                </Col>
             </Row>
 
         </>
@@ -225,39 +224,47 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
     let SpeedCodeSection = (
         <>
             <Col xs={4}>
-            <Form.Label className="mb-0">
-                        Speed Code
-                    </Form.Label>
-                    <Form.Control
-                        type="Text"
-                        name="speed_code"
-                        value={jobsData.speed_code}
-                        onChange={(e) => handleControlChange(e)}
-                    />
+                <Form.Label className="mb-0">
+                    Speed Code
+                </Form.Label>
+                <Form.Control
+                    type="Text"
+                    name="speed_code"
+                    value={jobsData.speed_code}
+                    onChange={(e) => handleControlChange(e)}
+                />
             </Col>
             <Col xs={4}>
-            <Form.Label className="mb-0">
-                        Account
-                    </Form.Label>
-                    <Form.Control
-                        type="Text"
-                        name="account"
-                        value={jobsData.account}
-                        onChange={(e) => handleControlChange(e)}
-                    />
+                <Form.Label className="mb-0">
+                    Account
+                </Form.Label>
+                <Form.Control
+                    type="Text"
+                    name="account"
+                    value={jobsData.account}
+                    onChange={(e) => handleControlChange(e)}
+                />
             </Col>
         </>
     )
 
     var externalDepartment = (
-        <Form.Control
-            className='mt-1'
-            name="external_department"
-            type="text"
-            onChange={(e) =>  handleControlChange(e)}
-            value={jobsData.external_department ?? ""}
-            required
-        />
+        <Row className="justify-content-end">
+            <Col xs={5}>
+            <FormLabel className="mb-0">External Department</FormLabel>
+                <Form.Control
+                    className='mt-1'
+                    name="external_department"
+                    type="text"
+                    onChange={(e) => handleControlChange(e)}
+                    value={jobsData.external_department ?? ""}
+                    required
+                />
+            </Col>
+            <Col xs={1}>
+            </Col>
+
+        </Row>
     )
 
     return (
@@ -292,11 +299,11 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             name="department"
                             value={jobsData.department}
                             onChange={(e) => handleControlChange(e)}>
-                                {departments.map((departmentName) => (
-                                    <option key={departmentName} value={departmentName}>{departmentName}</option>
-                                ))}
+                            {departments.map((departmentName) => (
+                                <option key={departmentName} value={departmentName}>{departmentName}</option>
+                            ))}
                         </Form.Select>
-                        {jobsData.department == 'Other' ? externalDepartment: null}
+
                     </Col>
                     <Col xs={3}>
                         <Form.Label className="mb-0">
@@ -305,6 +312,9 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <p>{jobsData.poster_id} </p>
                     </Col>
                 </Row>
+
+                {jobsData.department == 'Other' ? externalDepartment : null}
+
                 <Row>
                     <Col xs={12} className="mt-2">
                         <h4>Requisitioner</h4>
@@ -402,8 +412,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="number"
                             name="height"
-                            onChange={(e) => handleControlChange(e)} 
-                            defaultValue={parseFloat(jobsData.height).toFixed(2)}/>
+                            onChange={(e) => handleControlChange(e)}
+                            defaultValue={parseFloat(jobsData.height).toFixed(2)} />
 
                     </Col>
                     <Col xs={2}>
