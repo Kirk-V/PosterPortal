@@ -58,6 +58,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         event.stopPropagation();
         if (form.checkValidity() === false) {
             console.log("not valid");
+            setValidated(true);
         }
         else {
             //We have a valid form. We can now send data show the receipt. 
@@ -126,6 +127,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 name="grant_holder_name"
                 defaultValue={jobsData.grant_holder_name}
                 onChange={(e) => handleControlChange(e)}
+                required
             />
         </Col>
     )
@@ -146,7 +148,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Select
                         name="approver_type"
                         defaultValue={jobsData.approver_type}
-                        onChange={(e) => handleControlChange(e)}>
+                        onChange={(e) => handleControlChange(e)}
+                        required>
                         <option value="dosa">Designate</option>
                         <option value="grant_holder">Grant Holder</option>
                         <option value="administrator">Administrator</option>
@@ -161,6 +164,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         name="approver_name"
                         defaultValue={jobsData.approver_name}
                         onChange={(e) => handleControlChange(e)}
+                        required
                     />
                 </Col>
                 <Col xs={4}>
@@ -170,6 +174,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Control
                         type="Text"
                         name="approver_email"
+                        required
                         defaultValue={jobsData.approver_email}
                         onChange={(e) => handleControlChange(e)}
                     />
@@ -185,6 +190,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Control
                         type="Text"
                         name="approver_name"
+                        required
                         defaultValue={jobsData.approver_name}
                         onChange={(e) => handleControlChange(e)}
                     />
@@ -194,6 +200,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Control
                         type="Text"
                         name="approver_department"
+                        required
                         value={jobsData.approver_department}>
 
                     </Form.Control>
@@ -214,6 +221,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                     <Form.Control
                         type="number"
                         name="discount"
+                        required
                         defaultValue={parseFloat(jobsData.discount).toFixed(2)}
                         onChange={(e) => handleControlChange(e)} />
                 </InputGroup>
@@ -230,6 +238,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 <Form.Control
                     type="Text"
                     name="speed_code"
+                    required
                     value={jobsData.speed_code}
                     onChange={(e) => handleControlChange(e)}
                 />
@@ -241,6 +250,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                 <Form.Control
                     type="Text"
                     name="account"
+                    required
                     value={jobsData.account}
                     onChange={(e) => handleControlChange(e)}
                 />
@@ -288,7 +298,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Select
                             name="technician"
                             defaultValue={jobsData.technician}
-                            onChange={(e) => handleControlChange(e)}>
+                            onChange={(e) => handleControlChange(e)}
+                            required>
                             <option value="Rick">Rick</option>
                             <option value="Steve">Steve</option>
                         </Form.Select>
@@ -298,7 +309,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Select
                             name="department"
                             value={jobsData.department}
-                            onChange={(e) => handleControlChange(e)}>
+                            onChange={(e) => handleControlChange(e)}
+                            required>
                             {departments.map((departmentName) => (
                                 <option key={departmentName} value={departmentName}>{departmentName}</option>
                             ))}
@@ -328,6 +340,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="Text"
                             name="first_name"
+                            required
                             defaultValue={jobsData.first_name}
                             onChange={(e) => handleControlChange(e)}
                         />
@@ -339,6 +352,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="Text"
                             name="last_name"
+                            required
                             defaultValue={jobsData.last_name}
                             onChange={(e) => handleControlChange(e)}
                         />
@@ -350,6 +364,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="Text"
                             name="email"
+                            required
                             defaultValue={jobsData.email}
                             onChange={(e) => handleControlChange(e)}
                         />
@@ -368,7 +383,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Select
                             name="payment_method"
                             defaultValue={jobsData.payment_method}
-                            onChange={(e) => handleControlChange(e)}>
+                            onChange={(e) => handleControlChange(e)}
+                            required>
                             <option value="cash">Cash</option>
                             <option value="speed_code">Speed Code</option>
                         </Form.Select>
@@ -389,6 +405,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Control
                             type="number"
                             name="quantity"
+                            required
                             defaultValue={jobsData.quantity}
                             onChange={(e) => handleControlChange(e)} />
 
@@ -402,7 +419,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             name="width"
                             pattern="^\d*(\.\d{0,2})?$"
                             defaultValue={parseFloat(jobsData.width).toFixed(2)}
-                            onChange={(e) => handleControlChange(e)} />
+                            onChange={(e) => handleControlChange(e)} 
+                            required/>
 
                     </Col>
                     <Col xs={2}>
@@ -413,7 +431,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                             type="number"
                             name="height"
                             onChange={(e) => handleControlChange(e)}
-                            defaultValue={parseFloat(jobsData.height).toFixed(2)} />
+                            defaultValue={parseFloat(jobsData.height).toFixed(2)} 
+                            required/>
 
                     </Col>
                     <Col xs={2}>
@@ -423,7 +442,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         <Form.Select
                             name="units"
                             defaultValue={jobsData.units}
-                            onChange={(e) => handleControlChange(e)}>
+                            onChange={(e) => handleControlChange(e)}
+                            required>
                             <option value="centimeters">cm</option>
                             <option value="inches">Inches</option>
                         </Form.Select>
@@ -440,7 +460,8 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                                 name="cost"
                                 // value ={calculateTotalCost()}
                                 defaultValue={parseFloat(jobsData.cost).toFixed(2)}
-                                onChange={(e) => handleControlChange(e)} />
+                                onChange={(e) => handleControlChange(e)}
+                                required />
                         </InputGroup>
 
                     </Col>
