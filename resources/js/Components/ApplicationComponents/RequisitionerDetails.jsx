@@ -137,7 +137,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
               type="text"
               name="first_name"
               maxLength="50"
-              pattern="[A-Za-z ]+"
+              pattern="[A-Za-z\- ]+"
               isInvalid={serverValidationAttempted ? validationFields?.hasOwnProperty('first_name') ?? false ? true : false : false}
               isValid={serverValidationAttempted ? validationFields?.hasOwnProperty('first_name') ?? false ? false : true : false}
               //If server validation has not occured false. If server validation has occuredcheck for first_name: if first_name exists false, else true
@@ -156,7 +156,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
               required
               type="text"
               name="last_name"
-              pattern="[A-Za-z ]+"
+              pattern="[A-Za-z\- ]+"
               isInvalid={serverValidationAttempted ? validationFields?.hasOwnProperty('last_name') ?? false ? true : false : false}
               isValid={serverValidationAttempted ? validationFields?.hasOwnProperty('last_name') ?? false ? false : true : false}
               maxLength="50"
