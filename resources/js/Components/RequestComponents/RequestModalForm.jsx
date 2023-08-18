@@ -283,7 +283,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
 
     var undergradInfo = (
         <>
-            <Col xs={6}>
+            <Col xs={6} className="mb-3">
                 <CourseSelect
                     updateCourse={handleCourseChange}
                     courseData={courseData}
@@ -327,7 +327,9 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     );
 
     var externalDepartment = (
-        <Form.Control
+        <Row className="justify-content-end mt-0 g-2">
+            <Col xs={4} className="mt-0 mb-3">
+            <Form.Control
             className='mt-1'
             name="external_department"
             type="text"
@@ -335,6 +337,9 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
             value={formD.external_department ?? ""}
             required
         />
+            </Col>
+        </Row>
+        
     )
 
 
@@ -346,8 +351,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     <h5>Requsitioner Details</h5>
                 </Col>
             </Row>
-            <Row className="mb-2 g-2">
-                <Col>
+            <Row className="mb-0 g-2">
+                <Col xs={2}>
                     <Form.Group
                         className="mb-3"
                         controlId="requestFormFirstName"
@@ -361,7 +366,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         />
                     </Form.Group>
                 </Col>
-                <Col >
+                <Col xs={3}>
                     <Form.Group
                         className="mb-3"
                         controlId="requestFormLastName"
@@ -375,7 +380,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         />
                     </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={3}>
                     <Form.Group className="mb-3" controlId="requestFormEmail">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
@@ -396,8 +401,6 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <option key={departmentName} value={departmentName}>{departmentName}</option>
                         ))}
                     </Form.Select>
-                    {formD.department == 'Other (Non Social Science Department)' ? externalDepartment : null}
-
                 </Col>
                 <Col xs={2}>
                     <Form.Group
@@ -417,7 +420,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                     </Form.Group>
                 </Col>
             </Row>
-            <Row className="mb-3">
+            {formD.department == 'Other' ? externalDepartment : null}
+            <Row >
                 {formD.applied_for_discount == 1 ? undergradInfo : null}
             </Row>
             <Row>

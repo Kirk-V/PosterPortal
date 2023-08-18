@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
             'payment_method' => 'cash', 
             'email' => 'kvande85@uwo.ca',
             'applied_for_discount' => false,
-            'department' => "Other (Non Social Science Department)"]))
+            'department' => "Other"]))
         ->count(1)
         ->create([
             'state' => 'pending',

@@ -296,7 +296,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                                     <option key={departmentName} value={departmentName}>{departmentName}</option>
                                 ))}
                         </Form.Select>
-                        {jobsData.department == 'Other (Non Social Science Department)' ? externalDepartment: null}
+                        {jobsData.department == 'Other' ? externalDepartment: null}
                     </Col>
                     <Col xs={3}>
                         <Form.Label className="mb-0">

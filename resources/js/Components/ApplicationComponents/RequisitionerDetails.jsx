@@ -214,7 +214,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
             </Form.Select>
           </FloatingLabel>
         </Form.Group>
-        {formData?.department == "Other (Non Social Science Department)" ? ExternalReqDepartment : null}
+        {formData?.department == "Other" ? ExternalReqDepartment : null}
       </Row>
       {formSettings?.undergrad == "1" ? UnderGradCheckBox : null}
       {ApplyingForDiscount ? CourseInfo : null}
