@@ -44,6 +44,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                         <Form.Control
                             required
                             type="number"
+                            step="0.01"
                             name="width"
                             onChange={(e) => handleControlUpdate(e)}
                             isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('width') ??false ? true: false: false}
@@ -62,6 +63,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                             required
                             type="number"
                             name="height"
+                            step="0.01"
                             onChange={(e) => handleControlUpdate(e)}
                             isInvalid={ serverValidationAttempted? validationFields?.hasOwnProperty('height') ??false ? true: false: false}
                             isValid={ serverValidationAttempted? validationFields?.hasOwnProperty('height') ??false ? false: true: false }
