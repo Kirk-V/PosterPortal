@@ -82,7 +82,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     }
 
     const calcualteDiscount = (data) => {
-        if (data.discount_eligible) {
+        if (data.discount_eligible == 1) {
             return data.quantity * settings.discount;
         }
         else{

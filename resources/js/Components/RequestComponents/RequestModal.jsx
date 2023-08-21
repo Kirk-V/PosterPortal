@@ -49,7 +49,6 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 console.log(error)
             }
             )
-
         }
         else
         {
