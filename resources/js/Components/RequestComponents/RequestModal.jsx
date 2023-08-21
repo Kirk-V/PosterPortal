@@ -3,8 +3,11 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+
+import { EnvelopePaper } from 'react-bootstrap-icons';
 import RequestModalForm from './RequestModalForm';
 import { useState, useEffect } from 'react';
+import QuickEmail from './QuickEmail';
 
 
 //This component holds request data, and should call for extra data related to a request when needed
@@ -14,6 +17,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     const [request, setRequest] = useState(null);
     const [formData, setFormData] = useState(null); // originally comes from request.
     const [formIsValid, setFormIsValid] = useState(false);
+    
 
     // We have the passed Data already in the requestData Prop, so lets display it in a form
     // for editing
@@ -57,19 +61,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
         }
     }, [requestData]);
 
-    console.log(JSON.stringify(settings));
 
-    //Function to add in the total (cost * quantity - discount)
-    // function updateTotal(){
-    //     let costPer = formData.cost;
-    //     let quantity = formData.quantity;
-    //     let discount = formData.discount_eligible == "1" ? formData.discount : 0;
-    //     console.log(`cost: ${costPer} quant: ${quantity} disc: ${discount}`);
-    //     console.log("calculated Total" + (costPer - discount) * quantity);
-    //     formData.total = ((costPer - discount) * quantity).toFixed(2);
-    //     refreshData = {...formData}
-    //     setFormData(refreshData);
-    // }
 
     function checkApproved()
     {
@@ -193,6 +185,8 @@ export default function RequestModal({requestData, onHide, show, courseData, set
             });
     }
 
+    
+
     const rejectingConfirm = (
         <>
             {/* <p>sure you want to reject?</p> */}
@@ -219,11 +213,14 @@ export default function RequestModal({requestData, onHide, show, courseData, set
             aria-labelledby="contained-modal-title-vcenter"
             centered>
             <Modal.Header closeButton>
+                
                 <Modal.Title id="contained-modal-title-vcenter">
-                    <h2>Poster #{formData?.poster_id}</h2>
+                    <h2>Poster #{formData?.poster_id} - {formData?.first_name} {formData?.last_name}</h2>
                 </Modal.Title>
+                
             </Modal.Header>
             <Modal.Body>
+                
                 {formData != null ? <RequestModalForm formD={formData} courseData={courseData} onUpdate={handleFromUpdate} settings={settings} onHandleAccept={onAccept} departments={departments}/> : <h1>noData</h1>}
             </Modal.Body>
             <Modal.Footer>

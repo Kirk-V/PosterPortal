@@ -8,6 +8,8 @@ import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import CourseSelect from "@/Components/RequestComponents/CourseSelect";
 import { useEffect } from "react";
+import QuickEmail from "./QuickEmail";
+import { EnvelopePaper } from 'react-bootstrap-icons';
 
 export default function RequestModalForm({ formD, settings, courseData, onUpdate, onHandleAccept, departments }) {
     const [formData, setformData] = useState(formD);
@@ -15,6 +17,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     const [total, setTotal] = useState(0);
     const [validated, setValidated] = useState(false);
     const [sdfBalance, setSDFBalance] = useState(null);
+    const [showquickEmail, setShowQuickEmail] = useState(false);
     //I think that data should be pulled here, and joined with the course ID + whatever other info is needed
     // This will allow for users to change the course info attached to the request..
     // Alternative...we make a new call for each modal form (this component), or instead just the undergrad section
@@ -66,6 +69,10 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         let roundedTotal = data.payment_method == 'cash' ? Math.floor((costPer * quantity)).toFixed(2): (costPer * quantity).toFixed(2);
         return roundedTotal;
     };
+
+    const handleShowQuickEmail = () => {
+        setShowQuickEmail(!showquickEmail);
+    }
 
 
     const calculateCost = (data) => {
@@ -388,11 +395,19 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
     //display request data in a formdata.position
     return (
         <Form noValidate validated={validated} onSubmit={handleRequestSubmit} id="requestForm" >
-            <Row>
-                <Col>
-                    <h5>Requsitioner Details</h5>
+            <Row className="justify-content-between">
+                <Col >
+                    <h5>Requisitioner Details</h5>
+                </Col>
+                <Col className="justify-content-end d-flex mb-1">
+                    <Button variant="dark" size="sm" onClick={handleShowQuickEmail}>
+                        <small className="font-small">{ showquickEmail ?"hide quick Email": "Quick Email"} </small><EnvelopePaper/>
+                    </Button>
                 </Col>
             </Row>
+            
+            {showquickEmail ? <QuickEmail /> : null}
+
             <Row className="mb-0 g-2">
                 <Col xs={2}>
                     <Form.Group
