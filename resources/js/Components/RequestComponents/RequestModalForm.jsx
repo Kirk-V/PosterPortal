@@ -260,13 +260,14 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                         className={"mt-3"}
                         variant={
                             formD.speed_code_approved == 0
-                                ? "danger"
+                                ? formD.state == 'rejected' ? "danger" : "warning"
                                 : "success"
                         }
                     >
                         Speedcode has{" "}
-                        {formD.speed_code_approved == 0 ? "not" : null} been
-                        approved
+                        {formD.speed_code_approved == 0 
+                            ? formD.state == 'rejected' ? "been rejected!" : "not been approved"
+                            : "been approved"} 
                     </Alert>
                 </Col>
                 <Col>

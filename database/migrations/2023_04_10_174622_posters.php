@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id('poster_id')->first();
             // $table->foreignId('request_id')->nullable()->references('request_id')->on('Requests')->nullOnDelete();
             // $table->foreignId('job_id')->nullable()->references('job_id')->on('Jobs')->nullOnDelete();
-            $table->enum('state', ['pending', 'ready', 'rejected', 'accepted', 'complete', 'paid']);
+            $table->enum('state', ['pending', 'ready', 'rejected', 'accepted', 'complete', 'paid', 'void']);
             $table->float('width', 8, 2);
             $table->float('height', 8, 2);
             $table->integer('quantity');

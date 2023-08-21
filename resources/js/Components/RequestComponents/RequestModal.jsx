@@ -166,7 +166,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 'Accept': 'application/json'
             }
         }
-        fetch(`api/requests/reject&id=${formData.request_id}`, options)
+        fetch(`api/requests/void&id=${formData.request_id}`, options)
             .then( (res) => {
                 if (!res.ok) {
                     throw new Error(`HTTP error! Status: ${res.message}`);
@@ -177,7 +177,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 console.log(`okay, Res data: ${JSON.stringify(response)}`);
                 if(response.status == "Success")
                 {
-                    console.log("changed request to rejected");
+                    console.log("changed request to Void");
                     onHide();
                 }
                 else
@@ -196,7 +196,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
     const rejectingConfirm = (
         <>
             {/* <p>sure you want to reject?</p> */}
-            <Button variant="danger" onClick={handleReject}>Reject and Delete</Button>
+            <Button variant="danger" onClick={handleReject}>Void and Remove</Button>
             <Button variant="primary" className={'ms-auto'} onClick={() => setRejecting(false)}>no, Go Back</Button>
         </>
 
@@ -204,7 +204,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
 
     const footerButtons = (
         <>
-            <Button variant="primary" onClick={onReject}>Reject</Button>
+            <Button variant="danger" onClick={onReject}>Void</Button>
             <Button variant="primary" form='requestForm' type="submit"disabled={formData?.payment_type == 'speedcode'? formData?.speed_code_approved == "0": false}>Accept</Button>
             {/* <Button variant="primary" onClick={onAccept} disabled={formData?.payment_type == 'speedcode'? formData?.speed_code_approved == "0": false}>Accept</Button> */}
             <Button variant="primary" className={'ms-auto'} onClick={onHide}>Close</Button>

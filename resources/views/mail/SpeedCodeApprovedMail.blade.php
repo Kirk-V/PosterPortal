@@ -3,5 +3,5 @@
     <p>Please sign in to {{url("requests")}} to approve the poster job.</p>
 @else
     <p>This is an automated notice that a speed code payment has been <strong>rejected</strong> for poster # {{ $poster->poster_id }}<p>
-    <p>Please sign in to {{url("requests")}} to reject the poster job.</p>
+    <p>Please sign in to {{url("requests")}} to cancel the poster job or request a cash payment alternative.</p>
 @endif

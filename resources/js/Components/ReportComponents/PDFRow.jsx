@@ -43,7 +43,7 @@ export default function PDFRow({ rowData }) {
             <DollarCell amount={rowData.transactions.total} active={rowData.requests.payment_method == "speed_code"}/>
             <DollarCell amount={rowData.transactions.total_received} active={rowData.requests.payment_method == "cash"}/>
             <DollarCell amount={rowData.discount} active={rowData.discount_eligible == "1"} rightBorder={true}/>
-            {rowData.state == 'rejected' ? <VoidCell/> : <DollarCell amount={rowData.transactions.total}/>}
+            {rowData.state == 'void' ? <VoidCell/> : <DollarCell amount={rowData.transactions.total}/>}
         </View>
     );
 }

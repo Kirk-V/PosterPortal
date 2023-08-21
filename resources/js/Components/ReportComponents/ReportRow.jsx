@@ -15,10 +15,10 @@ export default function ReportRow({data, handleRowClick}) {
           </td>
           : 
           <td className='border-end'>-</td>}
-        <td>{data.requests.payment_method == 'speed_code' ? data.state == 'rejected' ? 'VOID': `$${parseFloat(data.transactions.total)}`: <td>-</td>}</td>
-        <td>{data.requests.payment_method == 'cash' ? data.state == 'rejected' ? 'VOID': `$${parseFloat(data.transactions.total_received).toFixed(2)}`: <td>-</td>}</td>
-        <td className="border-end">{data.state == 'rejected' ? 'VOID':parseFloat(data.discount).toFixed(2)}</td>
-        <td>{data.state == 'rejected' ? 'VOID':parseFloat(data.transactions.total).toFixed(2)}</td>
+        <td>{data.requests.payment_method == 'speed_code' ? data.state == 'void' ? 'VOID': `$${parseFloat(data.transactions.total)}`: <td>-</td>}</td>
+        <td>{data.requests.payment_method == 'cash' ? data.state == 'void' ? 'VOID': `$${parseFloat(data.transactions.total_received).toFixed(2)}`: <td>-</td>}</td>
+        <td className="border-end">{data.state == 'void' ? 'VOID':parseFloat(data.discount).toFixed(2)}</td>
+        <td>{data.state == 'void' ? 'VOID':parseFloat(data.transactions.total).toFixed(2)}</td>
     </tr>
   )
 }

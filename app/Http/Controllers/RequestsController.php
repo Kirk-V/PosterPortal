@@ -76,11 +76,11 @@ class RequestsController extends Controller
      *      take place.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function rejectRequest($requestId){
+    public function removeRequest($requestId){
         $request = Requests::find($requestId);
         $posterId = $request->poster_id;
 
-        return $this->rejectPoster($posterId);
+        return $this->voidPoster($posterId);
 
         if($request != null)
         {
@@ -93,7 +93,7 @@ class RequestsController extends Controller
             $request->posters->save();
 
             log::info("transaction added");
-            if($request->posters->state == 'rejected')
+            if($request->posters->state == 'void')
             {
                 //Send email notification
                 Mail::to($request->email)->send(new PosterRejectedNotice($request->poster_id));
@@ -112,7 +112,7 @@ class RequestsController extends Controller
 
 
     /**
-     * Summary of rejectPoster:
+     * Summary of voidPoster:
      * This function effectively voids out a poster changing the state to rejected. It will also
      * update the Total in the related transaction to 0. It will also update the SDF discount to
      * 0 on Poster. When a poster is rejected an email is sent to all parties involved (requisitioner,
@@ -120,7 +120,7 @@ class RequestsController extends Controller
      * @param mixed $requestId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function rejectPoster($posterId): JsonResponse{
+    public function voidPoster($posterId): JsonResponse{
         try{
             DB::beginTransaction();//This allows failed DB transaction to be undone automatically if error thrown
             $poster = Posters::with('requests','transactions')->find($posterId);
@@ -129,7 +129,7 @@ class RequestsController extends Controller
 
             $request = $poster->requests;
             //Make changed to poster
-            $poster->state = 'rejected';
+            $poster->state = 'void';
             $poster->discount = 0;
             $poster->save();
             DB::commit();
@@ -165,6 +165,7 @@ class RequestsController extends Controller
         return Posters::with(['requests'])
                     ->where('state', 'pending')
                     ->orWhere('state', 'ready')
+                    ->orWhere('state', 'rejected')
                     ->get();
     }
 

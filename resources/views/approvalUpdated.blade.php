@@ -13,6 +13,5 @@
 <script>
 function confirmReject(){
     console.log("rejecting");
-    alert("hi");
 }
 </script>

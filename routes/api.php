@@ -51,7 +51,7 @@ Route::controller(ReportController::class)->group(function () {
 });
 
 Route::controller(RequestsController::class)->group(function (){
-    Route::patch('/requests/reject&id={id}', 'rejectRequest');
+    Route::patch('/requests/void&id={id}', 'removeRequest');
 });
 
 
