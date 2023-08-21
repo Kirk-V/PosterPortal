@@ -45,7 +45,6 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
             });
     }, []);
 
-    console.log("total is " + formD.total);
     function handleOpenFile() {
         console.log("file opening");
     }
@@ -332,7 +331,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                 </Form.Group>
             </Col>
             <Col xs={3} className="align-self-center">
-                <Button variant={formD.discount_eligible == 0 ? "primary" : "danger"} onClick={handleUpdateDiscountEligible}>{formD.discount_eligible == 0 ? "Apply discount" : "Remove Discount"}</Button>{' '}
+                <Button variant={formD.discount_eligible == 1 ? "primary" : "danger"} onClick={handleUpdateDiscountEligible}>{formD.discount_eligible == 0 ? "Apply discount" : "Remove Discount"}</Button>{' '}
             </Col>
         </>
     );
@@ -591,7 +590,8 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <Form.Control
                                 name="total"
                                 type="number"
-                                value={(parseFloat(formD.payment_method == 'speed_code'? formD.total : Math.floor(formD.total))).toFixed(2)}
+                                // value={(parseFloat(formD.payment_method == 'speed_code'? formD.total : Math.floor(formD.total))).toFixed(2)}
+                                value={parseFloat(formD.total).toFixed(2)}
                                 // value={calculateTotal()} 
                                 onChange={(e) => handleControlChange(e)}
                                 readOnly />
@@ -640,6 +640,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                             <Form.Control
                                 type="number"
                                 value={parseFloat(formD.total - formD.discount).toFixed(2)}
+                                readOnl
                             />
                         </InputGroup>
                     </Form.Group>

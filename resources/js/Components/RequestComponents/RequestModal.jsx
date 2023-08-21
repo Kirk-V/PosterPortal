@@ -40,8 +40,9 @@ export default function RequestModal({requestData, onHide, show, courseData, set
                 //calculate the total
                 let costPer = response.cost;
                 let quantity = response.quantity;
-                let discount = response.discount_eligible == "1" ? response.discount : 0;
-                response.total = (costPer * quantity).toFixed(2);
+                let discount = response.discount_eligible == 1? response.quantity * settings.discount : 0;
+                response.discount = discount;
+                response.total = response.payment_method == 'cash' ? parseFloat(Math.floor(costPer * quantity)).toFixed(2) :parseFloat(costPer * quantity).toFixed(2) ;
                 setFormData(response);
             },
             (error) => {
@@ -57,6 +58,7 @@ export default function RequestModal({requestData, onHide, show, courseData, set
         }
     }, [requestData]);
 
+    console.log(JSON.stringify(settings));
 
     //Function to add in the total (cost * quantity - discount)
     // function updateTotal(){
