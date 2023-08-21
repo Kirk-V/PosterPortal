@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Settings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 
@@ -31,15 +32,23 @@ class SettingsController extends Controller
 
     static function getAllSettings()
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         return self::successResponse(Settings::all()->pluck('value', 'setting'), "Settings gathered");
+        
+        
     }
 
     static function updateSetting(Request $request)
     {
-        Log::info("updating setting");
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $settingToUpdate = $request->setting;
         $newValue = $request->value;
-        Log::info("Setting $settingToUpdate to $newValue");
         $setting = Settings::where("setting", $settingToUpdate)->update(['value' => floatval($newValue)]);
         if (!is_null($setting)) {
             // $setting->update(['value' => $newValue]);
@@ -54,6 +63,10 @@ class SettingsController extends Controller
 
     static function getSetting($setting)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         //open settings are cost, undergrad, external
         if (in_array($setting, ['cost', 'undergrad', 'external'])) {
             //public access
@@ -72,6 +85,10 @@ class SettingsController extends Controller
 
     static function getFormSettings()
     {
+        if(!Gate::allows('applicant'))
+        {
+            abort(403);
+        }
         try {
             $cost = Settings::where('setting', 'cost')->firstorfail();
             $undergrad = Settings::where('setting', 'undergrad')->firstorfail();

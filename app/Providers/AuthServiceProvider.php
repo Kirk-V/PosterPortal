@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         {
             return;
         }
-        $user = User::where('cn', config('app.env') == 'OfficePC' ? 'kvande85' : $_SERVER["AUTH_USER"] ?? 'kvande85')
+        $user = User::where('cn', $_SERVER["AUTH_USER"] ?? 'kvande85')
             ->limit(1)
             ->get()
             ->first();
@@ -43,7 +43,7 @@ class AuthServiceProvider extends ServiceProvider
             log::info("testing user");
             log::info($user->getAttribute("cn")[0]);
 
-            return true;
+            return $this->userIsAdmin($user);
         });
 
         Gate::define('applicant', function (User $user){
@@ -82,6 +82,17 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->groups()->exists($group)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+
+    private function userIsAdmin(User $user): bool 
+    {
+        if($this->userInAccessGroup($user, 'admin'))
+        {
+            log::info("user is admin");
+            return true;
         }
         return false;
     }

@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+// Settings routes are provided to SSTS-posters group members.
 Route::controller(SettingsController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/settings/all', 'getAllSettings');

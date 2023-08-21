@@ -53,6 +53,15 @@ return [
                     'ou'=> ['Social Science', 'Administration']
                 ],
             ]
+        ],
+        'admin' => [
+            'required' =>
+            [
+                'SSC-U-SSTSPosters' => [
+                    'cn' => 'SSC-U-SSTSPosters',
+                    'ou' => ['Social Science', 'Administration']
+                ]
+            ]
         ]
     ],
 
