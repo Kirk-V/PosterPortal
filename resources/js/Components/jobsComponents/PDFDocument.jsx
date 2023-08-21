@@ -190,7 +190,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             {jobData.discount_eligible == 1 ? DiscountField : null}
             <View style={styles.rowView}>
                 <View style={styles.infoColumnSmallRight}>
-                    <Text style={styles.label}>Total</Text>
+                    <Text style={styles.label}>{jobData.payment_method == 'cash' ? 'Total Recieved' : 'Total'}</Text>
                     <Text style={styles.value}>$ {parseFloat(jobData.total_received).toFixed(2)}</Text>
                 </View>
             </View>
@@ -217,7 +217,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
     let CourseField = (
         <View style={styles.infoColumn}>
             <Text style={styles.label}>Course Number</Text>
-            <Text style={styles.value}>{jobData.course}</Text>
+            <Text style={styles.value}>{jobData.course_department}</Text>
         </View>
     )
 

@@ -29,7 +29,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         console.log("Updating total Received")
         let data = { ...jobsData };
         let discountTotal = jobsData.discount_eligible == "0" ? 0 : jobsData.discount;
-        data['total_received'] = jobsData.cost * jobsData.quantity - discountTotal;
+        data['total_received'] = data.payment_method == 'cash' ? Math.floor(jobsData.cost * jobsData.quantity - discountTotal) : jobsData.cost * jobsData.quantity - discountTotal;
         setTotalReceived(data['total_received']);
         dataUpdateHandler(data);
     }
@@ -258,6 +258,35 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
         </>
     )
 
+    let CourseInfoSection = (
+        <>
+            <Col xs={4}>
+                <Form.Label className="mb-0">
+                    Course Number
+                </Form.Label>
+                <Form.Control
+                    type="Text"
+                    name="number"
+                    required
+                    value={jobsData.number}
+                    onChange={(e) => handleControlChange(e)}
+                />
+            </Col>
+            <Col xs={4}>
+                <Form.Label className="mb-0">
+                    department
+                </Form.Label>
+                <Form.Control
+                    type="Text"
+                    name="course_department"
+                    required
+                    value={jobsData.course_department}
+                    onChange={(e) => handleControlChange(e)}
+                />
+            </Col>
+        </>
+    )
+
     var externalDepartment = (
         <Row className="justify-content-end">
             <Col xs={5}>
@@ -390,6 +419,7 @@ export default function JobForm({ jobsData, onHide, show, dataUpdateHandler, han
                         </Form.Select>
                     </Col>
                     {jobsData.payment_method == "speed_code" ? SpeedCodeSection : null}
+                    {jobsData.discount_eligible == 1 ? CourseInfoSection : null}
                 </Row>
                 {jobsData.payment_method == "speed_code" ? GrantHolderInfo : null}
                 <Row>

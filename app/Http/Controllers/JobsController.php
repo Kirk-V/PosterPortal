@@ -80,7 +80,8 @@ class JobsController extends Controller
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
             ->leftJoin('Transactions', 'Posters.poster_id', 'Transactions.poster_id')
-            ->select('Posters.*', 'Requests.*', 'Transactions.*', 'jobs.poster_id', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id', 'jobs.emailed_receipt_req','jobs.emailed_receipt_grant_holder','jobs.emailed_receipt_ssts')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
+            ->leftJoin('Courses', 'Requests.course_id', 'Courses.course_id')
+            ->select('Posters.*', 'Requests.*', 'Transactions.*', 'jobs.poster_id', 'jobs.job_state as job_state', 'jobs.technician', 'jobs.print_date', 'jobs.job_id', 'jobs.emailed_receipt_req','jobs.emailed_receipt_grant_holder','jobs.emailed_receipt_ssts', 'courses.number', 'courses.department as course_department')->skip(($page - 1) * $entriesPerPage)->take($entriesPerPage)->get([]);
         // return Posters::has('jobs')->with(['Jobs', 'Requests', 'transactions'])->get();
         return response($jobs);
     }
