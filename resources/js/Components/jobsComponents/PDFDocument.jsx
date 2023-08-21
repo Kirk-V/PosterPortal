@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 export default function PDF({ show, jobData, handleCloseReceipt }) {
     const [redactSpeedCode, setRedactSpeedCode] = useState(false);
     const [emailedReq, setEmailedReq] = useState(jobData.emailed_receipt_req);
+    const [emailedApprover, setEmailedApprover] = useState(jobData.emailed_receipt_grant_holder);
+    const [emailedAdminAssist, setEmailedAdminAssist] = useState(jobData.emailed_receipt_ssts);
     // Create styles
     const styles = StyleSheet.create({
         page: {
@@ -307,6 +309,14 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         
                         console.log("Recieved response! " + JSON.stringify(response));
                     }
+                    if (to == "GrantHolder") {
+                        setEmailedApprover(1);
+                        console.log("Recieved response! sent email to approver" + JSON.stringify(response));
+                    }
+                    if (to == "AdminAssistant") {
+                        setEmailedAdminAssist(1);
+                        console.log("Recieved response! sent email to SSTS" + JSON.stringify(response));
+                    }
                 }
             })
             .catch((error) => {
@@ -362,7 +372,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
     )
 
     const emailGrantHolder = (
-        <Button type="button" variant={jobData.emailed_receipt_grant_holder == 0 ? "primary" : "danger"} className="" onClick={(e) => handleEmailClick(e,"GrantHolder")}>Email Grant Holder</Button>
+        <Button type="button" variant={emailedApprover == 0 ? "primary" : "danger"} className="" onClick={(e) => handleEmailClick(e,"GrantHolder")}>Email Grant Holder</Button>
     )
 
 
@@ -380,7 +390,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                     <div className="d-flex justify-content-evenly align-items-center p-3">
                         {jobData.payment_method == 'speed_code' ? redactSpeedCode ? emailReqBtn : redactSpeedCodeBtn : emailReqBtn}
                         {jobData.payment_method == 'speed_code' ? emailGrantHolder: null}
-                        <Button type="button" variant={jobData.emailed_receipt_ssts == 0 ? "primary" : "danger"} className="" onClick={(e) => handleEmailClick(e, "AdminAssistant")}>Email Mary</Button>
+                        <Button type="button" variant={emailedAdminAssist == 0 ? "primary" : "danger"} className="" onClick={(e) => handleEmailClick(e, "AdminAssistant")}>Email Mary</Button>
                     </div>
                 </div>
 
