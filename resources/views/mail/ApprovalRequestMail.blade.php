@@ -1,5 +1,5 @@
 <html><body>
-<p>Please Approve/Deny the payment by filling out the information <a href="{{url('/approve?id='.$poster->poster_id)}}">here</a></p>
+<p>Please Approve/Deny the payment by filling out the information <a href="{{url('/approve?id='.$poster->poster_id)}}"><strong style="font-size: 20px">here</strong></a></p>
 <p>This is an automated notification that {{  $poster->requests->first_name}} {{  $poster->requests->last_name}} ({{ $poster->requests->email}}) has requested the printing of a poster(s) by SSTS and identified you as the grant holder (or authorized designate) to approve the payment.</p>
 <p>We require a valid speedcode from you to approve the printing of the following poster(s). The poster printing status will remain "on hold" until we receive the return email authorization.</p>
 <p>Department: {{  $poster->requests->department}}</p>

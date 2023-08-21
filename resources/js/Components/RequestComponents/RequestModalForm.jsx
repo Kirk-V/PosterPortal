@@ -111,6 +111,13 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         onUpdate(data);
     }
 
+    const handleUpdateCourse = (event) => {
+        let data = {...formD};
+        console.log("updating course to "+ event.target.value);
+        data['course_id'] = event.target.value;
+        onUpdate(data);
+    }
+
 
 
     const handleCourseChange = (event) => {
@@ -154,8 +161,16 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         }
         else{
             console.log("adding discount");
-            data['discount'] = settings.discount * data.quantity;
-            data['discount_eligible'] = 1;
+            if(data['course_id'])
+            {
+                data['discount'] = settings.discount * data.quantity;
+                data['discount_eligible'] = 1;
+            }
+            else
+            {
+                alert("add course first!");
+            }           
+            
         }
         data.cost = calculateCost(data);
         data.total = calculateTotal(data);
@@ -310,9 +325,11 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
         <>
             <Col xs={6} className="mb-3">
                 <CourseSelect
+                    
                     updateCourse={handleCourseChange}
                     courseData={courseData}
                     value={formD.course_id}
+                    onUpdateCourse={handleUpdateCourse}
                 />
             </Col>
             <Col xs={3}>
@@ -332,7 +349,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                 </Form.Group>
             </Col>
             <Col xs={3} className="align-self-center">
-                <Button variant={formD.discount_eligible == 1 ? "primary" : "danger"} onClick={handleUpdateDiscountEligible}>{formD.discount_eligible == 0 ? "Apply discount" : "Remove Discount"}</Button>{' '}
+                <Button variant={formD.discount_eligible == 1 ? "danger" :"primary"} onClick={handleUpdateDiscountEligible}>{formD.discount_eligible == 1 ? "Remove Discount" : "Apply discount"}</Button>{' '}
             </Col>
         </>
     );
