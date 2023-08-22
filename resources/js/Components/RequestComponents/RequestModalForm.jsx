@@ -406,7 +406,7 @@ export default function RequestModalForm({ formD, settings, courseData, onUpdate
                 </Col>
             </Row>
             
-            {showquickEmail ? <QuickEmail /> : null}
+            {showquickEmail ? <QuickEmail reqEmail={formD.email}/> : null}
 
             <Row className="mb-0 g-2">
                 <Col xs={2}>
