@@ -217,7 +217,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
     let CourseField = (
         <View style={styles.infoColumn}>
             <Text style={styles.label}>Course Number</Text>
-            <Text style={styles.value}>{jobData.course_department}</Text>
+            <Text style={styles.value}>{jobData.number} - {jobData.department}</Text>
         </View>
     )
 
