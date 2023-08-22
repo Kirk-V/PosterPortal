@@ -8,7 +8,8 @@ import Row from 'react-bootstrap/Row';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { CurrencyDollar } from 'react-bootstrap-icons';
+import { CurrencyDollar, ArrowLeftShort, ArrowRightShort, ArrowUpShort, ArrowDownShort} from 'react-bootstrap-icons';
+
 
 export default function PosterDetails({serverValidationAttempted, validationFields, formData, handleControlUpdate, formSettings}) {
     const [costPerPoster, setCostPerPoster] = useState(formData?.cost ?? 0);
@@ -24,6 +25,21 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
         </Col>
     )
 
+    const widthArrows = (
+        <>Width
+        <ArrowLeftShort/>
+        <ArrowRightShort/>
+        </>
+    )
+
+    const heightArrows = (
+        <>
+        Height
+        <ArrowUpShort className="mt-0 pt-0"/>
+        <ArrowDownShort className="m-0 p-0"/>
+    
+        </>
+    )
 
     return (
         <>
@@ -38,7 +54,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                 <Form.Group as={Col} sm="2" controlId="validationCustomUsername">
                     <FloatingLabel
                         controlId="floatingInput"
-                        label="Width"
+                        label={widthArrows}
                         className="mb-3"
                     >
                         <Form.Control
@@ -56,7 +72,7 @@ export default function PosterDetails({serverValidationAttempted, validationFiel
                     <FloatingLabel
                         required
                         controlId="floatingInput"
-                        label="Height"
+                        label={heightArrows}
                         className="mb-3"
                     >
                         <Form.Control

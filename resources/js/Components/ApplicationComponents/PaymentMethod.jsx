@@ -44,9 +44,9 @@ export default function PaymentMethod({serverValidationAttempted, validationFiel
     const CashSection = (
         <Row >
             <Col>
-                <p><small>Cash payments (Pre-payment is not required). 
-                Payment is completed when the poster is picked up.</small> <br/>
-                Payment method cannot be changed <strong>AFTER</strong> the poster has been printed.</p>
+                <p>Pre-payment is not required. Cash only - <strong>NO</strong> credit cards, debit cards or cheques.<br/>
+Payment is completed when the poster is picked up. Cash payments are rounded down to the nearest dollar.
+</p>
             </Col>
         </Row>
     )

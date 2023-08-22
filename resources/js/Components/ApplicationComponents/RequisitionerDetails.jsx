@@ -9,12 +9,15 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 
 
+
+
 export default function RequisitionerDetails({ allowUndergrad = true, serverValidationAttempted, validationFields, formData, handleControlUpdate, departmentList, formSettings }) {
   const [ApplyingForDiscount, setApplyingforDiscount] = useState(false);
   const departments = departmentList;
+
   const DiscountText = (
     <>
-      <p>This printing service is only available to Social Science undergraduate students who are enrolled in the Pre-approved courses arranged by the course Professor. We are aware that the Psychology thesis poster presentation is Friday March 24. The undergraduate Social Science student donation discount ($12.00) only applies when funds are available and the correct Pre-approved course number, Department, and Cash payment options are selected. Posters are printed on a first come, first served basis. We will be dedicating our printing service to try and print all posters for this event. Discounts DO NOT apply to speedcode payments.</p>
+      <p>This printing discount is only available to undergraduate Social Science students enrolled in a pre-approved Social Science course. To activate the discount (${parseFloat(formSettings?.discount).toFixed(2)}), you must enter the correct <strong>Course Number</strong>, correct <strong>Department</strong> and select <strong>Cash</strong>. The discount will be applied to the total cost AFTER the poster has been printed. You will receive an email when the poster is ready to pick up.</p>
     </>
 
   );
@@ -31,7 +34,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
       <Form.Group as={Col} md="12" controlId="validationCustomUsername">
 
         <InputGroup className="mb-3">
-          <div><strong className='fs-5'> Undergraduate Student -</strong> Paying by Cash?
+          <div><strong className='fs-5 text-primary'> Undergraduate Student -</strong> Paying by Cash?
           <Form.Check
             className="ps-1 pe-1 ms-2 me-1 bg-primary bg-gradient rounded form-check-inline shadow"
             type="checkbox"
@@ -39,7 +42,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
             name="apply_for_discount"
             value={ApplyingForDiscount ? 0 : 1}
             onChange={(e) => { handleControlUpdate(e), ToggleApplyForDiscount() }}
-          /><strong>click</strong> to apply for the pre-approved course discount.
+          /><strong>click</strong> to apply for the pre-approved Social Science course discount.
           (Note: discount does not apply to Speedcode payments).
           </div>
         </InputGroup>
@@ -56,7 +59,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
         <FloatingLabel
           controlId="floatingInput"
           label="Course Number"
-          className="mb-3"
+          className="mb-3 text-primary"
         >
           <Form.Control
             required
@@ -75,7 +78,7 @@ export default function RequisitionerDetails({ allowUndergrad = true, serverVali
         <FloatingLabel
           controlId="floatingInput"
           label="Course Department"
-          className="mb-3"
+          className="mb-3 text-primary"
         >
           <Form.Select
             aria-label="Department Select"
