@@ -41,7 +41,7 @@ class PosterAcceptedForPrintingNotice extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Poster Accepted For Printing Notice - SSTS Printing Services',
+            subject: 'Poster placed in the queue for printing- SSTS',
         );
     }
 

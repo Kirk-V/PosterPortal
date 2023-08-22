@@ -1,38 +1,34 @@
-<html><body>
-@if($poster->file_location == 'email')
-    <p>Your printing request has been received and we now require the poster file(s) be sent to Social Science Technology Services by replying to this email.
-    Please ensure the poster dimensions of the file(s) you are attaching are the same dimensions that were entered on the Poster Submission Form {{$poster->width}} x {{$poster->height}} ({{$poster->units}}).</p>
-    <b>Please reply to this email with an attached copy of the poster file in .pdf and Powerpoint format (if available)</b>
-@endif
+<html>
+    <body>
+        <p>Social Science Technology Services has received your poster printing request.</p>
 
-@if(strTolower($poster->requests->payment_method) == "speed_code")
-    <p>An email will also be sent to {{$poster->requests->approver_name }}: {{$poster->requests->approver_email }} for a speed code and authorization to charge the grant.</p>
-@endif
-<p>This is an automated notification that {{$poster->requests->first_name}} {{$poster->requests->last_name}} ({{$poster->requests->email}}) has requested the printing of the Poster(s) following details:</p>
-<p>Poster #: {{$poster->poster_id}}</p>
-<p>Dimensions: {{$poster->width}} x {{$poster->height}} ({{$poster->units}})</p>
-<p>Cost Per Poster: ${{$poster->cost}}</p>
-<p>Quantity: {{$poster->quantity}}</p>
-@if(strTolower($poster->requests->payment_method) == "speed_code")
-    <p>Total: ${{ number_format((float)($poster->cost * $poster->quantity), 2, '.', '' )}}</p>
+@if($poster->file_location == '')
+    <p>PLEASE REPLY TO THIS EMAIL WITH YOUR POSTER FILE(S) ATTACHED.</p>
+    <p><strong>PDF FILE REQUIRED</strong>. A PowerPoint file (if available) can also be submitted as a secondary file.</p>
 @else
-    <p>Total: ${{ number_format(floor((float)($poster->cost * $poster->quantity)), 2, '.', '' )}}</p>
+    <p>You have selected to share your file through <strong>OneDrive</strong>, there is no need to reply to this email.</p>
 @endif
 
-<p>Payment Method: {{$poster->requests->payment_method}}</p>
+@if(strTolower($poster->requests->payment_method) == "speed_code")
+    <p>An automated email will be sent to the specified account approver {{$poster->requests->approver_email }} for Speedcode authorization.</p>
+@endif
+
+<p>You will receive automated emails during the printing process to keep you informed and updated on the progress of your poster. You will receive a final email when the poster is ready to be picked up, including total cost, building, room number and available office hours.</p>
+
+<li>Poster #{{$poster->poster_id}}</li>
+<li>Dimensions: {{$poster->width}} x {{$poster->height}} ({{$poster->units}})</li>
+<li>Cost Per Poster: ${{$poster->cost}}</li>
+<li>Quantity: {{$poster->quantity}}</li>
+@if(strTolower($poster->requests->payment_method) == "speed_code")
+    <li>Total: ${{ number_format((float)($poster->cost * $poster->quantity), 2, '.', '' )}}</li>
+@else
+    <li>Total: ${{ number_format(floor((float)($poster->cost * $poster->quantity)), 2, '.', '' )}}</li>
+@endif
+
+<li>Payment Method: {{$poster->requests->payment_method}}</li>
 
 
-Please note that the above cost is subject to change if the Requisitioner increases/decreases the poster dimensions.
-
-<p>If any formatting issues etc. preventing the printing of your poster, we will provide an email explanation and notify you that the issue must be resolved before we can print the poster.</p>
-<p>You will receive an email regarding the progress of your poster(s) for the following occurences:</p>
-<ul>
-    <li>When the poster has been placed in the queue for printing.</li>
-    <li>When the poster has been printed.</li>
-    <li>When the poster is ready to pick up.</li>
-    <li>An email receipt for your records.</li>
-</ul>
-    
-    <p>If you did not request this service or wish to cancel, please reply to this email to notify SSTS staff.</p>
-    <p>If you have any questions/concerns please reply to this email or contact Social Science Technology Services at 519-661-2152 or Ext. 82152</p>
-    </body></html>
+<p>Please note that the above cost is subject to change if the Requisitioner increases/decreases the poster dimensions.
+    <br/>If you did not request this service or wish to cancel, please reply to this email to notify SSTS staff.
+    <br/>If you have any questions/concerns please reply to this email or contact Social Science Technology Services at 519-661-2152 or Ext. 82152</p>
+</body></html>

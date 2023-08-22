@@ -45,7 +45,7 @@ class ApplicationConfirmation extends Mailable
             replyTo: [
                 new Address('ssts-poster@uwo.ca')
             ],
-            subject: 'Poster Printing Service - Poster # '.$this->poster_id.' Confirmation and Instructions',
+            subject: "Confirmation / Poster File Request - Poster #$this->poster_id"
         );
     }
 
