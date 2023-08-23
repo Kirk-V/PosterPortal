@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Models\ExternalUsers;
 use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -148,6 +149,13 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         }
+
+        //Check the list of external users
+       if(ExternalUsers::where('username', '=', $user->cn)->firstOr(function () {return false;}))
+       {
+        log::info("external authorized user");
+        return true;
+       }
         //We have checked all possibilities but user not authenticated
 
         return false;

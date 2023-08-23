@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\PosterController;
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\ExternalUserController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ReportController;
@@ -44,6 +45,14 @@ Route::controller(JobsController::class)->group(function (){
     Route::put('jobs/sendPickUpEmail', 'sendPickUpEmail');
     Route::post('/jobs/sendPDFEmail', 'emailPDFReceipt');
     Route::post('/jobs/makeTransactionAndUpdate', 'makeTransactionAndUpdate');
+});
+
+
+
+Route::controller(ExternalUserController::class)->group(function () {
+    Route::get('/ExternalUsers', 'getExternalUsers');
+    Route::post('/addExternalUser', 'addExternalUsers');
+    Route::post('/removeExternalUser', 'removeExternalUsers');
 });
 
 Route::controller(ReportController::class)->group(function () {

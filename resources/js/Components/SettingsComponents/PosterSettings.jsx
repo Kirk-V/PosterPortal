@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Button, Row, Col, InputGroup, Accordion, Collapse, Card } from 'react-bootstrap';
 import { useState} from 'react';
+import AuthorizedUsers from './AuthorizedUsers';
 
 export default function PosterSettings({allSettinsData, updateSetting}) {
     const [settingsData, setSettingsData] = useState(allSettinsData);
@@ -69,6 +70,7 @@ export default function PosterSettings({allSettinsData, updateSetting}) {
             <Card.Body>
                 {CostSection}
                 {AcceptExternalSection}
+                <AuthorizedUsers/>
             </Card.Body>
 
         </Card>

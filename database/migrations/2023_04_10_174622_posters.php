@@ -39,6 +39,11 @@ return new class extends Migration
             $table->string('instructor');
         });
 
+        Schema::create('ExternalUsers', function (Blueprint $table) {
+            $table->id('user_id')->first();
+            $table->string('username');
+        });
+
         Schema::create('Transactions', function (Blueprint $table) {
             $table->id('transaction_id')->first();
             $table->foreignId('poster_id')->nullable()->references('poster_id')->on('Posters')->nullOnDelete();
