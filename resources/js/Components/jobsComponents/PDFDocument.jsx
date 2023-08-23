@@ -217,7 +217,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
     let CourseField = (
         <View style={styles.infoColumn}>
             <Text style={styles.label}>Course Number</Text>
-            <Text style={styles.value}>{jobData.number} - {jobData.department}</Text>
+            <Text style={styles.value}>{jobData.number} - {jobData.course_department}</Text>
         </View>
     )
 
@@ -259,7 +259,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
                         <Text style={styles.label}>Department</Text>
                         <Text style={styles.value}>{jobData.department == 'Other'? jobData.external_department: jobData.department}</Text>
                     </View>
-                    {jobData.discount_eligible ? CourseField : null}
+                    {jobData.discount_eligible == "1" ? CourseField : null}
 
                 </View>
                 <View style={styles.sectionHeader}>
