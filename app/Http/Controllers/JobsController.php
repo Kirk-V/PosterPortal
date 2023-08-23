@@ -130,11 +130,14 @@ class JobsController extends Controller
         $req_email = Posters::find($poster_id)->requests->email;
         $request = Posters::find($poster_id)->requests;
         $req_name = $request->first_name." ".$request->last_name;
-        $req_cost = $poster->cost;
-        log::info("Pick up Email being sent to $req_email for poster: $poster_id with cost: $req_cost");
         
-        
-        Mail::to($req_email)->send(new PickUpNotice($req_name, $req_cost));
+        $req_total = $poster->cost *  $poster->quantity - $poster->discount;
+        if($poster->requests->payment_method == 'cash')
+        {
+            $req_total = floor($req_total);
+        }
+        log::info("Pick up Email being sent to $req_email for poster: $poster_id with cost: $req_total");        
+        Mail::to($req_email)->send(new PickUpNotice($req_name, $req_total));
         return self::successResponse("none");
     }
 
@@ -238,7 +241,7 @@ class JobsController extends Controller
             'approver_type' => [Rule::requiredIf($request->payment_method == 'speed_code'), Rule::excludeIf($request->payment_method == 'cash'),'string', 'max:250', 'in:dosa,grant_holder,administrator'],
             'approver_name' => [Rule::requiredIf($request->payment_method == 'speed_code'), Rule::excludeIf($request->payment_method == 'cash'), 'string', 'max:250'],
             'approver_email' => [Rule::requiredIf($request->payment_method == 'speed_code'), Rule::excludeIf($request->payment_method == 'cash'), 'string', 'max:250'],
-            'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type != 'grant_holder')],
+            'grant_holder_name' => [Rule::excludeIf($request->payment_method == 'cash'), Rule::requiredIf($request->approver_type == 'dosa')],
             'speed_code' => [Rule::requiredIf($request->payment_method == 'speed_code')],
             'account' => [Rule::requiredIf($request->payment_method == 'speed_code')],
 

@@ -41,11 +41,12 @@ class ApplicationConfirmation extends Mailable
      */
     public function envelope(): Envelope
     {
+        $subject = $this->poster->file_location == "" ? "and Poster File Request" : "";
         return new Envelope(
             replyTo: [
                 new Address('ssts-poster@uwo.ca')
             ],
-            subject: "Confirmation / Poster File Request - Poster #$this->poster_id"
+            subject: "Confirmation $subject- Poster #$this->poster_id"
         );
     }
 

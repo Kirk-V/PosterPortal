@@ -16,7 +16,7 @@
 <p>You will receive automated emails during the printing process to keep you informed and updated on the progress of your poster. You will receive a final email when the poster is ready to be picked up, including total cost, building, room number and available office hours.</p>
 
 <li>Poster #{{$poster->poster_id}}</li>
-<li>Dimensions: {{$poster->width}} x {{$poster->height}} ({{$poster->units}})</li>
+<li>Dimensions: {{number_format((float)($poster->width), 2, '.', '' )}} x {{number_format((float)($poster->height), 2, '.', '' )}} ({{$poster->units}})</li>
 <li>Cost Per Poster: ${{$poster->cost}}</li>
 <li>Quantity: {{$poster->quantity}}</li>
 @if(strTolower($poster->requests->payment_method) == "speed_code")

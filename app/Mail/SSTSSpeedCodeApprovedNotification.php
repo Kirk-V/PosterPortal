@@ -42,7 +42,7 @@ class SSTSSpeedCodeApprovedNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Speed Code Approved Notification',
+            subject: 'Speed Code Request Notification',
         );
     }
 
