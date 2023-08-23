@@ -73,6 +73,7 @@ Route::controller(CoursesController::class)->group(function (){
     // Route::get('/poster/costDetails&id={id}', 'getPosterCostDetails');
     Route::get('/courses/all', 'getAllCoursesJson');
     Route::delete('/courses/delete', 'deleteCourse');
+    Route::post('/courses/addCourse', 'addCourse');
 
 });
 
@@ -81,9 +82,6 @@ Route::controller(ApplicationController::class)->group(function (){
 });
 
 
-Route::controller(CoursesController::class)->group(function (){
-    Route::post('/courses/addCourse', 'addCourse');
-});
 
 Route::controller(TransactionController::class)->group(function (){
     Route::get('/SDFBalance', 'getSDFBalance');
