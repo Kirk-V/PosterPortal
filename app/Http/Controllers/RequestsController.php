@@ -10,6 +10,7 @@ use App\Models\Transactions;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
@@ -51,13 +52,20 @@ class RequestsController extends Controller
 
     public function getAll()
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         return Requests::all();
     }
 
     public function getRequest($id)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $r = Requests::with(['courses'])->find($id);
-        Log::info($r);
         return response($r);
     }
 
@@ -77,6 +85,10 @@ class RequestsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function removeRequest($requestId){
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $request = Requests::find($requestId);
         $posterId = $request->poster_id;
 
@@ -121,6 +133,10 @@ class RequestsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function voidPoster($posterId): JsonResponse{
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         try{
             DB::beginTransaction();//This allows failed DB transaction to be undone automatically if error thrown
             $poster = Posters::with('requests','transactions')->find($posterId);
@@ -161,6 +177,10 @@ class RequestsController extends Controller
     // This function should retrieve all posters that have a pending state. These posters are joined with Requests
     // such that they can be sent to the front-end for changes
     public function getPendingRequests(){
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         // $r = Posters::with(['requests'])->whereIn('state', 'pending')->all();
         return Posters::with(['requests'])
                     ->where('state', 'pending')
@@ -171,7 +191,10 @@ class RequestsController extends Controller
 
     //We need to get all assocaited data with a pending request, joined on the various relationships
     public function getPendingRequestData($id){
-        log::info("got requests");
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $r = DB::table('Posters')
             ->leftJoin('Requests', 'Posters.poster_id', '=', 'Requests.poster_id')
             ->leftJoin('Courses', 'Requests.course_id', '=', 'Courses.course_id')

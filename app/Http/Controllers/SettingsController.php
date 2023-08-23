@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Settings;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
@@ -49,15 +52,32 @@ class SettingsController extends Controller
         }
         $settingToUpdate = $request->setting;
         $newValue = $request->value;
-        $setting = Settings::where("setting", $settingToUpdate)->update(['value' => floatval($newValue)]);
-        if (!is_null($setting)) {
-            // $setting->update(['value' => $newValue]);
-            // $setting->save();
-            // Log::info("Updating setting $setting with value ".$setting->value);
-            return self::successResponse("", "Updated Setting $settingToUpdate to $newValue");
-        } else {
-            return self::errorResponse("Could not find the setting: $settingToUpdate to update", 400);
+        try
+        {
+            DB::table('Settings')->upsert(
+                ['setting' => $settingToUpdate, 'value' => $newValue],
+                ['setting']
+                );
+            // $setting = Settings::where('setting', '=', $settingToUpdate)->firstOrFail();
+            // $setting->value = $newValue;
+            // // $setting->save();
         }
+        // catch(ModelNotFoundException $e)
+        // {
+        //     log::info("Model not found: but creating new setting in place $e");
+        //     $set = Settings::create([
+        //         'setting'=>$settingToUpdate, 
+        //         'value' => $newValue]);
+        //     try{
+        //         $setting = Settings::where('setting', '=', $settingToUpdate)->firstOrFail();
+        //     }
+            catch(Exception $e)
+            {
+                log::error($e);
+                return self::errorResponse("Could not find the setting: $settingToUpdate to update $e", 400);
+            }
+            return self::successResponse("", "Updated Setting $settingToUpdate to $newValue");
+                        
     }
 
 

@@ -7,6 +7,7 @@ use App\Models\Transactions;
 use Illuminate\Database\Eloquent\Builder;
 // use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -33,11 +34,19 @@ class ReportController extends Controller
 
     public function showReportView(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         return Inertia::render('Reports');
     }
 
     public function getData(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         //get the attributes
         $startDate = $request->query('start') ?? null;
         $endDate = $request->query('end') ?? null;

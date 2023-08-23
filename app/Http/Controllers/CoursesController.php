@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Courses;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class CoursesController extends Controller
@@ -28,7 +29,6 @@ class CoursesController extends Controller
 
     static function errorResponse($message = null, $code)
     {
-        log::notice("Error in Courses Controller: $message");
         return response()->json([
             'status' => 'Error',
             'message' => $message,
@@ -38,11 +38,19 @@ class CoursesController extends Controller
 
     public function getAllCoursesInYear($year)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         return Courses::where('course_year', $year);
     }
 
     public function addCourse(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $course = new Courses;
         $course->number = $request->number;
         $course->year = date("Y")."/".date("Y")+1;
@@ -56,6 +64,10 @@ class CoursesController extends Controller
 
     public function getAllCoursesJson()
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $course = Courses::all();
         if(is_null($course))
         {
@@ -67,7 +79,10 @@ class CoursesController extends Controller
 
     public function deleteCourse(Request $request)
     {
-        log::info("request here");
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         try{
             $id = $request->query('id');
             if(is_null($id))

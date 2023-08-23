@@ -47,33 +47,41 @@ class ApplicationController extends Controller
 
 
     public function UserCanSubmit():bool{
-        $user = User::where('cn', $_SERVER['LOGON_USER'])
-            ->limit(1)
-            ->get()
-            ->first();
-        $External = Settings::where('setting', 'external')->get()->first()->value;
-        $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
-        if($this->userInAccessGroup($user, 'normal'))
+        if(Gate::allows('applicant'))
         {
             return true;
         }
-        elseif ($External == 1) {
-            //check if user is an external user:
-            if($this->userInAccessGroup($user, 'external'))
-            {
-                return true;
-            }
+        else
+        {
+            return false;
         }
-        //check undergrad
-        elseif ($uGrad == 1) {
-            //Currently Accepting Ugrad Applications.
-            //check if user is an external user:
-            if($this->userInAccessGroup($user, 'undergrad'))
-            {
-                return true;
-            }
-        }
-        return false;
+        // $user = User::where('cn', $_SERVER['LOGON_USER'])
+        //     ->limit(1)
+        //     ->get()
+        //     ->first();
+        // $External = Settings::where('setting', 'external')->get()->first()->value;
+        // $uGrad = Settings::where('setting', 'undergrad')->get()->first()->value;
+        // if($this->userInAccessGroup($user, 'normal'))
+        // {
+        //     return true;
+        // }
+        // elseif ($External == 1) {
+        //     //check if user is an external user:
+        //     if($this->userInAccessGroup($user, 'external'))
+        //     {
+        //         return true;
+        //     }
+        // }
+        // //check undergrad
+        // elseif ($uGrad == 1) {
+        //     //Currently Accepting Ugrad Applications.
+        //     //check if user is an external user:
+        //     if($this->userInAccessGroup($user, 'undergrad'))
+        //     {
+        //         return true;
+        //     }
+        // }
+        // return false;
     }
 
     //applicationForm
@@ -365,7 +373,7 @@ class ApplicationController extends Controller
         else
         {
             log::info("User attempted to submit poster but was not authorized");
-            return $this->errorResponse("Too Many Pending Requests", 200);
+            return $this->errorResponse("Not a Valid User", 200);
         }
     }
 

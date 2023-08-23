@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Settings;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -86,16 +87,30 @@ return new class extends Migration
             $table->boolean('emailed_receipt_ssts')->default(false);
         });
 
-        Schema::create('SDFTransactions', function (Blueprint $table) {
-            $table->id("sdf_transaction_id");
-            $table->enum('type', ['deposit', 'withdrawal']);
-            $table->float('ammount');
-        });
-
         Schema::create('Settings', function (Blueprint $table) {
             $table->string('setting');
             $table->string('value');
         });
+        // This adds in default settings necessary to run the app
+        $cost = new Settings();
+        $cost->setting = 'cost';
+        $cost->value = 6;
+        $cost->save();
+
+        $external = new Settings();
+        $external->setting = 'external';
+        $external->value = 0;
+        $external->save();
+
+        $external = new Settings();
+        $external->setting = 'undergrad';
+        $external->value = 0;
+        $external->save();
+
+        $discount = new Settings();
+        $discount->setting = 'discount';
+        $discount->value = 12.00;
+        $discount->save();
     }
 
     /**
@@ -111,5 +126,6 @@ return new class extends Migration
         Schema::dropIfExists('Courses');
         Schema::dropIfExists('Posters');
         Schema::dropIfExists('SDFTransactions');
+        Schema::dropIfExists('ExternalUsers');
     }
 };

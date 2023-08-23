@@ -6,6 +6,7 @@ use App\Models\ExternalUsers;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class ExternalUserController extends Controller
@@ -31,12 +32,20 @@ class ExternalUserController extends Controller
 
     public function getExternalUsers(): JsonResponse
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         return $this->successResponse(ExternalUsers::all());
     }
 
 
     public function addExternalUsers( Request $request ): JsonResponse
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         Log::info("USER SENT:");
         $userName = $request->id;
         
@@ -59,10 +68,11 @@ class ExternalUserController extends Controller
 
     public function removeExternalUsers( Request $request ): JsonResponse
     {
-        Log::info("USER SENT:");
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $userID = $request->id;
-        
-        Log::info($userID);
         try
         {
             ExternalUsers::find($userID)->delete();

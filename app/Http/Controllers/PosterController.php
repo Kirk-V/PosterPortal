@@ -9,6 +9,7 @@ use App\Models\Posters;
 use App\Models\Requests;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use LdapRecord\Models\ActiveDirectory\User;
@@ -53,6 +54,10 @@ class PosterController extends Controller
      */
     public function acceptPendingPoster(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $posterID = $request->poster_id;
         //Move Poster To accepted State:
         Posters::acceptPoster($posterID);

@@ -33,17 +33,21 @@ class AuthServiceProvider extends ServiceProvider
         {
             return;
         }
-        $user = User::where('cn', $_SERVER["AUTH_USER"] ?? 'kvande85')
+        try
+        {
+            $user = User::where('cn', $_SERVER["AUTH_USER"])
             ->limit(1)
             ->get()
             ->first();
-        Auth::login($user);
-
-
+            log::info("user is ".$user->cn[0]);
+            Auth::login($user);
+        }
+        catch(\Exception $e)
+        {
+            log::error($e);
+        }
+        
         Gate::define('admin', function (User $user) {
-            log::info("testing user");
-            log::info($user->getAttribute("cn")[0]);
-
             return $this->userIsAdmin($user);
         });
 

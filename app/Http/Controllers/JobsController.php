@@ -6,6 +6,7 @@ use App\Mail\PickUpNotice;
 use App\Models\Transactions;
 use Exception;
 use App\Models\Jobs;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use App\Mail\PDFMail;
@@ -25,6 +26,10 @@ class JobsController extends Controller
 {
     public function index()
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         Log::info("returning index interia");
         return Inertia::render('posterportal', [
             'currentView' => 'jobs',
@@ -76,6 +81,10 @@ class JobsController extends Controller
      */
     public function getJobsData($page, $entriesPerPage = 50)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $jobs = DB::table('Posters')->where('state', 'accepted')
             ->join('Jobs', 'Posters.poster_id', 'Jobs.poster_id')
             ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
@@ -90,6 +99,10 @@ class JobsController extends Controller
     //Function to update the job state of a job.
     public function updateState(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $jobID = $request->input('job_id');
         $state = $request->input('job_state');
         log::info("$jobID being updated with state $state");
@@ -124,6 +137,10 @@ class JobsController extends Controller
      */
     public function sendPickUpEmail(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $poster_id = $request->query('id');
         //get the requisitioner email to send the notification
         $poster = Posters::find($poster_id);
@@ -154,7 +171,10 @@ class JobsController extends Controller
      */
     public function emailPDFReceipt(Request $request)
     {
-        
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         // Extract the required parameters
         $recipientType = $request->query('to');
         $poster_id = $request->query('id');
@@ -208,6 +228,10 @@ class JobsController extends Controller
 
     public function emailPickUp(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         $id = $request->query('id');
         log::info("Email request for $id");
         // log::info($request->getContent());
@@ -223,6 +247,10 @@ class JobsController extends Controller
      */
     public function makeTransactionAndUpdate(Request $request)
     {
+        if(!Gate::allows('admin'))
+        {
+            abort(403);
+        }
         //Pull the ID of the poster.
         $poster = Posters::find($request->poster_id);
         if(is_null($poster))
@@ -264,32 +292,4 @@ class JobsController extends Controller
         Posters::updateAllPosterData($request->poster_id, $request->all());
         return self::successResponse("Success", "Success");
     }
-
-
-    // /**
-    //  * Summary of updateJobsData
-    //  *  this function will update all available information in the requests json object. 
-    //  *  It checks the column names in the posters, requests, and jobs tables. Careful as
-    //  *  two column names could be the same in two different tables. Both tables will be updated
-    //  *  with the value. 
-    //  * @param Request $request
-    //  */
-    // public function updateJobsData(Request $request)
-    // {
-    //     //Update Poster Data
-    //     $posterID = $request->poster_id;
-    //     if (!is_Null($posterID)) {
-    //         try {
-    //             Posters::updateAllPosterData($posterID, $request->all());
-    //             return true;
-    //         } catch (Exception $e) {
-    //             log::error($e);
-    //             return false;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         throw new Exception("Poster ID Not Found in Json");
-    //     }
-    // }
 }
