@@ -184,7 +184,7 @@ export default function PDF({ show, jobData, handleCloseReceipt }) {
             <View style={styles.rowView}>
                 <View style={styles.infoColumnSmallRight}>
                     <Text style={styles.label}>Sub Total</Text>
-                    <Text style={styles.value}>$ {parseFloat(jobData.cost * jobData.quantity).toFixed(2)}</Text>
+                    <Text style={styles.value}>$ {jobData.payment_method == 'cash' ? Math.floor(jobData.cost * jobData.quantity).toFixed(2): parseFloat(jobData.cost * jobData.quantity).toFixed(2)}</Text>
                 </View>
             </View>
             {jobData.discount_eligible == 1 ? DiscountField : null}
