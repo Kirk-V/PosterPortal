@@ -72,7 +72,7 @@ class PosterController extends Controller
         }
         catch(Exception $e)
         {
-            Mail::to($request->email)->send(new SSTSErrorNotification("Error Finding poster when attempting to send notice. $e"));
+            Mail::to(['ssts-posters@uwo.ca'])->send(new SSTSErrorNotification("Error Finding poster when attempting to send notice. $e"));
             return response(["success" => false]);
         }
         
@@ -84,7 +84,7 @@ class PosterController extends Controller
         {
             //Mail Failed alert SSTS
             log::error("Failed to send email notification that poster has been approve $e");
-            Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new SSTSErrorNotification("Error Sending Poster Accepted for printing notice. $e"));
+            Mail::to(["ssts-posters@uwo.ca"])->send(new SSTSErrorNotification("Error Sending Poster Accepted for printing notice. $e"));
             //mailing error but still moved to accepted state so we can return true to front end.
             return response(["success" => True]);
         }

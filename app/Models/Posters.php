@@ -263,7 +263,7 @@ class Posters extends Model
                 catch(Exception $e)
                 {
                     log::error("Failed to sent ssts notice that a speedcode has been approved  $e");
-                    Mail::to(["kvande85@uwo.ca", "rmcornwa@uwo.ca"])->send(new SSTSErrorNotification("Error updating speedcode for poster # ".$poster->poster_id." $e"));
+                    Mail::to(["ssts-posters@uwo.ca"])->send(new SSTSErrorNotification("Error updating speedcode for poster # ".$poster->poster_id." $e"));
                 }
                 return true;
             }
