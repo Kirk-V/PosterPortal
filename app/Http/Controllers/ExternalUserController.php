@@ -46,10 +46,8 @@ class ExternalUserController extends Controller
         {
             abort(403);
         }
-        Log::info("USER SENT:");
         $userName = $request->id;
         
-        Log::info($userName);
         try
         {
             $externalUser = new ExternalUsers(['username'=>$userName]);

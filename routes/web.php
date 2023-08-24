@@ -39,7 +39,6 @@ Route::get('/posterportal', function () {
    
     if(Gate::allows('admin'))
     {
-        log::info("gate allows");
         return Inertia::render('posterportal',
         [
             'departments' => config("app.departments"),

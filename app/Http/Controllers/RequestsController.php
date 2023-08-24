@@ -24,7 +24,6 @@ class RequestsController extends Controller
     //
     public function index()
     {
-        log::info("returning index interia");
         return Inertia::render('posterportal', [
             'currentView' => 'requests',
             'departments' => config("app.departments"),
@@ -96,7 +95,6 @@ class RequestsController extends Controller
 
         if($request != null)
         {
-            log::info("Rejecting Poster ".$request->posters->poster_id);
             $request->posters->state = 'rejected';
             //void transaction
             // $transaction = new Transactions();
@@ -104,7 +102,7 @@ class RequestsController extends Controller
             $request->posters->transactions()->create(['transaction_date'=>date("Y-m-d"), 'total_received'=>0, 'total'=>0]);
             $request->posters->save();
 
-            log::info("transaction added");
+
             if($request->posters->state == 'void')
             {
                 //Send email notification

@@ -78,7 +78,6 @@ class ReportController extends Controller
         switch($payment_type)
         {
             case "SDF":
-                log::info("SDF only");
                 $reportQuery = $reportQuery->where('applied_for_discount', 1);
                 break;
             case "CASH":

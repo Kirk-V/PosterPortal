@@ -39,7 +39,6 @@ class AuthServiceProvider extends ServiceProvider
             ->limit(1)
             ->get()
             ->first();
-            log::info("user is ".$user->cn[0]);
             Auth::login($user);
         }
         catch(\Exception $e)
@@ -113,7 +112,7 @@ class AuthServiceProvider extends ServiceProvider
         //Check if user is in SSC fac/staff
         if($this->userInAccessGroup($user, 'normal'))
             {
-                log::info("user  is normal");
+
                 return true;
             }
         //check if External users allowed and if user is an external user:
@@ -130,7 +129,7 @@ class AuthServiceProvider extends ServiceProvider
         if ($External == 1) {
             if($this->userInAccessGroup($user, 'external'))
             {
-                log::info("user  is external");
+
                 return true;
             }
         }
@@ -149,7 +148,6 @@ class AuthServiceProvider extends ServiceProvider
             //check if user is an external user:
             if($this->userInAccessGroup($user, 'undergrad'))
             {
-                log::info("user is undergrad");
                 return true;
             }
         }

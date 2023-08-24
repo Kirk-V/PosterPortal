@@ -30,7 +30,6 @@ class JobsController extends Controller
         {
             abort(403);
         }
-        Log::info("returning index interia");
         return Inertia::render('posterportal', [
             'currentView' => 'jobs',
             'departments' => config("app.departments")
@@ -105,12 +104,10 @@ class JobsController extends Controller
         }
         $jobID = $request->input('job_id');
         $state = $request->input('job_state');
-        log::info("$jobID being updated with state $state");
         DB::enableQueryLog();
         $job = Jobs::find($request->input('job_id'));
         // log::info(DB::getQueryLog());
         if ($job == null) {
-            log::info("job is null");
             return response(["success" => False]);
         }
         
@@ -119,7 +116,7 @@ class JobsController extends Controller
 
         if($state == 'picked_up')
         {
-            log::info("also updating the poster state to complete");
+
             $poster = $job->posters;
             $poster->state = 'complete';
             $poster->save();
@@ -153,7 +150,7 @@ class JobsController extends Controller
         {
             $req_total = floor($req_total);
         }
-        log::info("Pick up Email being sent to $req_email for poster: $poster_id with cost: $req_total");        
+    
         Mail::to($req_email)->send(new PickUpNotice($req_name, $req_total));
         return self::successResponse("none");
     }
@@ -201,7 +198,7 @@ class JobsController extends Controller
         }
         try
         {
-            log::info("Email to $toAddress request for $poster_id");   
+
             $pdfBlob = $request->getContent();
             $pdfFile = fopen("../resources/views/mail/Receipts/Receipt_$poster_id.pdf", "w");
             fwrite($pdfFile, $pdfBlob);
@@ -233,7 +230,7 @@ class JobsController extends Controller
             abort(403);
         }
         $id = $request->query('id');
-        log::info("Email request for $id");
+
         // log::info($request->getContent());
         // file_put_contents('myfile.pdf', $request->getContent());
         return self::successResponse("none");
@@ -282,7 +279,6 @@ class JobsController extends Controller
             'discount' => ['required'],
             'total_received' => ['required']
         ]);
-        log::info("passed Validation");
         // $transaction = new Transactions;
         // $transaction->transaction_date = $request->transaction_date;
         // $transaction->total_received = $request->total_received;

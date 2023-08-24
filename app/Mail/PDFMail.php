@@ -21,7 +21,7 @@ class PDFMail extends Mailable
     public function __construct(public String $poster_id, public String $MailType)
     {
         //
-        Log::info("sending receipt for poster $poster_id to $MailType");
+
     }
 
     /**
@@ -29,7 +29,7 @@ class PDFMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        log::info("Building envelope: ".$this->MailType);
+
         $subjectWording = "Requisitioner";
         if($this->MailType == 'GrantHolder')
         {

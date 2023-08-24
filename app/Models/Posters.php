@@ -120,7 +120,6 @@ class Posters extends Model
         $columnNames = Schema::getColumnListing('Posters');
         foreach ($updateArray as $key => $value)
         {
-            Log::info("Attempting to Update Poster $id -- $key => $value");
             if(in_array($key , $columnNames))
             {
                 //Should check that key is valid
@@ -169,7 +168,6 @@ class Posters extends Model
         $columnNames = Schema::getColumnListing('Jobs');
         foreach ($updateArray as $key => $value)
         {
-            Log::info("Attempting to Update job $job->id -- $key => $value");
             if(in_array($key , $columnNames))
             {
                 //Should check that key is valid
@@ -189,7 +187,6 @@ class Posters extends Model
         $columnNames = Schema::getColumnListing('Requests');
         foreach ($updateArray as $key => $value)
         {
-            Log::info("Attempting to Update request $request->id -- $key => $value");
             if(in_array($key , $columnNames))
             {
                 //Should check that key is valid
@@ -208,7 +205,7 @@ class Posters extends Model
         $columnNames = Schema::getColumnListing('Transactions');
         foreach ($updateArray as $key => $value)
         {
-            Log::info("Attempting to Update transaction $transaction->id -- $key => $value");
+
             if(in_array($key, $columnNames))
             {
                 //Should check that key is valid

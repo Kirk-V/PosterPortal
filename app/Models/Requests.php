@@ -35,7 +35,7 @@ class Requests extends Model
         $columnNames = Schema::getColumnListing('Requests');
         foreach ($updateArray as $key => $value)
         {
-            Log::info("Attempting to Update Request $id -- $key => $value");
+
             if(in_array($key , $columnNames))
             {
                 //Should check that key is valid

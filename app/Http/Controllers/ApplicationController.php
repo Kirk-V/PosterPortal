@@ -365,7 +365,6 @@ class ApplicationController extends Controller
             catch(Exception $e)
             {
                 log::info("Failed to validate poster data $e");
-                log::info(implode(DB::getQueryLog()));
                 return $this->errorResponse("Provided data was not valid", 200, $validationArray);
             }
 
@@ -390,7 +389,6 @@ class ApplicationController extends Controller
         ->join('Requests', 'Posters.poster_id', 'Requests.poster_id')
         ->where('user_logged_in', $userName->cn[0])
         ->where('state', 'pending')->count();
-        log::info("User ".$userName->cn[0]." already has $count pending jobs");
         return $count > config('app.user_request_limit') ? true:false;
     }
 }

@@ -66,7 +66,7 @@ class PosterController extends Controller
         Requests::updateRequest($reqId, $request->all());
         Jobs::newJob($posterID, $request->technician);
         $total = $request->total;
-        log::info("Total = ".$request->total);
+
         try{
             $poster = Posters::find($posterID)->transactions()->updateOrCreate(['poster_id' => $posterID, 'total' => floatval($total)]);
         }

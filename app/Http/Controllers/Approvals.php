@@ -88,13 +88,11 @@ class Approvals extends Controller
 
     public function rejectSpeedCode(Request $request, $id)
     {
-        log::info("Rejecting speedCode");
         $rString = $id;
         //Get poster
         $rString .= $request->input('speedcode');
         if(Posters::updateApprovalStatus($id, "reject"))
         {
-            Log::info("Rejecting speedcode and returning success");
             return view('approvalUpdated', ['success'=>true]);
         }
         else
