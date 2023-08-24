@@ -3,7 +3,7 @@
 <p>This is an automated notification that {{  $poster->requests->first_name}} {{  $poster->requests->last_name}} ({{ $poster->requests->email}}) has requested the printing of a poster(s) by SSTS and identified you as the grant holder (or authorized designate) to approve the payment.</p>
 <p>We require a valid speedcode from you to approve the printing of the following poster(s). The poster printing status will remain "on hold" until we receive the return email authorization.</p>
 <p>Department: {{  $poster->requests->department}}</p>
-<p>Dimensions: {{  $poster->width}} x {{  $poster->height}}({{  $poster->units}})</p>
+<p>Dimensions: {{  number_format((float)($poster->width), 2, '.', '')}} x {{  number_format((float)($poster->height), 2, '.', '')}} ({{ $poster->units}})</p>
 <p>Cost Per Poster: ${{$poster->cost}}</p>
 <p>Quantity: {{$poster->quantity}}</p>
 <p>Total: ${{ number_format((float)($poster->cost * $poster->quantity), 2, '.', '' )}}</p>
